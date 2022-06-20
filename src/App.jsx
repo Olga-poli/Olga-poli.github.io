@@ -5,21 +5,32 @@ import MoviesList from './components/MoviesList';
 import MovieInfo from './components/MovieInfo';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import MoviesService from './services/MoviesService';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       filter: '',
+      movies: null,
     };
+    this.updateMovies();
   }
+
+  updateMovies = () => {
+    const movies = new MoviesService();
+    movies.getResource()
+      .then((res) => {
+        this.setState({ movies: res.results });
+      });
+  };
 
   onFilterChange = (filter) => {
     this.setState({ filter });
   };
 
   render() {
-    const { filter } = this.state;
+    const { filter, movies } = this.state;
     return (
       <div className="App">
         <Header />
@@ -30,7 +41,7 @@ class App extends Component {
                 filter={filter}
                 onFilterChange={this.onFilterChange}
               />
-              <MoviesList />
+              <MoviesList movies={movies} />
             </div>
             <MovieInfo />
           </div>
