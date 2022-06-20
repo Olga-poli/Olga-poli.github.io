@@ -10,9 +10,15 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <Filter />
-      <MoviesList />
-      <MovieInfo />
+      <div className="container">
+        <div className="row">
+          <div className="col-8">
+            <Filter />
+            <MoviesList />
+          </div>
+          <MovieInfo />
+        </div>
+      </div>
       <Footer />
     </div>
   );

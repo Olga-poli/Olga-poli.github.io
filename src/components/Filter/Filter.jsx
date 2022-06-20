@@ -4,8 +4,8 @@ import './Filter.scss';
 function Filter() {
   return (
     <div className="filter">
-      <h2>Sort movies</h2>
-      <div>
+      <h2 className="mb-2">Sort movies</h2>
+      <div className="buttons mb-3">
         <button type="button" className="btn btn-outline-dark btn-sm">
           by likes
         </button>
@@ -13,12 +13,10 @@ function Filter() {
           by names
         </button>
       </div>
-      <div className="input-group">
-        <div className="input-group-prepend">
-          <button type="button" className="btn btn-outline-secondary">
-            <i className="fa fa-search" />
-          </button>
-        </div>
+      <div className="input-group mb-3">
+        <button type="button" className="btn btn-outline-secondary">
+          <i className="fa fa-search" />
+        </button>
         <input
           className="form-control"
           type="text"

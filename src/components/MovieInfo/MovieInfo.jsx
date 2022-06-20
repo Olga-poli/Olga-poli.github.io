@@ -3,7 +3,7 @@ import './MovieInfo.scss';
 
 function MovieInfo() {
   return (
-    <div>
+    <div className="MovieInfo col">
       <aside>
         <h3>Titanic</h3>
         <span>
