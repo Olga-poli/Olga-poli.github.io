@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.scss';
 import Filter from './components/Filter';
 import MoviesList from './components/MoviesList';
@@ -6,22 +6,39 @@ import MovieInfo from './components/MovieInfo';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
-function App() {
-  return (
-    <div className="App">
-      <Header />
-      <div className="container">
-        <div className="row">
-          <div className="col-8">
-            <Filter />
-            <MoviesList />
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      filter: 'rating', // likes, rating
+    };
+  }
+
+  onFilterChange = (filter) => {
+    this.setState({ filter });
+  };
+
+  render() {
+    const { filter } = this.state;
+    return (
+      <div className="App">
+        <Header />
+        <div className="container">
+          <div className="row">
+            <div className="col-8">
+              <Filter
+                filter={filter}
+                onFilterChange={this.onFilterChange}
+              />
+              <MoviesList />
+            </div>
+            <MovieInfo />
           </div>
-          <MovieInfo />
         </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
-  );
+    );
+  }
 }
 
 export default App;
