@@ -5,7 +5,7 @@ import MovieListItem from '../MovieListItem';
 
 function MoviesList({ movies }) {
   const moviesItems = movies
-    ? movies.map((item) => (<MovieListItem data={item} key={item.id} />))
+    ? movies.map((item) => (<MovieListItem movieData={item} key={item.id} />))
     : null;
   return (
     <div className="movies-list">

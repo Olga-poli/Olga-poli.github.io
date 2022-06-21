@@ -1,3 +1,11 @@
 .movies-list-item {
   width: 17rem;
+
+  .image-container {
+    height: 10rem;
+
+    img {
+      height: 100%;
+    }
+  }
 }
