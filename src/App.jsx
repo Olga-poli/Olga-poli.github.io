@@ -14,8 +14,16 @@ class App extends Component {
       filter: '',
       movies: null,
       activeMovieId: null,
+      term: '',
     };
     this.updateMovies();
+    this.search = (arr, term) => {
+      if (term.length === 0) {
+        return arr;
+      }
+      return arr
+        .filter(({ title }) => title.toLowerCase().indexOf(term.toLowerCase()) > -1);
+    };
   }
 
   updateMovies = () => {
@@ -30,14 +38,6 @@ class App extends Component {
     this.setState({ filter });
   };
 
-  onSearch = (term) => {
-    const { movies } = this.state;
-    const filteredMovies = movies
-      .map(({ title }) => title.toLowerCase())
-      .filter((title) => title.indexOf(term.toLowerCase()) > -1);
-    console.log(filteredMovies);
-  };
-
   onMovieTitleClick = (activeMovieId) => {
     this.setState(() => ({ activeMovieId }));
   };
@@ -48,6 +48,10 @@ class App extends Component {
 
   onDislikeClick = (currentMovieId) => {
     this.updateItemLikesCounter(currentMovieId, -1);
+  };
+
+  onSearch = (term) => {
+    this.setState(({ term }));
   };
 
   updateItemLikesCounter(movieId, shift = 1) {
@@ -65,12 +69,18 @@ class App extends Component {
   }
 
   render() {
-    const { filter, movies, activeMovieId } = this.state;
+    const {
+      filter,
+      movies,
+      activeMovieId,
+      term,
+    } = this.state;
+    const visibleMovies = this.search(movies, term);
     const activeMovieData = movies && activeMovieId
       ? movies.find(({ id }) => id === activeMovieId)
       : null;
-    const moviesItems = movies
-      ? movies.map((item) => (
+    const moviesItems = visibleMovies
+      ? visibleMovies.map((item) => (
         <MovieListItem
           movieData={item}
           key={item.id}
