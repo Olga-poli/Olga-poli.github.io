@@ -10,12 +10,25 @@ class Filter extends Component {
         { name: 'likes', label: 'by likes' },
         { name: 'rating', label: 'by rating' },
       ],
+      term: '',
     };
   }
 
+  onSearch = (e) => {
+    e.preventDefault();
+    const { term } = this.state;
+    const { onSearch } = this.props;
+    onSearch(term);
+    this.setState(({ term: '' }));
+  };
+
+  onInputChange = (e) => {
+    this.setState(({ term: e.target.value }));
+  };
+
   render() {
     const { filter, onFilterChange } = this.props;
-    const { items } = this.state;
+    const { items, term } = this.state;
     const buttons = items.map(({ name, label }) => {
       const isActive = filter === name;
       const clazz = isActive ? 'btn-info' : 'btn-outline-secondary';
@@ -37,16 +50,21 @@ class Filter extends Component {
         <div className="buttons mb-3">
           {buttons}
         </div>
-        <div className="input-group mb-3">
+        <form
+          onSubmit={this.onSearch}
+          className="input-group mb-3"
+        >
           <button type="button" className="btn btn-outline-secondary">
             <i className="fa fa-search" />
           </button>
           <input
+            onChange={this.onInputChange}
+            value={term}
             className="form-control"
             type="text"
             placeholder="Search by name"
           />
-        </div>
+        </form>
       </div>
     );
   }
@@ -55,6 +73,7 @@ class Filter extends Component {
 Filter.propTypes = {
   filter: PropTypes.string.isRequired,
   onFilterChange: PropTypes.func.isRequired,
+  onSearch: PropTypes.func.isRequired,
 };
 
 export default Filter;

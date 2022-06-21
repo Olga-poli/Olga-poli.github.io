@@ -30,6 +30,14 @@ class App extends Component {
     this.setState({ filter });
   };
 
+  onSearch = (term) => {
+    const { movies } = this.state;
+    const filteredMovies = movies
+      .map(({ title }) => title.toLowerCase())
+      .filter((title) => title.indexOf(term.toLowerCase()) > -1);
+    console.log(filteredMovies);
+  };
+
   onMovieTitleClick = (activeMovieId) => {
     this.setState(() => ({ activeMovieId }));
   };
@@ -82,6 +90,7 @@ class App extends Component {
               <Filter
                 filter={filter}
                 onFilterChange={this.onFilterChange}
+                onSearch={this.onSearch}
               />
               <div className="movies-list">
                 {moviesItems}
