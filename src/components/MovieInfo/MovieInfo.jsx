@@ -3,45 +3,57 @@ import './MovieInfo.scss';
 import PropTypes from 'prop-types';
 
 function MovieInfo({ activeMovieData }) {
-  return activeMovieData
-    ? (
-      <div className="MovieInfo col">
-        <aside>
-          <h3>Titanic</h3>
-          <span>
-            <span>
-              Likes:
-              <span>4</span>
-            </span>
-          </span>
-        </aside>
-        <div>
-          <div>
-            <img src="" alt="Titanic" />
+  if (!activeMovieData) {
+    return null;
+  }
+  const {
+    title,
+    poster_path: posterPath,
+    release_date: releaseDate,
+    original_language: language,
+    overview,
+  } = activeMovieData;
+  const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  return (
+    <div className="movie-info col">
+      <div className="movie-info__container card">
+        <div className="card-body">
+          <div className="movie-info__header">
+            <div className="movie-info__text">
+              <h3>{title}</h3>
+              <p>
+                <span>
+                  Likes:
+                  <span>4</span>
+                </span>
+              </p>
+            </div>
+            <div className="movie-info__image">
+              <img src={`https://image.tmdb.org/t/p/w500/${posterPath}`} alt={posterPath} />
+            </div>
           </div>
-          <div>
-            <p>
-              Director:
-              <span>Cameron</span>
-            </p>
-            <p>
-              Actors:
-              <span>Di Caprio</span>
-            </p>
-            <p>
-              Genres:
-              <span>Abra</span>
-            </p>
-            <p>
-              Description:
-              {/* eslint-disable-next-line max-len */}
-              <span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis, dolore </span>
-            </p>
+          <div className="movie-info__body">
+            <div>
+              <p>
+                Release:
+                <span>
+                  {` ${new Date(releaseDate).toLocaleDateString('en-US', dateOptions)}`}
+                </span>
+              </p>
+              <p>
+                Language:
+                <span>{` ${language}`}</span>
+              </p>
+              <p>
+                Description:
+                <span>{` ${overview}`}</span>
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    )
-    : null;
+    </div>
+  );
 }
 
 MovieInfo.defaultProps = {

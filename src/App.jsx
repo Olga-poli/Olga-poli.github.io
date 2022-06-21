@@ -16,9 +16,6 @@ class App extends Component {
       activeMovieId: null,
     };
     this.updateMovies();
-    this.onMovieTitleClick = (activeMovieId) => {
-      this.setState(() => ({ activeMovieId }));
-    };
   }
 
   updateMovies = () => {
@@ -31,6 +28,10 @@ class App extends Component {
 
   onFilterChange = (filter) => {
     this.setState({ filter });
+  };
+
+  onMovieTitleClick = (activeMovieId) => {
+    this.setState(() => ({ activeMovieId }));
   };
 
   render() {
