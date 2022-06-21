@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import './App.scss';
 import Filter from './components/Filter';
-import MoviesList from './components/MoviesList';
 import MovieInfo from './components/MovieInfo';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import MoviesService from './services/MoviesService';
+import MovieListItem from './components/MovieListItem';
 
 class App extends Component {
   constructor(props) {
@@ -13,8 +13,12 @@ class App extends Component {
     this.state = {
       filter: '',
       movies: null,
+      activeMovieId: null,
     };
     this.updateMovies();
+    this.onMovieTitleClick = (activeMovieId) => {
+      this.setState(() => ({ activeMovieId }));
+    };
   }
 
   updateMovies = () => {
@@ -30,7 +34,20 @@ class App extends Component {
   };
 
   render() {
-    const { filter, movies } = this.state;
+    const { filter, movies, activeMovieId } = this.state;
+    const activeMovieData = movies && activeMovieId
+      ? movies.find(({ id }) => id === activeMovieId)
+      : null;
+    const moviesItems = movies
+      ? movies.map((item) => (
+        <MovieListItem
+          movieData={item}
+          key={item.id}
+          onMovieTitleClick={this.onMovieTitleClick}
+        />
+      ))
+      : null;
+
     return (
       <div className="App">
         <Header />
@@ -41,9 +58,11 @@ class App extends Component {
                 filter={filter}
                 onFilterChange={this.onFilterChange}
               />
-              <MoviesList movies={movies} />
+              <div className="movies-list">
+                {moviesItems}
+              </div>
             </div>
-            <MovieInfo />
+            <MovieInfo activeMovieData={activeMovieData} />
           </div>
         </div>
         <Footer />
