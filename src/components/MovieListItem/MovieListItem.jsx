@@ -17,15 +17,17 @@ class MovieListItem extends Component {
     return (
       <div className="card movies-list-item">
         <div className="card-body">
-          <p className="card-title">{title}</p>
-          <div className="d-flex">
-            <div className="buttons-group">
-              <button type="button" className="btn btn-light btn-sm">
-                <i className="fa fa-thumbs-up" />
-              </button>
-              <button type="button" className="btn btn-light btn-sm">
-                <i className="fa fa-thumbs-down" />
-              </button>
+          <p className="card-title mb-3">{title}</p>
+          <div className="card-content d-flex">
+            <div className="card-likes">
+              <div className="buttons mb-3">
+                <button type="button" className="btn btn-light btn-sm">
+                  <i className="fa fa-thumbs-up" />
+                </button>
+                <button type="button" className="btn btn-light btn-sm">
+                  <i className="fa fa-thumbs-down" />
+                </button>
+              </div>
               <span>likes</span>
               <span>1</span>
             </div>
@@ -33,7 +35,7 @@ class MovieListItem extends Component {
               <img src={poster} alt={title} />
             </div>
           </div>
-          <div className="ratong">
+          <div className="rating">
             <span className="fa fa-star" />
             <span className="fa fa-star" />
             <span className="fa fa-star-o" />
