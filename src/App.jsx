@@ -35,23 +35,17 @@ class App extends Component {
   };
 
   onLikeClick = (currentMovieId) => {
-    const { movies } = this.state;
-    const currentMovieIdx = movies.findIndex(({ id }) => id === currentMovieId);
-    const currentLikesCount = movies[currentMovieIdx].currentLikesCount + 1;
-    const updatedMovie = { ...movies[currentMovieIdx], currentLikesCount };
-    this.setState(() => ({
-      movies: [
-        ...movies.slice(0, currentMovieIdx),
-        updatedMovie,
-        ...movies.slice(currentMovieIdx + 1),
-      ],
-    }));
+    this.updateItemLikesCounter(currentMovieId);
   };
 
   onDislikeClick = (currentMovieId) => {
+    this.updateItemLikesCounter(currentMovieId, -1);
+  };
+
+  updateItemLikesCounter(movieId, shift = 1) {
     const { movies } = this.state;
-    const currentMovieIdx = movies.findIndex(({ id }) => id === currentMovieId);
-    const currentLikesCount = movies[currentMovieIdx].currentLikesCount - 1;
+    const currentMovieIdx = movies.findIndex(({ id }) => id === movieId);
+    const currentLikesCount = movies[currentMovieIdx].currentLikesCount + shift;
     const updatedMovie = { ...movies[currentMovieIdx], currentLikesCount };
     this.setState(() => ({
       movies: [
@@ -60,7 +54,7 @@ class App extends Component {
         ...movies.slice(currentMovieIdx + 1),
       ],
     }));
-  };
+  }
 
   render() {
     const { filter, movies, activeMovieId } = this.state;
