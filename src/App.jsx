@@ -24,6 +24,13 @@ class App extends Component {
       return arr
         .filter(({ title }) => title.toLowerCase().indexOf(term.toLowerCase()) > -1);
     };
+    this.filter = (arr) => {
+      const { filter } = this.state;
+      switch (filter) {
+        case 'likes': return arr.sort((a, b) => b.currentLikesCount - a.currentLikesCount);
+        default: return arr;
+      }
+    };
   }
 
   updateMovies = () => {
@@ -75,7 +82,9 @@ class App extends Component {
       activeMovieId,
       term,
     } = this.state;
-    const visibleMovies = this.search(movies, term);
+    const visibleMovies = this.filter(
+      this.search(movies, term),
+    );
     const activeMovieData = movies && activeMovieId
       ? movies.find(({ id }) => id === activeMovieId)
       : null;
