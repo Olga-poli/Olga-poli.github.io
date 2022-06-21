@@ -8,6 +8,7 @@ function MovieInfo({ activeMovieData }) {
   }
   const {
     title,
+    currentLikesCount = 0,
     poster_path: posterPath,
     release_date: releaseDate,
     original_language: language,
@@ -24,7 +25,7 @@ function MovieInfo({ activeMovieData }) {
               <p>
                 <span>
                   Likes:
-                  <span>4</span>
+                  <span>{` ${currentLikesCount}`}</span>
                 </span>
               </p>
             </div>
@@ -76,6 +77,7 @@ MovieInfo.propTypes = {
     video: PropTypes.bool,
     vote_average: PropTypes.number,
     vote_count: PropTypes.number,
+    currentLikesCount: PropTypes.number,
   }),
 };
 

@@ -22,7 +22,7 @@ class App extends Component {
     const movies = new MoviesService();
     movies.getResource()
       .then((res) => {
-        this.setState({ movies: res.results });
+        this.setState({ movies: res.results.map((item) => ({ ...item, currentLikesCount: 0 })) });
       });
   };
 
@@ -32,6 +32,34 @@ class App extends Component {
 
   onMovieTitleClick = (activeMovieId) => {
     this.setState(() => ({ activeMovieId }));
+  };
+
+  onLikeClick = (currentMovieId) => {
+    const { movies } = this.state;
+    const currentMovieIdx = movies.findIndex(({ id }) => id === currentMovieId);
+    const currentLikesCount = movies[currentMovieIdx].currentLikesCount + 1;
+    const updatedMovie = { ...movies[currentMovieIdx], currentLikesCount };
+    this.setState(() => ({
+      movies: [
+        ...movies.slice(0, currentMovieIdx),
+        updatedMovie,
+        ...movies.slice(currentMovieIdx + 1),
+      ],
+    }));
+  };
+
+  onDislikeClick = (currentMovieId) => {
+    const { movies } = this.state;
+    const currentMovieIdx = movies.findIndex(({ id }) => id === currentMovieId);
+    const currentLikesCount = movies[currentMovieIdx].currentLikesCount - 1;
+    const updatedMovie = { ...movies[currentMovieIdx], currentLikesCount };
+    this.setState(() => ({
+      movies: [
+        ...movies.slice(0, currentMovieIdx),
+        updatedMovie,
+        ...movies.slice(currentMovieIdx + 1),
+      ],
+    }));
   };
 
   render() {
@@ -45,6 +73,8 @@ class App extends Component {
           movieData={item}
           key={item.id}
           onMovieTitleClick={this.onMovieTitleClick}
+          onLikeClick={this.onLikeClick}
+          onDislikeClick={this.onDislikeClick}
         />
       ))
       : null;

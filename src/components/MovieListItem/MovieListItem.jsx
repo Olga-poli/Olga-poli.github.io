@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import './MovieListItem.scss';
 import PropTypes from 'prop-types';
 
-// import MovieTitle from '../MovieTitle';
-
 class MovieListItem extends Component {
   constructor(props) {
     super(props);
@@ -11,7 +9,14 @@ class MovieListItem extends Component {
   }
 
   render() {
-    const { onMovieTitleClick, movieData: { title, poster_path: posterPath, id } } = this.props;
+    const {
+      onMovieTitleClick,
+      onLikeClick,
+      onDislikeClick,
+      movieData: {
+        title, poster_path: posterPath, id, currentLikesCount = 0,
+      },
+    } = this.props;
     return (
       <div className="card movies-list-item">
         <div className="card-body">
@@ -25,15 +30,23 @@ class MovieListItem extends Component {
           <div className="card-content d-flex">
             <div className="card-likes">
               <div className="buttons mb-3">
-                <button type="button" className="btn btn-light btn-sm">
+                <button
+                  onClick={() => onLikeClick(id)}
+                  type="button"
+                  className="btn btn-light btn-sm"
+                >
                   <i className="fa fa-thumbs-up" />
                 </button>
-                <button type="button" className="btn btn-light btn-sm">
+                <button
+                  onClick={() => onDislikeClick(id)}
+                  type="button"
+                  className="btn btn-light btn-sm"
+                >
                   <i className="fa fa-thumbs-down" />
                 </button>
               </div>
               <span>likes</span>
-              <span>1</span>
+              <span>{` ${currentLikesCount}`}</span>
             </div>
             <div className="image-container">
               <img src={`https://image.tmdb.org/t/p/w500/${posterPath}`} alt={title} />
@@ -54,11 +67,15 @@ class MovieListItem extends Component {
 
 MovieListItem.defaultProps = {
   onMovieTitleClick: PropTypes.func,
+  onLikeClick: PropTypes.func,
+  onDislikeClick: PropTypes.func,
   movieData: PropTypes.shape({}),
 };
 
 MovieListItem.propTypes = {
   onMovieTitleClick: PropTypes.func,
+  onLikeClick: PropTypes.func,
+  onDislikeClick: PropTypes.func,
   movieData: PropTypes.shape({
     adult: PropTypes.bool,
     backdrop_path: PropTypes.string,
@@ -74,6 +91,7 @@ MovieListItem.propTypes = {
     video: PropTypes.bool,
     vote_average: PropTypes.number,
     vote_count: PropTypes.number,
+    currentLikesCount: PropTypes.number,
   }),
 };
 
