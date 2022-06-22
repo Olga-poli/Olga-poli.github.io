@@ -28,6 +28,7 @@ class App extends Component {
       const { filter } = this.state;
       switch (filter) {
         case 'likes': return arr.sort((a, b) => b.currentLikesCount - a.currentLikesCount);
+        case 'rating': return arr.sort((a, b) => b.rating - a.rating);
         default: return arr;
       }
     };
