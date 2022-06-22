@@ -1,21 +1,32 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './MovieRating.scss';
 import PropTypes from 'prop-types';
 
-function MovieRating(props) {
-  const { rating } = props;
-  let idx = 0;
+class MovieRating extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      hover: 0,
+    };
+  }
 
-  const createStarItem = () => {
-    const { movieId, onRatingChange } = props;
-    const clazz = idx >= rating
+  createStarItem() {
+    const { hover } = this.state;
+    const { rating, movieId, onRatingChange } = this.props;
+    const clazz = (this.idx >= rating) && (this.idx >= hover)
       ? 'rating-button__star fa fa-star-o'
       : 'rating-button__star fa fa-star';
-    idx += 1;
-    const currentIdx = idx;
+    this.idx += 1;
+    const currentIdx = this.idx;
+    const setHover = (hoveredStarMax) => {
+      this.setState(({ hover: hoveredStarMax }));
+    };
+
     return (
       <button
         onClick={() => onRatingChange(movieId, currentIdx)}
+        onMouseEnter={() => setHover(currentIdx)}
+        onMouseLeave={() => setHover(0)}
         className="rating-button"
         key={`${movieId}_${currentIdx}`}
         type="button"
@@ -23,18 +34,22 @@ function MovieRating(props) {
         <span className={clazz} />
       </button>
     );
-  };
+  }
 
-  return (
-    <div
-      rating={rating}
-      className="rating"
-    >
-      {[...Array(5)].map(() => (
-        createStarItem()
-      ))}
-    </div>
-  );
+  render() {
+    const { rating } = this.props;
+    this.idx = 0;
+    return (
+      <div
+        rating={rating}
+        className="rating"
+      >
+        {[...Array(5)].map(() => (
+          this.createStarItem()
+        ))}
+      </div>
+    );
+  }
 }
 
 MovieRating.propTypes = {

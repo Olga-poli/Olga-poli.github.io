@@ -27,16 +27,14 @@ class App extends Component {
       },
     ];
     this.updateMovies();
+    this.search = (arr, term) => {
+      if (term.length === 0) {
+        return arr;
+      }
+      return arr
+        .filter(({ title }) => title.toLowerCase().indexOf(term.toLowerCase()) > -1);
+    };
   }
-
-  // eslint-disable-next-line class-methods-use-this
-  search = (arr, term) => {
-    if (term.length === 0) {
-      return arr;
-    }
-    return arr
-      .filter(({ title }) => title.toLowerCase().indexOf(term.toLowerCase()) > -1);
-  };
 
   filter = (arr) => {
     const { activeFilter } = this.state;
