@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './MovieListItem.scss';
 import PropTypes from 'prop-types';
+import MovieRating from '../MovieRating';
 
 class MovieListItem extends Component {
   constructor(props) {
@@ -14,7 +15,7 @@ class MovieListItem extends Component {
       onLikeClick,
       onDislikeClick,
       movieData: {
-        title, poster_path: posterPath, id, currentLikesCount = 0,
+        title, poster_path: posterPath, id, currentLikesCount = 0, rating = 0,
       },
     } = this.props;
     return (
@@ -52,13 +53,10 @@ class MovieListItem extends Component {
               <img src={`https://image.tmdb.org/t/p/w500/${posterPath}`} alt={title} />
             </div>
           </div>
-          <div className="rating">
-            <span className="fa fa-star" />
-            <span className="fa fa-star" />
-            <span className="fa fa-star-o" />
-            <span className="fa fa-star-o" />
-            <span className="fa fa-star-o" />
-          </div>
+          <MovieRating
+            rating={rating}
+            movieId={id}
+          />
         </div>
       </div>
     );
@@ -92,6 +90,7 @@ MovieListItem.propTypes = {
     vote_average: PropTypes.number,
     vote_count: PropTypes.number,
     currentLikesCount: PropTypes.number,
+    rating: PropTypes.number,
   }),
 };
 

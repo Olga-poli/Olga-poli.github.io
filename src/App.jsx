@@ -37,7 +37,13 @@ class App extends Component {
     const movies = new MoviesService();
     movies.getResource()
       .then((res) => {
-        this.setState({ movies: res.results.map((item) => ({ ...item, currentLikesCount: 0 })) });
+        this.setState({
+          movies: res.results.map((item) => ({
+            ...item,
+            currentLikesCount: 0,
+            rating: 0,
+          })),
+        });
       });
   };
 

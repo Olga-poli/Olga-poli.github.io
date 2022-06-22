@@ -31,7 +31,7 @@ class Filter extends Component {
     const { items, term } = this.state;
     const buttons = items.map(({ name, label }) => {
       const isActive = filter === name;
-      const clazz = isActive ? 'btn-info' : 'btn-outline-secondary';
+      const clazz = isActive ? 'btn-primary' : 'btn-outline-secondary';
       return (
         <button
           key={name}

@@ -1,6 +1,7 @@
 import React from 'react';
 import './MovieInfo.scss';
 import PropTypes from 'prop-types';
+import MovieRating from '../MovieRating';
 
 function MovieInfo({ activeMovieData }) {
   if (!activeMovieData) {
@@ -9,6 +10,8 @@ function MovieInfo({ activeMovieData }) {
   const {
     title,
     currentLikesCount = 0,
+    rating = 0,
+    id,
     poster_path: posterPath,
     release_date: releaseDate,
     original_language: language,
@@ -49,6 +52,10 @@ function MovieInfo({ activeMovieData }) {
                 Description:
                 <span>{` ${overview}`}</span>
               </p>
+              <MovieRating
+                rating={rating}
+                movieId={id}
+              />
             </div>
           </div>
         </div>
@@ -78,6 +85,7 @@ MovieInfo.propTypes = {
     vote_average: PropTypes.number,
     vote_count: PropTypes.number,
     currentLikesCount: PropTypes.number,
+    rating: PropTypes.number,
   }),
 };
 
