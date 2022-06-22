@@ -3,20 +3,25 @@ import './MovieInfo.scss';
 import PropTypes from 'prop-types';
 import MovieRating from '../MovieRating';
 
-function MovieInfo({ activeMovieData }) {
+function MovieInfo(props) {
+  const { activeMovieData } = props || null;
   if (!activeMovieData) {
     return null;
   }
   const {
-    title,
-    currentLikesCount = 0,
-    rating = 0,
-    id,
-    poster_path: posterPath,
-    release_date: releaseDate,
-    original_language: language,
-    overview,
-  } = activeMovieData;
+    activeMovieData: {
+      title,
+      currentLikesCount = 0,
+      rating = 0,
+      id,
+      poster_path: posterPath,
+      release_date: releaseDate,
+      original_language: language,
+      overview,
+    },
+    onRatingChange,
+  } = props;
+
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
   return (
     <div className="movie-info col">
@@ -55,6 +60,7 @@ function MovieInfo({ activeMovieData }) {
               <MovieRating
                 rating={rating}
                 movieId={id}
+                onRatingChange={onRatingChange}
               />
             </div>
           </div>
@@ -66,6 +72,7 @@ function MovieInfo({ activeMovieData }) {
 
 MovieInfo.defaultProps = {
   activeMovieData: PropTypes.shape({}),
+  onRatingChange: PropTypes.func,
 };
 
 MovieInfo.propTypes = {
@@ -87,6 +94,7 @@ MovieInfo.propTypes = {
     currentLikesCount: PropTypes.number,
     rating: PropTypes.number,
   }),
+  onRatingChange: PropTypes.func,
 };
 
 export default MovieInfo;

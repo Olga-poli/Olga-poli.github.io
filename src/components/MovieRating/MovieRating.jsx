@@ -6,22 +6,30 @@ class MovieRating extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.idx = 0;
   }
 
   createStarItem() {
-    const { movieId } = this.props;
+    const { rating, movieId, onRatingChange } = this.props;
+    const clazz = this.idx >= rating
+      ? 'rating-button__star fa fa-star-o'
+      : 'rating-button__star fa fa-star';
     this.idx += 1;
+    const currentIdx = this.idx;
     return (
-      <span
-        className="fa fa-star-o"
-        key={`${movieId}_${this.idx}`}
-      />
+      <button
+        onClick={() => onRatingChange(movieId, currentIdx)}
+        className="rating-button"
+        key={`${movieId}_${currentIdx}`}
+        type="button"
+      >
+        <span className={clazz} />
+      </button>
     );
   }
 
   render() {
     const { rating } = this.props;
+    this.idx = 0;
     return (
       <div
         rating={rating}
@@ -35,9 +43,14 @@ class MovieRating extends Component {
   }
 }
 
+MovieRating.defaultProps = {
+  onRatingChange: PropTypes.func,
+};
+
 MovieRating.propTypes = {
   rating: PropTypes.number.isRequired,
   movieId: PropTypes.number.isRequired,
+  onRatingChange: PropTypes.func,
 };
 
 export default MovieRating;

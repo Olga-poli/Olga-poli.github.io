@@ -14,6 +14,7 @@ class MovieListItem extends Component {
       onMovieTitleClick,
       onLikeClick,
       onDislikeClick,
+      onRatingChange,
       movieData: {
         title, poster_path: posterPath, id, currentLikesCount = 0, rating = 0,
       },
@@ -56,6 +57,7 @@ class MovieListItem extends Component {
           <MovieRating
             rating={rating}
             movieId={id}
+            onRatingChange={onRatingChange}
           />
         </div>
       </div>
@@ -64,16 +66,14 @@ class MovieListItem extends Component {
 }
 
 MovieListItem.defaultProps = {
-  onMovieTitleClick: PropTypes.func,
-  onLikeClick: PropTypes.func,
-  onDislikeClick: PropTypes.func,
   movieData: PropTypes.shape({}),
 };
 
 MovieListItem.propTypes = {
-  onMovieTitleClick: PropTypes.func,
-  onLikeClick: PropTypes.func,
-  onDislikeClick: PropTypes.func,
+  onMovieTitleClick: PropTypes.func.isRequired,
+  onLikeClick: PropTypes.func.isRequired,
+  onDislikeClick: PropTypes.func.isRequired,
+  onRatingChange: PropTypes.func.isRequired,
   movieData: PropTypes.shape({
     adult: PropTypes.bool,
     backdrop_path: PropTypes.string,

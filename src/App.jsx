@@ -51,6 +51,19 @@ class App extends Component {
     this.setState({ filter });
   };
 
+  onRatingChange = (movieId, rating) => {
+    const { movies } = this.state;
+    const currentMovieIdx = movies.findIndex(({ id }) => id === movieId);
+    const updatedMovie = { ...movies[currentMovieIdx], rating };
+    this.setState(() => ({
+      movies: [
+        ...movies.slice(0, currentMovieIdx),
+        updatedMovie,
+        ...movies.slice(currentMovieIdx + 1),
+      ],
+    }));
+  };
+
   onMovieTitleClick = (activeMovieId) => {
     this.setState(() => ({ activeMovieId }));
   };
@@ -102,6 +115,7 @@ class App extends Component {
           onMovieTitleClick={this.onMovieTitleClick}
           onLikeClick={this.onLikeClick}
           onDislikeClick={this.onDislikeClick}
+          onRatingChange={this.onRatingChange}
         />
       ))
       : null;
@@ -121,7 +135,10 @@ class App extends Component {
                 {moviesItems}
               </div>
             </div>
-            <MovieInfo activeMovieData={activeMovieData} />
+            <MovieInfo
+              activeMovieData={activeMovieData}
+              onRatingChange={this.onRatingChange}
+            />
           </div>
         </div>
         <Footer />
