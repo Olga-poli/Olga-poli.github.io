@@ -36,14 +36,13 @@ class App extends Component {
     };
   }
 
-  filter = (arr) => {
+  sortMovies = (arr) => {
     const { activeFilter } = this.state;
-    const [likes, rating] = this.filters.map(({ name }) => name);
-    switch (activeFilter) {
-      case likes: return arr.sort((a, b) => b.currentLikesCount - a.currentLikesCount);
-      case rating: return arr.sort((a, b) => b.rating - a.rating);
-      default: return arr;
-    }
+    const map = {
+      likes: (a, b) => b.currentLikesCount - a.currentLikesCount,
+      rating: (a, b) => b.rating - a.rating,
+    };
+    return activeFilter ? arr.sort(map[activeFilter]) : arr;
   };
 
   updateMovies = () => {
@@ -114,7 +113,7 @@ class App extends Component {
       activeMovieId,
       term,
     } = this.state;
-    const visibleMovies = this.filter(
+    const visibleMovies = this.sortMovies(
       this.search(movies, term),
     );
     const activeMovieData = movies && activeMovieId
