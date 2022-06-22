@@ -3,7 +3,7 @@ import './Footer.scss';
 
 function Footer() {
   return (
-    <footer className="footer mt-auto">
+    <footer className="footer">
       <p>EPAM</p>
     </footer>
   );

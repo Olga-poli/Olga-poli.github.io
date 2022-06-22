@@ -30,14 +30,14 @@ function MovieListItem(props) {
               <button
                 onClick={() => onLikeClick(id)}
                 type="button"
-                className="btn btn-light btn-sm"
+                className="btn btn-outline-dark btn-sm"
               >
                 <i className="fa fa-thumbs-up" />
               </button>
               <button
                 onClick={() => onDislikeClick(id)}
                 type="button"
-                className="btn btn-light btn-sm"
+                className="btn btn-outline-dark btn-sm"
               >
                 <i className="fa fa-thumbs-down" />
               </button>
