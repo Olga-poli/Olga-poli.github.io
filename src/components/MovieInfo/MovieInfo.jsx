@@ -21,8 +21,8 @@ function MovieInfo(props) {
     },
     onRatingChange,
   } = props;
-
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+
   return (
     <div className="movie-info col">
       <div className="movie-info__container card">

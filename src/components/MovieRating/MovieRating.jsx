@@ -1,20 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './MovieRating.scss';
 import PropTypes from 'prop-types';
 
-class MovieRating extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+function MovieRating(props) {
+  const { rating } = props;
+  let idx = 0;
 
-  createStarItem() {
-    const { rating, movieId, onRatingChange } = this.props;
-    const clazz = this.idx >= rating
+  const createStarItem = () => {
+    const { movieId, onRatingChange } = props;
+    const clazz = idx >= rating
       ? 'rating-button__star fa fa-star-o'
       : 'rating-button__star fa fa-star';
-    this.idx += 1;
-    const currentIdx = this.idx;
+    idx += 1;
+    const currentIdx = idx;
     return (
       <button
         onClick={() => onRatingChange(movieId, currentIdx)}
@@ -25,22 +23,18 @@ class MovieRating extends Component {
         <span className={clazz} />
       </button>
     );
-  }
+  };
 
-  render() {
-    const { rating } = this.props;
-    this.idx = 0;
-    return (
-      <div
-        rating={rating}
-        className="rating"
-      >
-        {[...Array(5)].map(() => (
-          this.createStarItem()
-        ))}
-      </div>
-    );
-  }
+  return (
+    <div
+      rating={rating}
+      className="rating"
+    >
+      {[...Array(5)].map(() => (
+        createStarItem()
+      ))}
+    </div>
+  );
 }
 
 MovieRating.propTypes = {

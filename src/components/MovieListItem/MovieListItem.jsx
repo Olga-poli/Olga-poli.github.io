@@ -1,68 +1,62 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './MovieListItem.scss';
 import PropTypes from 'prop-types';
 import MovieRating from '../MovieRating';
 
-class MovieListItem extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+function MovieListItem(props) {
+  const {
+    onMovieTitleClick,
+    onLikeClick,
+    onDislikeClick,
+    onRatingChange,
+    movieData: {
+      title, poster_path: posterPath, id, currentLikesCount = 0, rating = 0,
+    },
+  } = props;
 
-  render() {
-    const {
-      onMovieTitleClick,
-      onLikeClick,
-      onDislikeClick,
-      onRatingChange,
-      movieData: {
-        title, poster_path: posterPath, id, currentLikesCount = 0, rating = 0,
-      },
-    } = this.props;
-    return (
-      <div className="card movies-list-item">
-        <div className="card-body">
-          <p
-            onClick={() => onMovieTitleClick(id)}
-            onKeyUp={onMovieTitleClick}
-            className="card-title mb-3"
-          >
-            {title}
-          </p>
-          <div className="card-content d-flex">
-            <div className="card-likes">
-              <div className="buttons mb-3">
-                <button
-                  onClick={() => onLikeClick(id)}
-                  type="button"
-                  className="btn btn-light btn-sm"
-                >
-                  <i className="fa fa-thumbs-up" />
-                </button>
-                <button
-                  onClick={() => onDislikeClick(id)}
-                  type="button"
-                  className="btn btn-light btn-sm"
-                >
-                  <i className="fa fa-thumbs-down" />
-                </button>
-              </div>
-              <span>likes</span>
-              <span>{` ${currentLikesCount}`}</span>
+  return (
+    <div className="card movies-list-item">
+      <div className="card-body">
+        <p
+          onClick={() => onMovieTitleClick(id)}
+          onKeyUp={onMovieTitleClick}
+          className="card-title mb-3"
+        >
+          {title}
+        </p>
+        <div className="card-content d-flex">
+          <div className="card-likes">
+            <div className="buttons mb-3">
+              <button
+                onClick={() => onLikeClick(id)}
+                type="button"
+                className="btn btn-light btn-sm"
+              >
+                <i className="fa fa-thumbs-up" />
+              </button>
+              <button
+                onClick={() => onDislikeClick(id)}
+                type="button"
+                className="btn btn-light btn-sm"
+              >
+                <i className="fa fa-thumbs-down" />
+              </button>
             </div>
-            <div className="image-container">
-              <img src={`https://image.tmdb.org/t/p/w500/${posterPath}`} alt={title} />
-            </div>
+            <span>likes</span>
+            <span>{` ${currentLikesCount}`}</span>
           </div>
-          <MovieRating
-            rating={rating}
-            movieId={id}
-            onRatingChange={onRatingChange}
-          />
+          <div className="image-container">
+            <img src={`https://image.tmdb.org/t/p/w500/${posterPath}`} alt={title} />
+          </div>
         </div>
+        <MovieRating
+          rating={rating}
+          movieId={id}
+          onRatingChange={onRatingChange}
+        />
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 MovieListItem.defaultProps = {
