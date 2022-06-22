@@ -43,14 +43,10 @@ class MovieRating extends Component {
   }
 }
 
-MovieRating.defaultProps = {
-  onRatingChange: PropTypes.func,
-};
-
 MovieRating.propTypes = {
   rating: PropTypes.number.isRequired,
   movieId: PropTypes.number.isRequired,
-  onRatingChange: PropTypes.func,
+  onRatingChange: PropTypes.func.isRequired,
 };
 
 export default MovieRating;

@@ -72,7 +72,6 @@ function MovieInfo(props) {
 
 MovieInfo.defaultProps = {
   activeMovieData: PropTypes.shape({}),
-  onRatingChange: PropTypes.func,
 };
 
 MovieInfo.propTypes = {
@@ -94,7 +93,7 @@ MovieInfo.propTypes = {
     currentLikesCount: PropTypes.number,
     rating: PropTypes.number,
   }),
-  onRatingChange: PropTypes.func,
+  onRatingChange: PropTypes.func.isRequired,
 };
 
 export default MovieInfo;
