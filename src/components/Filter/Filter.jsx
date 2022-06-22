@@ -6,10 +6,6 @@ class Filter extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [
-        { name: 'likes', label: 'by likes' },
-        { name: 'rating', label: 'by rating' },
-      ],
       term: '',
     };
   }
@@ -27,10 +23,10 @@ class Filter extends Component {
   };
 
   render() {
-    const { filter, onFilterChange } = this.props;
-    const { items, term } = this.state;
-    const buttons = items.map(({ name, label }) => {
-      const isActive = filter === name;
+    const { filters, activeFilter, onFilterChange } = this.props;
+    const { term } = this.state;
+    const buttons = filters.map(({ name, label }) => {
+      const isActive = activeFilter === name;
       const clazz = isActive ? 'btn-primary' : 'btn-outline-secondary';
       return (
         <button
@@ -71,7 +67,11 @@ class Filter extends Component {
 }
 
 Filter.propTypes = {
-  filter: PropTypes.string.isRequired,
+  filters: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+    label: PropTypes.string,
+  })).isRequired,
+  activeFilter: PropTypes.string.isRequired,
   onFilterChange: PropTypes.func.isRequired,
   onSearch: PropTypes.func.isRequired,
 };

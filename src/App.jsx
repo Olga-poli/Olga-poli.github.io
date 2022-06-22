@@ -11,28 +11,42 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      filter: '',
+      activeFilter: '',
       movies: null,
       activeMovieId: null,
       term: '',
     };
+    this.filters = [
+      {
+        name: 'likes',
+        label: 'by likes',
+      },
+      {
+        name: 'rating',
+        label: 'by rating',
+      },
+    ];
     this.updateMovies();
-    this.search = (arr, term) => {
-      if (term.length === 0) {
-        return arr;
-      }
-      return arr
-        .filter(({ title }) => title.toLowerCase().indexOf(term.toLowerCase()) > -1);
-    };
-    this.filter = (arr) => {
-      const { filter } = this.state;
-      switch (filter) {
-        case 'likes': return arr.sort((a, b) => b.currentLikesCount - a.currentLikesCount);
-        case 'rating': return arr.sort((a, b) => b.rating - a.rating);
-        default: return arr;
-      }
-    };
   }
+
+  // eslint-disable-next-line class-methods-use-this
+  search = (arr, term) => {
+    if (term.length === 0) {
+      return arr;
+    }
+    return arr
+      .filter(({ title }) => title.toLowerCase().indexOf(term.toLowerCase()) > -1);
+  };
+
+  filter = (arr) => {
+    const { activeFilter } = this.state;
+    const [likes, rating] = this.filters.map(({ name }) => name);
+    switch (activeFilter) {
+      case likes: return arr.sort((a, b) => b.currentLikesCount - a.currentLikesCount);
+      case rating: return arr.sort((a, b) => b.rating - a.rating);
+      default: return arr;
+    }
+  };
 
   updateMovies = () => {
     const movies = new MoviesService();
@@ -48,8 +62,8 @@ class App extends Component {
       });
   };
 
-  onFilterChange = (filter) => {
-    this.setState({ filter });
+  onFilterChange = (activeFilter) => {
+    this.setState({ activeFilter });
   };
 
   onRatingChange = (movieId, rating) => {
@@ -97,7 +111,7 @@ class App extends Component {
 
   render() {
     const {
-      filter,
+      activeFilter,
       movies,
       activeMovieId,
       term,
@@ -128,7 +142,8 @@ class App extends Component {
           <div className="row">
             <div className="col-8">
               <Filter
-                filter={filter}
+                filters={this.filters}
+                activeFilter={activeFilter}
                 onFilterChange={this.onFilterChange}
                 onSearch={this.onSearch}
               />
