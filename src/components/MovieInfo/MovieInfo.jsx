@@ -1,7 +1,7 @@
 import React from 'react';
-import './MovieInfo.scss';
 import PropTypes from 'prop-types';
 import MovieRating from '../MovieRating';
+import './MovieInfo.scss';
 
 function MovieInfo(props) {
   const { activeMovieData } = props || null;

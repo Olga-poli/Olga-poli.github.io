@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import './MovieRating.scss';
 import PropTypes from 'prop-types';
+import './MovieRating.scss';
 
 class MovieRating extends Component {
   constructor(props) {
@@ -13,32 +13,32 @@ class MovieRating extends Component {
   createStarItem() {
     const { hover } = this.state;
     const { rating, movieId, onRatingChange } = this.props;
-    const clazz = (this.idx >= rating) && (this.idx >= hover)
+    const ratingStarClass = (this.index >= rating) && (this.index >= hover)
       ? 'rating-button__star fa fa-star-o'
       : 'rating-button__star fa fa-star';
-    this.idx += 1;
-    const currentIdx = this.idx;
+    this.index += 1;
+    const currentIndex = this.index;
     const setHover = (hoveredStarMax) => {
       this.setState(({ hover: hoveredStarMax }));
     };
 
     return (
       <button
-        onClick={() => onRatingChange(movieId, currentIdx)}
-        onMouseEnter={() => setHover(currentIdx)}
+        onClick={() => onRatingChange(movieId, currentIndex)}
+        onMouseEnter={() => setHover(currentIndex)}
         onMouseLeave={() => setHover(0)}
         className="rating-button"
-        key={`${movieId}_${currentIdx}`}
+        key={`${movieId}_${currentIndex}`}
         type="button"
       >
-        <span className={clazz} />
+        <span className={ratingStarClass} />
       </button>
     );
   }
 
   render() {
     const { rating } = this.props;
-    this.idx = 0;
+    this.index = 0;
     return (
       <div
         rating={rating}

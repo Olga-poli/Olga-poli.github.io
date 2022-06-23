@@ -14,7 +14,7 @@ class App extends Component {
       activeFilter: '',
       movies: null,
       activeMovieId: null,
-      term: '',
+      searchInputValue: '',
     };
     this.filters = [
       {
@@ -26,28 +26,30 @@ class App extends Component {
         label: 'by rating',
       },
     ];
-    this.updateMovies();
-    this.search = (arr, term) => {
-      if (term.length === 0) {
-        return arr;
+    this.search = (array, searchInputValue) => {
+      if (searchInputValue.length === 0) {
+        return array;
       }
-      return arr
-        .filter(({ title }) => title.toLowerCase().indexOf(term.toLowerCase()) > -1);
+      return array
+        .filter(({ title }) => title.toLowerCase().indexOf(searchInputValue.toLowerCase()) > -1);
     };
   }
 
-  sortMovies = (arr) => {
+  componentDidMount() {
+    this.updateMovies();
+  }
+
+  sortMovies = (array) => {
     const { activeFilter } = this.state;
     const map = {
       likes: (a, b) => b.currentLikesCount - a.currentLikesCount,
       rating: (a, b) => b.rating - a.rating,
     };
-    return activeFilter ? arr.sort(map[activeFilter]) : arr;
+    return activeFilter ? [...array].sort(map[activeFilter]) : array;
   };
 
   updateMovies = () => {
-    const movies = new MoviesService();
-    movies.getResource()
+    MoviesService.getResource()
       .then((res) => {
         this.setState({
           movies: res.results.map((item) => ({
@@ -88,20 +90,20 @@ class App extends Component {
     this.updateItemLikesCounter(currentMovieId, -1);
   };
 
-  onSearch = (term) => {
-    this.setState(({ term }));
+  onSearch = (searchInputValue) => {
+    this.setState(({ searchInputValue }));
   };
 
   updateItemLikesCounter(movieId, shift = 1) {
     const { movies } = this.state;
-    const currentMovieIdx = movies.findIndex(({ id }) => id === movieId);
-    const currentLikesCount = movies[currentMovieIdx].currentLikesCount + shift;
-    const updatedMovie = { ...movies[currentMovieIdx], currentLikesCount };
+    const currentMovieIndex = movies.findIndex(({ id }) => id === movieId);
+    const currentLikesCount = movies[currentMovieIndex].currentLikesCount + shift;
+    const updatedMovie = { ...movies[currentMovieIndex], currentLikesCount };
     this.setState(() => ({
       movies: [
-        ...movies.slice(0, currentMovieIdx),
+        ...movies.slice(0, currentMovieIndex),
         updatedMovie,
-        ...movies.slice(currentMovieIdx + 1),
+        ...movies.slice(currentMovieIndex + 1),
       ],
     }));
   }
@@ -111,10 +113,10 @@ class App extends Component {
       activeFilter,
       movies,
       activeMovieId,
-      term,
+      searchInputValue,
     } = this.state;
     const visibleMovies = this.sortMovies(
-      this.search(movies, term),
+      this.search(movies, searchInputValue),
     );
     const activeMovieData = movies && activeMovieId
       ? movies.find(({ id }) => id === activeMovieId)
