@@ -1,0 +1,14 @@
+.movie-info {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__image {
+    height: 20rem;
+
+    img {
+      height: 100%;
+    }
+  }
+}

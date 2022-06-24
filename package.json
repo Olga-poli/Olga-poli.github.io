@@ -10,7 +10,8 @@
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "sass": "^1.52.3",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "prop-types": "^15.8.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -23,7 +24,17 @@
       "react-app",
       "react-app/jest",
       "airbnb"
-    ]
+    ],
+    "rules": {
+      "jsx-a11y/no-noninteractive-element-interactions": [
+      "error", {
+          "handlers": [
+           "onMouseDown","onMouseUp","onKeyPress","onKeyDown"
+          ]
+        }
+      ],
+      "jsx-ally/click-events-have-key-events": "off"
+    }
   },
   "browserslist": {
     "production": [
