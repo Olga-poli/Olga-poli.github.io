@@ -1,38 +1,38 @@
 import React, { Component } from 'react';
-import './Filter.scss';
 import PropTypes from 'prop-types';
+import './Filter.scss';
 
 class Filter extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      term: '',
+      searchInputValue: '',
     };
   }
 
-  onSearch = (e) => {
-    e.preventDefault();
-    const { term } = this.state;
+  onSubmit = (event) => {
+    event.preventDefault();
+    const { searchInputValue } = this.state;
     const { onSearch } = this.props;
-    onSearch(term);
-    this.setState(({ term: '' }));
+    onSearch(searchInputValue);
+    this.setState(({ searchInputValue: '' }));
   };
 
-  onInputChange = (e) => {
-    this.setState(({ term: e.target.value }));
+  onInputChange = (event) => {
+    this.setState(({ searchInputValue: event.target.value }));
   };
 
   render() {
     const { filters, activeFilter, onFilterChange } = this.props;
-    const { term } = this.state;
+    const { searchInputValue } = this.state;
     const buttons = filters.map(({ name, label }) => {
       const isActive = activeFilter === name;
-      const clazz = isActive ? 'btn-primary' : 'btn-outline-secondary';
+      const filterButtonClass = isActive ? 'btn-primary' : 'btn-outline-secondary';
       return (
         <button
           key={name}
           type="button"
-          className={`btn btn-sm ${clazz}`}
+          className={`btn btn-sm ${filterButtonClass}`}
           onClick={() => onFilterChange(name)}
         >
           {label}
@@ -47,7 +47,7 @@ class Filter extends Component {
           {buttons}
         </div>
         <form
-          onSubmit={this.onSearch}
+          onSubmit={this.onSubmit}
           className="input-group mb-3"
         >
           <button type="button" className="btn btn-outline-secondary">
@@ -55,7 +55,7 @@ class Filter extends Component {
           </button>
           <input
             onChange={this.onInputChange}
-            value={term}
+            value={searchInputValue}
             className="form-control"
             type="text"
             placeholder="Search by name"

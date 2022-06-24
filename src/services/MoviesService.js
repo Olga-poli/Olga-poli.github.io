@@ -1,14 +1,13 @@
 class MoviesService {
-  apiKey = '85b46e72155425cfce719a24dc2c3748';
+  static apiKey = '85b46e72155425cfce719a24dc2c3748';
 
-  async getResource() {
-    const url = `https://api.themoviedb.org/3/movie/popular?api_key=${this.apiKey}&language=en-US&page=1`;
-    const res = await fetch(url);
-    if (!res.ok) {
-      throw new Error(`Could not fetch url, received status ${res.status}`);
+  static async getResource() {
+    const url = `https://api.themoviedb.org/3/movie/popular?api_key=${MoviesService.apiKey}&language=en-US&page=1`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Could not fetch url, received status ${response.status}`);
     }
-    const body = await res.json();
-    return body;
+    return response.json();
   }
 }
 
