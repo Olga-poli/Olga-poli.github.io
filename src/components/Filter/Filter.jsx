@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+// import store from '../../store/configureStore';
+// import * as actions from '../../store/actions/actions';
 import styles from './Filter.module.scss';
 
 class Filter extends Component {
@@ -26,10 +29,13 @@ class Filter extends Component {
 
   onSubmit = (event) => {
     event.preventDefault();
-    const { searchInputValue } = this.state;
-    const { onSearch } = this.props;
-    onSearch(searchInputValue);
-    this.setState(({ searchInputValue: '' }));
+    const searchInputValue = event.target.searchInput.value;
+    // const { searchInputValue } = this.state;
+    // const { onSearch } = this.props;
+    // eslint-disable-next-line react/destructuring-assignment,react/prop-types
+    this.props.setSearchInputValue(searchInputValue);
+    // onSearch(searchInputValue);
+    // this.setState(({ searchInputValue: '' }));
   };
 
   onInputChange = (event) => {
@@ -51,7 +57,10 @@ class Filter extends Component {
       : { ...item, isActive: false }));
     this.setState(() => ({
       filters: updatedFilters,
-    }), onFilterChange(updatedButton));
+    }), () => {
+      const { filters: updatedWithOrderFilters } = this.state;
+      onFilterChange(updatedWithOrderFilters.find(({ name }) => name === clickedButtonName));
+    });
   };
 
   render() {
@@ -98,6 +107,7 @@ class Filter extends Component {
             className="form-control"
             type="text"
             placeholder="Search by name"
+            name="searchInput"
           />
         </form>
       </div>
@@ -107,7 +117,14 @@ class Filter extends Component {
 
 Filter.propTypes = {
   onFilterChange: PropTypes.func.isRequired,
-  onSearch: PropTypes.func.isRequired,
+  // onSearch: PropTypes.func.isRequired,
 };
 
-export default Filter;
+const mapDispatchToProps = (dispatch) => ({
+  setSearchInputValue: (searchInputValue) => dispatch({
+    type: 'SET_SEARCH_INPUT_VALUE',
+    payload: searchInputValue,
+  }),
+});
+
+export default connect(null, mapDispatchToProps)(Filter);
