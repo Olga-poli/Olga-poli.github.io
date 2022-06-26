@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import MovieRating from '../MovieRating';
-import './MovieInfo.scss';
+import styles from './MovieInfo.module.scss';
 
 function MovieInfo(props) {
   const { activeMovieData } = props || null;
@@ -24,10 +24,10 @@ function MovieInfo(props) {
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
 
   return (
-    <div className="movie-info col">
-      <div className="movie-info__container card">
+    <div className={`${styles.movieInfo} col`}>
+      <div className="card">
         <div className="card-body">
-          <div className="movie-info__header">
+          <div className={styles.header}>
             <div className="movie-info__text">
               <h3>{title}</h3>
               <p>
@@ -37,8 +37,8 @@ function MovieInfo(props) {
                 </span>
               </p>
             </div>
-            <div className="movie-info__image">
-              <img src={`https://image.tmdb.org/t/p/w500/${posterPath}`} alt={posterPath} />
+            <div className={styles.imageContainer}>
+              <img src={`https://image.tmdb.org/t/p/w500/${posterPath}`} alt={posterPath} className={styles.image} />
             </div>
           </div>
           <div className="movie-info__body">

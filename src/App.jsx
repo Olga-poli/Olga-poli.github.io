@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.scss';
+import styles from './App.module.scss';
 import Filter from './components/Filter';
 import MovieInfo from './components/MovieInfo';
 import Header from './components/Header';
@@ -11,42 +11,15 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeFilter: '',
       movies: null,
       activeMovieId: null,
       searchInputValue: '',
-    };
-    this.filters = [
-      {
-        name: 'likes',
-        label: 'by likes',
-      },
-      {
-        name: 'rating',
-        label: 'by rating',
-      },
-    ];
-    this.search = (array, searchInputValue) => {
-      if (searchInputValue.length === 0) {
-        return array;
-      }
-      return array
-        .filter(({ title }) => title.toLowerCase().indexOf(searchInputValue.toLowerCase()) > -1);
     };
   }
 
   componentDidMount() {
     this.updateMovies();
   }
-
-  sortMovies = (array) => {
-    const { activeFilter } = this.state;
-    const map = {
-      likes: (a, b) => b.currentLikesCount - a.currentLikesCount,
-      rating: (a, b) => b.rating - a.rating,
-    };
-    return activeFilter ? [...array].sort(map[activeFilter]) : array;
-  };
 
   updateMovies = () => {
     MoviesService.getResource()
@@ -61,8 +34,22 @@ class App extends Component {
       });
   };
 
-  onFilterChange = (activeFilter) => {
-    this.setState({ activeFilter });
+  onFilterChange = (activeButton) => {
+    const { movies } = this.state;
+    const map = {
+      likes: (a, b) => (
+        activeButton.descending
+          ? b.currentLikesCount - a.currentLikesCount
+          : a.currentLikesCount - b.currentLikesCount
+      ),
+      rating: (a, b) => (
+        activeButton.descending
+          ? b.rating - a.rating
+          : a.rating - b.rating
+      ),
+    };
+    const sortedMovies = [...movies].sort(map[activeButton.name]);
+    this.setState(() => ({ movies: sortedMovies }));
   };
 
   onRatingChange = (movieId, rating) => {
@@ -94,6 +81,15 @@ class App extends Component {
     this.setState(({ searchInputValue }));
   };
 
+  searchByInputValue(array) {
+    const { searchInputValue } = this.state;
+    if (searchInputValue.length === 0) {
+      return array;
+    }
+    return array
+      .filter(({ title }) => title.toLowerCase().indexOf(searchInputValue.toLowerCase()) > -1);
+  }
+
   updateItemLikesCounter(movieId, shift = 1) {
     const { movies } = this.state;
     const currentMovieIndex = movies.findIndex(({ id }) => id === movieId);
@@ -110,14 +106,10 @@ class App extends Component {
 
   render() {
     const {
-      activeFilter,
       movies,
       activeMovieId,
-      searchInputValue,
     } = this.state;
-    const visibleMovies = this.sortMovies(
-      this.search(movies, searchInputValue),
-    );
+    const visibleMovies = this.searchByInputValue(movies);
     const activeMovieData = movies && activeMovieId
       ? movies.find(({ id }) => id === activeMovieId)
       : null;
@@ -135,18 +127,16 @@ class App extends Component {
       : null;
 
     return (
-      <div className="App">
+      <div className={styles.App}>
         <Header />
         <div className="container">
           <div className="row">
             <div className="col-8">
               <Filter
-                filters={this.filters}
-                activeFilter={activeFilter}
                 onFilterChange={this.onFilterChange}
                 onSearch={this.onSearch}
               />
-              <div className="movies-list">
+              <div className={styles.moviesList}>
                 {moviesItems}
               </div>
             </div>

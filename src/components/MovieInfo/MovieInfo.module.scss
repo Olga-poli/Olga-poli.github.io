@@ -1,13 +1,13 @@
-.movie-info {
-  &__header {
+.movieInfo {
+  .header {
     display: flex;
     justify-content: space-between;
   }
 
-  &__image {
+  .imageContainer {
     height: 20rem;
 
-    img {
+    .image {
       height: 100%;
     }
   }
