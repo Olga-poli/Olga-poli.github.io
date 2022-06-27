@@ -19,7 +19,6 @@ function MovieInfo(props) {
       original_language: language,
       overview,
     },
-    onRatingChange,
   } = props;
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
 
@@ -60,7 +59,6 @@ function MovieInfo(props) {
               <MovieRating
                 rating={rating}
                 movieId={id}
-                onRatingChange={onRatingChange}
               />
             </div>
           </div>
@@ -93,7 +91,6 @@ MovieInfo.propTypes = {
     currentLikesCount: PropTypes.number,
     rating: PropTypes.number,
   }),
-  onRatingChange: PropTypes.func.isRequired,
 };
 
 export default MovieInfo;

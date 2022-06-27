@@ -29,3 +29,8 @@ export const removeLikeFromMovieItem = (currentMovieId) => ({
   type: constants.REMOVE_LIKE_FROM_MOVIE_ITEM,
   payload: currentMovieId,
 });
+
+export const setRatingToMovieItem = (movieId, rating) => ({
+  type: constants.SET_RATING_TO_MOVIE_ITEM,
+  payload: { movieId, rating },
+});

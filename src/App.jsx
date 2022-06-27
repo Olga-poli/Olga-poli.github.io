@@ -31,23 +31,10 @@ class App extends Component {
       });
   };
 
-  onRatingChange = (movieId, rating) => {
-    const { movies } = this.state;
-    const currentMovieIdx = movies.findIndex(({ id }) => id === movieId);
-    const updatedMovie = { ...movies[currentMovieIdx], rating };
-    this.setState(() => ({
-      movies: [
-        ...movies.slice(0, currentMovieIdx),
-        updatedMovie,
-        ...movies.slice(currentMovieIdx + 1),
-      ],
-    }));
-  };
-
-  onMovieTitleClick = (activeMovieId) => {
-    // eslint-disable-next-line react/no-unused-state
-    this.setState(() => ({ activeMovieId }));
-  };
+  // onMovieTitleClick = (activeMovieId) => {
+  //   // eslint-disable-next-line react/no-unused-state
+  //   this.setState(() => ({ activeMovieId }));
+  // };
 
   // eslint-disable-next-line class-methods-use-this
   searchByInputValue(array, searchValue) {
@@ -63,14 +50,7 @@ class App extends Component {
     const visibleMovies = this.searchByInputValue(moviesItemsList, searchInputValue);
     const moviesItems = visibleMovies
       ? visibleMovies.map((item) => (
-        <MovieListItem
-          movieData={item}
-          key={item.id}
-          onMovieTitleClick={this.onMovieTitleClick}
-          onLikeClick={this.onLikeClick}
-          onDislikeClick={this.onDislikeClick}
-          onRatingChange={this.onRatingChange}
-        />
+        <MovieListItem movieData={item} key={item.id} />
       ))
       : null;
     const activeMovieData = moviesItemsList && activeMovieId
@@ -90,7 +70,6 @@ class App extends Component {
             </div>
             <MovieInfo
               activeMovieData={activeMovieData}
-              onRatingChange={this.onRatingChange}
             />
           </div>
         </div>

@@ -1,4 +1,4 @@
-.movies-list-item {
+.moviesListItem {
   width: 17rem;
   transition: box-shadow .2s linear;
 
@@ -8,11 +8,11 @@
     box-shadow: 2px 2px 8px 4px rgba(153, 166, 176, 0.2);
   }
 
-  .card-body {
+  .cardBody {
     display: flex;
     flex-direction: column;
 
-    .card-title {
+    .cardTitle {
       cursor: pointer;
       height: 3rem;
       transition: font-weight .1s ease-in;
@@ -23,10 +23,10 @@
       }
     }
 
-    .card-content {
+    .cardContent {
       justify-content: space-between;
 
-      .card-likes {
+      .cardLikes {
         display: flex;
         flex-direction: column;
 
@@ -44,19 +44,13 @@
         }
       }
 
-      .image-container {
+      .imageContainer {
         height: 12rem;
 
         img {
           height: 100%;
         }
       }
-    }
-
-    .rating {
-      display: flex;
-      justify-content: center;
-      margin: 1rem 0 0;
     }
   }
 }
