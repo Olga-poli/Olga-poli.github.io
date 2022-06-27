@@ -31,24 +31,6 @@ class App extends Component {
       });
   };
 
-  // onFilterChange = (activeButton) => {
-  //   const { movies } = this.state;
-  //   const map = {
-  //     likes: (a, b) => (
-  //       activeButton.descending
-  //         ? b.currentLikesCount - a.currentLikesCount
-  //         : a.currentLikesCount - b.currentLikesCount
-  //     ),
-  //     rating: (a, b) => (
-  //       activeButton.descending
-  //         ? b.rating - a.rating
-  //         : a.rating - b.rating
-  //     ),
-  //   };
-  //   const sortedMovies = [...movies].sort(map[activeButton.name]);
-  //   this.setState(() => ({ movies: sortedMovies }));
-  // };
-
   onRatingChange = (movieId, rating) => {
     const { movies } = this.state;
     const currentMovieIdx = movies.findIndex(({ id }) => id === movieId);
@@ -67,14 +49,6 @@ class App extends Component {
     this.setState(() => ({ activeMovieId }));
   };
 
-  onLikeClick = (currentMovieId) => {
-    this.updateItemLikesCounter(currentMovieId);
-  };
-
-  onDislikeClick = (currentMovieId) => {
-    this.updateItemLikesCounter(currentMovieId, -1);
-  };
-
   // eslint-disable-next-line class-methods-use-this
   searchByInputValue(array, searchValue) {
     if (searchValue.length === 0) {
@@ -82,20 +56,6 @@ class App extends Component {
     }
     return array
       .filter(({ title }) => title.toLowerCase().indexOf(searchValue.toLowerCase()) > -1);
-  }
-
-  updateItemLikesCounter(movieId, shift = 1) {
-    const { movies } = this.state;
-    const currentMovieIndex = movies.findIndex(({ id }) => id === movieId);
-    const currentLikesCount = movies[currentMovieIndex].currentLikesCount + shift;
-    const updatedMovie = { ...movies[currentMovieIndex], currentLikesCount };
-    this.setState(() => ({
-      movies: [
-        ...movies.slice(0, currentMovieIndex),
-        updatedMovie,
-        ...movies.slice(currentMovieIndex + 1),
-      ],
-    }));
   }
 
   render() {

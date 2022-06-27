@@ -1,13 +1,14 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import MovieRating from '../MovieRating';
 import './MovieListItem.scss';
 
 function MovieListItem(props) {
   const {
+    addLikeToMovieItem,
+    removeLikeFromMovieItem,
     onMovieTitleClick,
-    onLikeClick,
-    onDislikeClick,
     onRatingChange,
     movieData: {
       title, poster_path: posterPath, id, currentLikesCount = 0, rating = 0,
@@ -28,14 +29,14 @@ function MovieListItem(props) {
           <div className="card-likes">
             <div className="buttons mb-3">
               <button
-                onClick={() => onLikeClick(id)}
+                onClick={() => addLikeToMovieItem(id)}
                 type="button"
                 className="btn btn-outline-dark btn-sm"
               >
                 <i className="fa fa-thumbs-up" />
               </button>
               <button
-                onClick={() => onDislikeClick(id)}
+                onClick={() => removeLikeFromMovieItem(id)}
                 type="button"
                 className="btn btn-outline-dark btn-sm"
               >
@@ -65,8 +66,8 @@ MovieListItem.defaultProps = {
 
 MovieListItem.propTypes = {
   onMovieTitleClick: PropTypes.func.isRequired,
-  onLikeClick: PropTypes.func.isRequired,
-  onDislikeClick: PropTypes.func.isRequired,
+  addLikeToMovieItem: PropTypes.func.isRequired,
+  removeLikeFromMovieItem: PropTypes.func.isRequired,
   onRatingChange: PropTypes.func.isRequired,
   movieData: PropTypes.shape({
     adult: PropTypes.bool,
@@ -88,4 +89,19 @@ MovieListItem.propTypes = {
   }),
 };
 
-export default MovieListItem;
+const mapStateToProps = (state) => ({
+  searchInputValue: state.appReducer.searchInputValue,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  addLikeToMovieItem: (currentMovieId) => dispatch({
+    type: 'ADD_LIKE_TO_MOVIE_ITEM',
+    payload: currentMovieId,
+  }),
+  removeLikeFromMovieItem: (currentMovieId) => dispatch({
+    type: 'REMOVE_LIKE_FROM_MOVIE_ITEM',
+    payload: currentMovieId,
+  }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MovieListItem);
