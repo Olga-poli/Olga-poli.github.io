@@ -1,7 +1,7 @@
 import * as constants from '../constants/constants';
 
 const initialState = {
-  movies: [],
+  moviesItemsList: [],
   activeMovieId: null,
   searchInputValue: '',
 };
@@ -10,7 +10,7 @@ const initialState = {
 const movieItemsReducer = (state = initialState, action) => {
   switch (action.type) {
     case constants.SET_MOVIES_LIST: {
-      return { ...state, movies: action.payload };
+      return { ...state, moviesItemsList: action.payload };
     }
     case constants.SET_SEARCH_INPUT_VALUE: {
       return { ...state, searchInputValue: action.payload };

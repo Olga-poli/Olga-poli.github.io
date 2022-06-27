@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import store from '../../store/configureStore';
-// import * as actions from '../../store/actions/actions';
 import styles from './Filter.module.scss';
 
 class Filter extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchInputValue: '',
       filters: [
         {
           name: 'likes',
@@ -30,16 +27,8 @@ class Filter extends Component {
   onSubmit = (event) => {
     event.preventDefault();
     const searchInputValue = event.target.searchInput.value;
-    // const { searchInputValue } = this.state;
-    // const { onSearch } = this.props;
-    // eslint-disable-next-line react/destructuring-assignment,react/prop-types
-    this.props.setSearchInputValue(searchInputValue);
-    // onSearch(searchInputValue);
-    // this.setState(({ searchInputValue: '' }));
-  };
-
-  onInputChange = (event) => {
-    this.setState(({ searchInputValue: event.target.value }));
+    const { setSearchInputValue } = this.props;
+    setSearchInputValue(searchInputValue);
   };
 
   onFilterButtonClick = (clickedButtonName) => {
@@ -64,7 +53,7 @@ class Filter extends Component {
   };
 
   render() {
-    const { searchInputValue, filters } = this.state;
+    const { filters } = this.state;
     const buttons = filters.map(
       ({
         name,
@@ -102,8 +91,6 @@ class Filter extends Component {
             <i className="fa fa-search" />
           </button>
           <input
-            onChange={this.onInputChange}
-            value={searchInputValue}
             className="form-control"
             type="text"
             placeholder="Search by name"
@@ -117,8 +104,12 @@ class Filter extends Component {
 
 Filter.propTypes = {
   onFilterChange: PropTypes.func.isRequired,
-  // onSearch: PropTypes.func.isRequired,
+  setSearchInputValue: PropTypes.func.isRequired,
 };
+
+const mapStateToProps = (state) => ({
+  searchInputValue: state.appReducer.searchInputValue,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   setSearchInputValue: (searchInputValue) => dispatch({
@@ -127,4 +118,4 @@ const mapDispatchToProps = (dispatch) => ({
   }),
 });
 
-export default connect(null, mapDispatchToProps)(Filter);
+export default connect(mapStateToProps, mapDispatchToProps)(Filter);

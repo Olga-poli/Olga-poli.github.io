@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import styles from './App.module.scss';
 import Filter from './components/Filter';
 import MovieInfo from './components/MovieInfo';
@@ -7,46 +8,26 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import MoviesService from './services/MoviesService';
 import MovieListItem from './components/MovieListItem';
-import store from './store/configureStore';
-// import * as actions from './store/actions/actions';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      movies: null,
-      // activeMovieId: null,
-      // searchInputValue: '',
-    };
+    this.state = {};
   }
 
   componentDidMount() {
     this.updateMovies();
   }
 
-  // eslint-disable-next-line class-methods-use-this
   updateMovies = () => {
     MoviesService.getResource()
       .then((res) => {
-        // eslint-disable-next-line react/prop-types,react/destructuring-assignment
-        this.props.setMoviesList(res.results.map((item) => ({
+        const { setMoviesList } = this.props;
+        setMoviesList(res.results.map((item) => ({
           ...item,
           currentLikesCount: 0,
           rating: 0,
         })));
-        // store.dispatch(actions.setMoviesList(res.results.map((item) => ({
-        //   ...item,
-        //   currentLikesCount: 0,
-        //   rating: 0,
-        // }))));
-
-        // this.setState({
-        //   movies: res.results.map((item) => ({
-        //     ...item,
-        //     currentLikesCount: 0,
-        //     rating: 0,
-        //   })),
-        // });
       });
   };
 
@@ -86,10 +67,6 @@ class App extends Component {
     this.setState(() => ({ activeMovieId }));
   };
 
-  // onSearch = (searchInputValue) => {
-  //   this.setState(({ searchInputValue }));
-  // };
-
   onLikeClick = (currentMovieId) => {
     this.updateItemLikesCounter(currentMovieId);
   };
@@ -99,14 +76,12 @@ class App extends Component {
   };
 
   // eslint-disable-next-line class-methods-use-this
-  searchByInputValue(array, term) {
-    // const { searchInputValue } = this.state;
-    // const searchInputValue = '';
-    if (term.length === 0) {
+  searchByInputValue(array, searchValue) {
+    if (searchValue.length === 0) {
       return array;
     }
     return array
-      .filter(({ title }) => title.toLowerCase().indexOf(term.toLowerCase()) > -1);
+      .filter(({ title }) => title.toLowerCase().indexOf(searchValue.toLowerCase()) > -1);
   }
 
   updateItemLikesCounter(movieId, shift = 1) {
@@ -124,17 +99,8 @@ class App extends Component {
   }
 
   render() {
-    const storedMovies = store.getState().appReducer.movies;
-    const storedActiveMovieId = store.getState().appReducer.activeMovieId;
-    const storedSearchInputValue = store.getState().appReducer.searchInputValue;
-    // const {
-    //   movies,
-    //   activeMovieId,
-    // } = this.state;
-    const visibleMovies = this.searchByInputValue(storedMovies, storedSearchInputValue);
-    const activeMovieData = storedMovies && storedActiveMovieId
-      ? storedMovies.find(({ id }) => id === storedActiveMovieId)
-      : null;
+    const { moviesItemsList, activeMovieId, searchInputValue } = this.props;
+    const visibleMovies = this.searchByInputValue(moviesItemsList, searchInputValue);
     const moviesItems = visibleMovies
       ? visibleMovies.map((item) => (
         <MovieListItem
@@ -147,6 +113,9 @@ class App extends Component {
         />
       ))
       : null;
+    const activeMovieData = moviesItemsList && activeMovieId
+      ? moviesItemsList.find(({ id }) => id === activeMovieId)
+      : null;
 
     return (
       <div className={styles.App}>
@@ -156,8 +125,6 @@ class App extends Component {
             <div className="col-8">
               <Filter
                 onFilterChange={this.onFilterChange}
-                // onSearch={(searchInputValue) => actions.setSearchInputValue(searchInputValue)}
-                // onSearch={(searchInputValue) => dispatch(setSearchInputValue(searchInputValue))}
               />
               <div className={styles.moviesList}>
                 {moviesItems}
@@ -175,13 +142,38 @@ class App extends Component {
   }
 }
 
-// store.subscribe(() => store.getState());
-// const mapStateToProps = (state) => ({
-//   movies: state.movies,
-// });
+App.defaultProps = {
+  moviesItemsList: PropTypes.array,
+  activeMovieId: PropTypes.shape({}),
+  searchInputValue: PropTypes.string,
+};
+
+App.propTypes = {
+  moviesItemsList: PropTypes.arrayOf(PropTypes.shape({
+    adult: PropTypes.bool,
+    backdrop_path: PropTypes.string,
+    genre_ids: PropTypes.arrayOf(PropTypes.number),
+    id: PropTypes.number,
+    original_language: PropTypes.string,
+    original_title: PropTypes.string,
+    overview: PropTypes.string,
+    popularity: PropTypes.number,
+    poster_path: PropTypes.string,
+    release_date: PropTypes.string,
+    title: PropTypes.string,
+    video: PropTypes.bool,
+    vote_average: PropTypes.number,
+    vote_count: PropTypes.number,
+    currentLikesCount: PropTypes.number,
+    rating: PropTypes.number,
+  })),
+  activeMovieId: PropTypes.shape({}),
+  searchInputValue: PropTypes.string,
+  setMoviesList: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = (state) => ({
-  moviesItemsList: state.appReducer.movies,
+  moviesItemsList: state.appReducer.moviesItemsList,
   activeMovieId: state.appReducer.activeMovieId,
   searchInputValue: state.appReducer.searchInputValue,
 });
@@ -191,10 +183,6 @@ const mapDispatchToProps = (dispatch) => ({
     type: 'SET_MOVIES_LIST',
     payload: itemsList,
   }),
-  // setSearchInputValue: (searchInputValue) => dispatch({
-  //   type: 'SET_SEARCH_INPUT_VALUE',
-  //   payload: searchInputValue,
-  // }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
