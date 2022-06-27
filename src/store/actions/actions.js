@@ -10,6 +10,11 @@ export const setSearchInputValue = (searchInputValue) => ({
   payload: searchInputValue,
 });
 
+export const setMoviesOrder = (filterOrder) => ({
+  type: constants.SET_MOVIES_ORDER,
+  payload: filterOrder,
+});
+
 export const setActiveMovieId = (activeMovieId) => ({
   type: constants.SET_SEARCH_INPUT_VALUE,
   payload: activeMovieId,

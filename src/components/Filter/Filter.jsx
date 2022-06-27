@@ -32,7 +32,7 @@ class Filter extends Component {
   };
 
   onFilterButtonClick = (clickedButtonName) => {
-    const { onFilterChange } = this.props;
+    const { setMoviesOrder } = this.props;
     const { filters } = this.state;
     const currentButton = filters.find(({ name }) => name === clickedButtonName);
 
@@ -48,7 +48,7 @@ class Filter extends Component {
       filters: updatedFilters,
     }), () => {
       const { filters: updatedWithOrderFilters } = this.state;
-      onFilterChange(updatedWithOrderFilters.find(({ name }) => name === clickedButtonName));
+      setMoviesOrder(updatedWithOrderFilters.find(({ name }) => name === clickedButtonName));
     });
   };
 
@@ -103,7 +103,7 @@ class Filter extends Component {
 }
 
 Filter.propTypes = {
-  onFilterChange: PropTypes.func.isRequired,
+  setMoviesOrder: PropTypes.func.isRequired,
   setSearchInputValue: PropTypes.func.isRequired,
 };
 
@@ -115,6 +115,10 @@ const mapDispatchToProps = (dispatch) => ({
   setSearchInputValue: (searchInputValue) => dispatch({
     type: 'SET_SEARCH_INPUT_VALUE',
     payload: searchInputValue,
+  }),
+  setMoviesOrder: (activeButton) => dispatch({
+    type: 'SET_MOVIES_ORDER',
+    payload: activeButton,
   }),
 });
 

@@ -31,23 +31,23 @@ class App extends Component {
       });
   };
 
-  onFilterChange = (activeButton) => {
-    const { movies } = this.state;
-    const map = {
-      likes: (a, b) => (
-        activeButton.descending
-          ? b.currentLikesCount - a.currentLikesCount
-          : a.currentLikesCount - b.currentLikesCount
-      ),
-      rating: (a, b) => (
-        activeButton.descending
-          ? b.rating - a.rating
-          : a.rating - b.rating
-      ),
-    };
-    const sortedMovies = [...movies].sort(map[activeButton.name]);
-    this.setState(() => ({ movies: sortedMovies }));
-  };
+  // onFilterChange = (activeButton) => {
+  //   const { movies } = this.state;
+  //   const map = {
+  //     likes: (a, b) => (
+  //       activeButton.descending
+  //         ? b.currentLikesCount - a.currentLikesCount
+  //         : a.currentLikesCount - b.currentLikesCount
+  //     ),
+  //     rating: (a, b) => (
+  //       activeButton.descending
+  //         ? b.rating - a.rating
+  //         : a.rating - b.rating
+  //     ),
+  //   };
+  //   const sortedMovies = [...movies].sort(map[activeButton.name]);
+  //   this.setState(() => ({ movies: sortedMovies }));
+  // };
 
   onRatingChange = (movieId, rating) => {
     const { movies } = this.state;
@@ -123,9 +123,7 @@ class App extends Component {
         <div className="container">
           <div className="row">
             <div className="col-8">
-              <Filter
-                onFilterChange={this.onFilterChange}
-              />
+              <Filter />
               <div className={styles.moviesList}>
                 {moviesItems}
               </div>
