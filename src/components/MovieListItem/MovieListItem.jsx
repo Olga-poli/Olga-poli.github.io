@@ -85,9 +85,7 @@ MovieListItem.propTypes = {
   }),
 };
 
-const mapStateToProps = (state) => ({
-  searchInputValue: state.appReducer.searchInputValue,
-});
+const mapStateToProps = () => ({});
 
 const mapDispatchToProps = (dispatch) => ({
   addLikeToMovieItem: (currentMovieId) => dispatch({

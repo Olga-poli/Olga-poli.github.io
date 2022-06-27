@@ -74,28 +74,11 @@ const movieItemsReducer = (state = initialState, action) => {
       ];
       return { ...state, moviesItemsList: updatedMoviesItemsList };
     }
-    // case constants.ADD_NEW_ITEM: {
-    //   return { ...state, itemsList: [...state.itemsList, action.payload] };
-    // }
 
     default: {
       return state;
     }
   }
 };
-
-//  updateItemLikesCounter(movieId, shift = 1) {
-//     const { movies } = this.state;
-//     const currentMovieIndex = movies.findIndex(({ id }) => id === movieId);
-//     const currentLikesCount = movies[currentMovieIndex].currentLikesCount + shift;
-//     const updatedMovie = { ...movies[currentMovieIndex], currentLikesCount };
-//     this.setState(() => ({
-//       movies: [
-//         ...movies.slice(0, currentMovieIndex),
-//         updatedMovie,
-//         ...movies.slice(currentMovieIndex + 1),
-//       ],
-//     }));
-//   }
 
 export default movieItemsReducer;

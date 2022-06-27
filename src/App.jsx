@@ -1,82 +1,65 @@
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import styles from './App.module.scss';
+import MoviesService from './services/MoviesService';
 import Filter from './components/Filter';
+import MovieListItem from './components/MovieListItem';
 import MovieInfo from './components/MovieInfo';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import MoviesService from './services/MoviesService';
-import MovieListItem from './components/MovieListItem';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+function App(props) {
+  const getItemsList = () => MoviesService.getResource()
+    .then((res) => res);
 
-  componentDidMount() {
-    this.updateMovies();
-  }
+  useEffect(() => {
+    (async () => {
+      const data = await getItemsList();
+      const { setMoviesList } = props;
+      setMoviesList(data.results.map((item) => ({
+        ...item,
+        currentLikesCount: 0,
+        rating: 0,
+      })));
+    })();
+  }, []);
 
-  updateMovies = () => {
-    MoviesService.getResource()
-      .then((res) => {
-        const { setMoviesList } = this.props;
-        setMoviesList(res.results.map((item) => ({
-          ...item,
-          currentLikesCount: 0,
-          rating: 0,
-        })));
-      });
-  };
-
-  // eslint-disable-next-line class-methods-use-this
-  searchByInputValue(array, searchValue) {
+  const searchByInputValue = (array, searchValue) => {
     if (searchValue.length === 0) {
       return array;
     }
     return array
       .filter(({ title }) => title.toLowerCase().indexOf(searchValue.toLowerCase()) > -1);
-  }
+  };
 
-  render() {
-    const { moviesItemsList, activeMovieId, searchInputValue } = this.props;
-    const visibleMovies = this.searchByInputValue(moviesItemsList, searchInputValue);
-    const moviesItems = visibleMovies
-      ? visibleMovies.map((item) => (
-        <MovieListItem movieData={item} key={item.id} />
-      ))
-      : null;
-    const activeMovieData = moviesItemsList && activeMovieId
-      ? moviesItemsList.find(({ id }) => id === activeMovieId)
-      : null;
+  const { moviesItemsList, searchInputValue } = props;
+  const visibleMovies = searchByInputValue(moviesItemsList, searchInputValue);
+  const moviesItems = visibleMovies
+    ? visibleMovies.map((item) => (
+      <MovieListItem movieData={item} key={item.id} />
+    ))
+    : null;
 
-    return (
-      <div className={styles.App}>
-        <Header />
-        <div className="container">
-          <div className="row">
-            <div className="col-8">
-              <Filter />
-              <div className={styles.moviesList}>
-                {moviesItems}
-              </div>
-            </div>
-            <MovieInfo
-              activeMovieData={activeMovieData}
-            />
+  return (
+    <div className={styles.App}>
+      <Header />
+      <div className="container">
+        <div className="row">
+          <div className="col-8">
+            <Filter />
+            <div className={styles.moviesList}>{moviesItems}</div>
           </div>
+          <MovieInfo />
         </div>
-        <Footer />
       </div>
-    );
-  }
+      <Footer />
+    </div>
+  );
 }
 
 App.defaultProps = {
   moviesItemsList: PropTypes.array,
-  activeMovieId: PropTypes.shape({}),
   searchInputValue: PropTypes.string,
 };
 
@@ -99,14 +82,12 @@ App.propTypes = {
     currentLikesCount: PropTypes.number,
     rating: PropTypes.number,
   })),
-  activeMovieId: PropTypes.number,
   searchInputValue: PropTypes.string,
   setMoviesList: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   moviesItemsList: state.appReducer.moviesItemsList,
-  activeMovieId: state.appReducer.activeMovieId,
   searchInputValue: state.appReducer.searchInputValue,
 });
 
