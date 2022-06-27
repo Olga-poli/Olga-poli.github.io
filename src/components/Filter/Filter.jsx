@@ -21,14 +21,16 @@ class Filter extends Component {
           descending: true,
         },
       ],
+      inputValue: '',
     };
   }
 
   onSubmit = (event) => {
     event.preventDefault();
-    const searchInputValue = event.target.searchInput.value;
+    const { inputValue } = this.state;
     const { setSearchInputValue } = this.props;
-    setSearchInputValue(searchInputValue);
+    setSearchInputValue(inputValue);
+    this.setState({ inputValue: '' });
   };
 
   onFilterButtonClick = (clickedButtonName) => {
@@ -53,7 +55,7 @@ class Filter extends Component {
   };
 
   render() {
-    const { filters } = this.state;
+    const { filters, inputValue } = this.state;
     const buttons = filters.map(
       ({
         name,
@@ -95,6 +97,10 @@ class Filter extends Component {
             type="text"
             placeholder="Search by name"
             name="searchInput"
+            value={inputValue}
+            onChange={(event) => {
+              this.setState(({ inputValue: event.target.value }));
+            }}
           />
         </form>
       </div>
