@@ -13,10 +13,8 @@ class MovieRating extends Component {
 
   createStarItem() {
     const { hover } = this.state;
-    const { rating, movieId, setRatingToMovieItem } = this.props;
-    // eslint-disable-next-line react/prop-types,react/destructuring-assignment
-    // const { rating } = this.props.moviesItemsList.find(({ id }) => id === movieId);
-    // console.log(rating);
+    const { movieId, moviesItemsList, setRatingToMovieItem } = this.props;
+    const { rating } = moviesItemsList.find(({ id }) => id === movieId);
     const ratingStarClass = (this.index >= rating) && (this.index >= hover)
       ? `${styles.ratingButtonStar} fa fa-star-o`
       : `${styles.ratingButtonStar} fa fa-star`;
@@ -41,11 +39,9 @@ class MovieRating extends Component {
   }
 
   render() {
-    // const { rating } = this.props;
     this.index = 0;
     return (
       <div
-        // rating={rating}
         className={styles.rating}
       >
         {[...Array(5)].map(() => (
@@ -57,8 +53,8 @@ class MovieRating extends Component {
 }
 
 MovieRating.propTypes = {
-  rating: PropTypes.number.isRequired,
   movieId: PropTypes.number.isRequired,
+  moviesItemsList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   setRatingToMovieItem: PropTypes.func.isRequired,
 };
 

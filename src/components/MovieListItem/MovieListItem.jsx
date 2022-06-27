@@ -8,7 +8,7 @@ function MovieListItem(props) {
   const {
     addLikeToMovieItem,
     removeLikeFromMovieItem,
-    // onMovieTitleClick,
+    setActiveMovieId,
     movieData: {
       title, poster_path: posterPath, id, currentLikesCount = 0,
     },
@@ -18,8 +18,8 @@ function MovieListItem(props) {
     <div className={`card ${styles.moviesListItem}`}>
       <div className={`card-body ${styles.cardBody}`}>
         <p
-          // onClick={() => onMovieTitleClick(id)}
-          // onKeyUp={onMovieTitleClick}
+          onClick={() => setActiveMovieId(id)}
+          onKeyUp={setActiveMovieId}
           className={`mb-3 ${styles.cardTitle}`}
         >
           {title}
@@ -50,7 +50,6 @@ function MovieListItem(props) {
           </div>
         </div>
         <MovieRating
-          // rating={rating}
           movieId={id}
         />
       </div>
@@ -65,7 +64,7 @@ MovieListItem.defaultProps = {
 MovieListItem.propTypes = {
   addLikeToMovieItem: PropTypes.func.isRequired,
   removeLikeFromMovieItem: PropTypes.func.isRequired,
-  // onMovieTitleClick: PropTypes.func.isRequired,
+  setActiveMovieId: PropTypes.func.isRequired,
   movieData: PropTypes.shape({
     adult: PropTypes.bool,
     backdrop_path: PropTypes.string,
@@ -98,6 +97,10 @@ const mapDispatchToProps = (dispatch) => ({
   removeLikeFromMovieItem: (currentMovieId) => dispatch({
     type: 'REMOVE_LIKE_FROM_MOVIE_ITEM',
     payload: currentMovieId,
+  }),
+  setActiveMovieId: (activeMovieId) => dispatch({
+    type: 'SET_ACTIVE_MOVIE_ID',
+    payload: activeMovieId,
   }),
 });
 

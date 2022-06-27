@@ -31,11 +31,6 @@ class App extends Component {
       });
   };
 
-  // onMovieTitleClick = (activeMovieId) => {
-  //   // eslint-disable-next-line react/no-unused-state
-  //   this.setState(() => ({ activeMovieId }));
-  // };
-
   // eslint-disable-next-line class-methods-use-this
   searchByInputValue(array, searchValue) {
     if (searchValue.length === 0) {
@@ -104,7 +99,7 @@ App.propTypes = {
     currentLikesCount: PropTypes.number,
     rating: PropTypes.number,
   })),
-  activeMovieId: PropTypes.shape({}),
+  activeMovieId: PropTypes.number,
   searchInputValue: PropTypes.string,
   setMoviesList: PropTypes.func.isRequired,
 };

@@ -16,7 +16,7 @@ export const setMoviesOrder = (filterOrder) => ({
 });
 
 export const setActiveMovieId = (activeMovieId) => ({
-  type: constants.SET_SEARCH_INPUT_VALUE,
+  type: constants.SET_ACTIVE_MOVIE_ID,
   payload: activeMovieId,
 });
 
@@ -30,7 +30,7 @@ export const removeLikeFromMovieItem = (currentMovieId) => ({
   payload: currentMovieId,
 });
 
-export const setRatingToMovieItem = (movieId, rating) => ({
+export const setRatingToMovieItem = (movieId, currentIndex) => ({
   type: constants.SET_RATING_TO_MOVIE_ITEM,
-  payload: { movieId, rating },
+  payload: { movieId, currentIndex },
 });
