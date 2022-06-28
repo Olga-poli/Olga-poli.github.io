@@ -24,10 +24,15 @@ function Filter(props) {
   const searchInput = useRef(null);
 
   useEffect(() => {
-    const { setFilteredMoviesByTitle, setMoviesOrder } = props;
+    const { setFilteredMoviesByTitle } = props;
     setFilteredMoviesByTitle(searchInputValue);
-    setMoviesOrder(([...filters].find(({ isActive }) => isActive === true)));
-  }, [searchInputValue, filters]);
+  }, [searchInputValue]);
+
+  useEffect(() => {
+    const { setMoviesOrder } = props;
+    const activeFilter = ([...filters].find(({ isActive }) => isActive === true));
+    setMoviesOrder(activeFilter);
+  }, [filters]);
 
   const onSubmit = (event) => {
     event.preventDefault();

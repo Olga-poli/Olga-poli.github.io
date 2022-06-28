@@ -62,10 +62,6 @@ function MovieListItem(props) {
   );
 }
 
-MovieListItem.defaultProps = {
-  movieData: PropTypes.shape({}),
-};
-
 MovieListItem.propTypes = {
   addLikeToMovieItem: PropTypes.func.isRequired,
   removeLikeFromMovieItem: PropTypes.func.isRequired,
@@ -88,7 +84,7 @@ MovieListItem.propTypes = {
     currentLikesCount: PropTypes.number,
     rating: PropTypes.number,
     toShow: PropTypes.bool,
-  }),
+  }).isRequired,
 };
 
 const mapStateToProps = () => ({});

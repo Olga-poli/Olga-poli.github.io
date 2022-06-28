@@ -39,10 +39,6 @@ function MovieRating(props) {
   );
 }
 
-MovieRating.defaultProps = {
-  moviesItemsList: PropTypes.array,
-};
-
 MovieRating.propTypes = {
   movieId: PropTypes.number.isRequired,
   moviesItemsList: PropTypes.arrayOf(PropTypes.shape({
@@ -62,7 +58,7 @@ MovieRating.propTypes = {
     vote_count: PropTypes.number,
     currentLikesCount: PropTypes.number,
     rating: PropTypes.number,
-  })),
+  })).isRequired,
   setRatingToMovieItem: PropTypes.func.isRequired,
 };
 

@@ -72,11 +72,6 @@ function MovieInfo(props) {
   );
 }
 
-MovieInfo.defaultProps = {
-  moviesItemsList: PropTypes.array,
-  activeMovieId: PropTypes.shape({}),
-};
-
 MovieInfo.propTypes = {
   moviesItemsList: PropTypes.arrayOf(PropTypes.shape({
     adult: PropTypes.bool,
@@ -95,8 +90,12 @@ MovieInfo.propTypes = {
     vote_count: PropTypes.number,
     currentLikesCount: PropTypes.number,
     rating: PropTypes.number,
-  })),
+  })).isRequired,
   activeMovieId: PropTypes.number,
+};
+
+MovieInfo.defaultProps = {
+  activeMovieId: null,
 };
 
 const mapStateToProps = (state) => ({
