@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { setRatingToMovieItemAction } from '../../store/actions/actions';
 import styles from './MovieRating.module.scss';
 
 class MovieRating extends Component {
@@ -83,11 +84,8 @@ const mapStateToProps = (state) => ({
   moviesItemsList: state.appReducer.moviesItemsList,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  setRatingToMovieItem: (movieId, currentIndex) => dispatch({
-    type: 'SET_RATING_TO_MOVIE_ITEM',
-    payload: { movieId, currentIndex },
-  }),
-});
+const mapDispatchToProps = {
+  setRatingToMovieItem: setRatingToMovieItemAction,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieRating);

@@ -7,7 +7,6 @@ const store = createStore(
   rootReducer,
   undefined,
   composeWithDevTools(applyMiddleware(logger)),
-
 );
 
 export default store;

@@ -1,14 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import {
+  setActiveMovieIdAction,
+  addLikeToMovieItemAction,
+  removeLikeFromMovieItemAction,
+} from '../../store/actions/actions';
 import MovieRating from '../MovieRating';
 import styles from './MovieListItem.module.scss';
 
 function MovieListItem(props) {
   const {
+    setActiveMovieId,
     addLikeToMovieItem,
     removeLikeFromMovieItem,
-    setActiveMovieId,
     movieData: {
       title, poster_path: posterPath, id, currentLikesCount = 0,
     },
@@ -87,19 +92,10 @@ MovieListItem.propTypes = {
 
 const mapStateToProps = () => ({});
 
-const mapDispatchToProps = (dispatch) => ({
-  addLikeToMovieItem: (currentMovieId) => dispatch({
-    type: 'ADD_LIKE_TO_MOVIE_ITEM',
-    payload: currentMovieId,
-  }),
-  removeLikeFromMovieItem: (currentMovieId) => dispatch({
-    type: 'REMOVE_LIKE_FROM_MOVIE_ITEM',
-    payload: currentMovieId,
-  }),
-  setActiveMovieId: (activeMovieId) => dispatch({
-    type: 'SET_ACTIVE_MOVIE_ID',
-    payload: activeMovieId,
-  }),
-});
+const mapDispatchToProps = {
+  setActiveMovieId: setActiveMovieIdAction,
+  addLikeToMovieItem: addLikeToMovieItemAction,
+  removeLikeFromMovieItem: removeLikeFromMovieItemAction,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieListItem);

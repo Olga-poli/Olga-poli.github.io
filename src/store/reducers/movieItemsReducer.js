@@ -2,8 +2,8 @@ import * as constants from '../constants/constants';
 
 const initialState = {
   moviesItemsList: [],
+  visibleMoviesItemsIDs: [],
   activeMovieId: null,
-  searchInputValue: '',
 };
 
 // eslint-disable-next-line default-param-last
@@ -11,14 +11,22 @@ const movieItemsReducer = (state = initialState, action) => {
   const { moviesItemsList } = state;
   switch (action.type) {
     case constants.SET_MOVIES_LIST: {
-      return { ...state, moviesItemsList: action.payload };
+      return { ...state, moviesItemsList: action.payload, visibleMoviesItemsList: action.payload };
     }
 
-    case constants.SET_SEARCH_INPUT_VALUE: {
-      return { ...state, searchInputValue: action.payload };
+    case constants.SET_FILTERED_MOVIES_BY_TITLE: {
+      if (action.payload.length === 0) {
+        return { ...state, moviesItemsList };
+      }
+      const sortedMovies = [...moviesItemsList]
+        .filter(({ title }) => title.toLowerCase().indexOf(action.payload.toLowerCase()) > -1);
+      return { ...state, visibleMoviesItemsList: sortedMovies };
     }
 
     case constants.SET_MOVIES_ORDER: {
+      if (!action.payload) {
+        return { ...state };
+      }
       const map = {
         likes: (a, b) => (
           action.payload.descending

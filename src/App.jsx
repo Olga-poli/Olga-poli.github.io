@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { setMoviesListAction } from './store/actions/actions';
 import styles from './App.module.scss';
 import MoviesService from './services/MoviesService';
 import Filter from './components/Filter';
@@ -12,6 +13,7 @@ import Footer from './components/Footer';
 function App(props) {
   const getItemsList = () => MoviesService.getResource()
     .then((res) => res);
+  const { moviesItemsList } = props;
 
   useEffect(() => {
     (async () => {
@@ -25,18 +27,8 @@ function App(props) {
     })();
   }, []);
 
-  const searchByInputValue = (array, searchValue) => {
-    if (searchValue.length === 0) {
-      return array;
-    }
-    return array
-      .filter(({ title }) => title.toLowerCase().indexOf(searchValue.toLowerCase()) > -1);
-  };
-
-  const { moviesItemsList, searchInputValue } = props;
-  const visibleMovies = searchByInputValue(moviesItemsList, searchInputValue);
-  const moviesItems = visibleMovies
-    ? visibleMovies.map((item) => (
+  const moviesItems = moviesItemsList
+    ? moviesItemsList.map((item) => (
       <MovieListItem movieData={item} key={item.id} />
     ))
     : null;
@@ -60,7 +52,6 @@ function App(props) {
 
 App.defaultProps = {
   moviesItemsList: PropTypes.array,
-  searchInputValue: PropTypes.string,
 };
 
 App.propTypes = {
@@ -82,20 +73,15 @@ App.propTypes = {
     currentLikesCount: PropTypes.number,
     rating: PropTypes.number,
   })),
-  searchInputValue: PropTypes.string,
   setMoviesList: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   moviesItemsList: state.appReducer.moviesItemsList,
-  searchInputValue: state.appReducer.searchInputValue,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  setMoviesList: (itemsList) => dispatch({
-    type: 'SET_MOVIES_LIST',
-    payload: itemsList,
-  }),
-});
+const mapDispatchToProps = {
+  setMoviesList: setMoviesListAction,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
