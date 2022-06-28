@@ -1,33 +1,36 @@
 import React from 'react';
-import './MovieInfo.scss';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import MovieRating from '../MovieRating';
+import styles from './MovieInfo.module.scss';
 
 function MovieInfo(props) {
-  const { activeMovieData } = props || null;
+  const { moviesItemsList, activeMovieId } = props;
+  const activeMovieData = moviesItemsList && activeMovieId
+    ? moviesItemsList.find(({ id }) => id === activeMovieId)
+    : null;
+
   if (!activeMovieData) {
     return null;
   }
+
   const {
-    activeMovieData: {
-      title,
-      currentLikesCount = 0,
-      rating = 0,
-      id,
-      poster_path: posterPath,
-      release_date: releaseDate,
-      original_language: language,
-      overview,
-    },
-    onRatingChange,
-  } = props;
+    title,
+    currentLikesCount = 0,
+    rating = 0,
+    id,
+    poster_path: posterPath,
+    release_date: releaseDate,
+    original_language: language,
+    overview,
+  } = activeMovieData;
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
 
   return (
-    <div className="movie-info col">
-      <div className="movie-info__container card">
+    <div className={`${styles.movieInfo} col`}>
+      <div className="card">
         <div className="card-body">
-          <div className="movie-info__header">
+          <div className={styles.header}>
             <div className="movie-info__text">
               <h3>{title}</h3>
               <p>
@@ -37,8 +40,8 @@ function MovieInfo(props) {
                 </span>
               </p>
             </div>
-            <div className="movie-info__image">
-              <img src={`https://image.tmdb.org/t/p/w500/${posterPath}`} alt={posterPath} />
+            <div className={styles.imageContainer}>
+              <img src={`https://image.tmdb.org/t/p/w500/${posterPath}`} alt={posterPath} className={styles.image} />
             </div>
           </div>
           <div className="movie-info__body">
@@ -60,7 +63,6 @@ function MovieInfo(props) {
               <MovieRating
                 rating={rating}
                 movieId={id}
-                onRatingChange={onRatingChange}
               />
             </div>
           </div>
@@ -71,11 +73,12 @@ function MovieInfo(props) {
 }
 
 MovieInfo.defaultProps = {
-  activeMovieData: PropTypes.shape({}),
+  moviesItemsList: PropTypes.array,
+  activeMovieId: PropTypes.shape({}),
 };
 
 MovieInfo.propTypes = {
-  activeMovieData: PropTypes.shape({
+  moviesItemsList: PropTypes.arrayOf(PropTypes.shape({
     adult: PropTypes.bool,
     backdrop_path: PropTypes.string,
     genre_ids: PropTypes.arrayOf(PropTypes.number),
@@ -92,8 +95,13 @@ MovieInfo.propTypes = {
     vote_count: PropTypes.number,
     currentLikesCount: PropTypes.number,
     rating: PropTypes.number,
-  }),
-  onRatingChange: PropTypes.func.isRequired,
+  })),
+  activeMovieId: PropTypes.number,
 };
 
-export default MovieInfo;
+const mapStateToProps = (state) => ({
+  moviesItemsList: state.appReducer.moviesItemsList,
+  activeMovieId: state.appReducer.activeMovieId,
+});
+
+export default connect(mapStateToProps)(MovieInfo);

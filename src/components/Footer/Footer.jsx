@@ -1,9 +1,9 @@
 import React from 'react';
-import './Footer.scss';
+import styles from './Footer.module.scss';
 
 function Footer() {
   return (
-    <footer className="footer mt-auto">
+    <footer className={`${styles.footer} mt-auto`}>
       <p>EPAM</p>
     </footer>
   );

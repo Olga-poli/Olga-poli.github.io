@@ -1,41 +1,41 @@
 import React from 'react';
-import './MovieListItem.scss';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import MovieRating from '../MovieRating';
+import styles from './MovieListItem.module.scss';
 
 function MovieListItem(props) {
   const {
-    onMovieTitleClick,
-    onLikeClick,
-    onDislikeClick,
-    onRatingChange,
+    addLikeToMovieItem,
+    removeLikeFromMovieItem,
+    setActiveMovieId,
     movieData: {
-      title, poster_path: posterPath, id, currentLikesCount = 0, rating = 0,
+      title, poster_path: posterPath, id, currentLikesCount = 0,
     },
   } = props;
 
   return (
-    <div className="card movies-list-item">
-      <div className="card-body">
+    <div className={`card ${styles.moviesListItem}`}>
+      <div className={`card-body ${styles.cardBody}`}>
         <p
-          onClick={() => onMovieTitleClick(id)}
-          onKeyUp={onMovieTitleClick}
-          className="card-title mb-3"
+          onClick={() => setActiveMovieId(id)}
+          onKeyUp={setActiveMovieId}
+          className={`mb-3 ${styles.cardTitle}`}
         >
           {title}
         </p>
-        <div className="card-content d-flex">
-          <div className="card-likes">
-            <div className="buttons mb-3">
+        <div className={`d-flex ${styles.cardContent}`}>
+          <div className={styles.cardLikes}>
+            <div className={` mb-3 ${styles.buttons}`}>
               <button
-                onClick={() => onLikeClick(id)}
+                onClick={() => addLikeToMovieItem(id)}
                 type="button"
                 className="btn btn-outline-dark btn-sm"
               >
                 <i className="fa fa-thumbs-up" />
               </button>
               <button
-                onClick={() => onDislikeClick(id)}
+                onClick={() => removeLikeFromMovieItem(id)}
                 type="button"
                 className="btn btn-outline-dark btn-sm"
               >
@@ -45,14 +45,12 @@ function MovieListItem(props) {
             <span>likes</span>
             <span>{` ${currentLikesCount}`}</span>
           </div>
-          <div className="image-container">
+          <div className={styles.imageContainer}>
             <img src={`https://image.tmdb.org/t/p/w500/${posterPath}`} alt={title} />
           </div>
         </div>
         <MovieRating
-          rating={rating}
           movieId={id}
-          onRatingChange={onRatingChange}
         />
       </div>
     </div>
@@ -64,10 +62,9 @@ MovieListItem.defaultProps = {
 };
 
 MovieListItem.propTypes = {
-  onMovieTitleClick: PropTypes.func.isRequired,
-  onLikeClick: PropTypes.func.isRequired,
-  onDislikeClick: PropTypes.func.isRequired,
-  onRatingChange: PropTypes.func.isRequired,
+  addLikeToMovieItem: PropTypes.func.isRequired,
+  removeLikeFromMovieItem: PropTypes.func.isRequired,
+  setActiveMovieId: PropTypes.func.isRequired,
   movieData: PropTypes.shape({
     adult: PropTypes.bool,
     backdrop_path: PropTypes.string,
@@ -88,4 +85,21 @@ MovieListItem.propTypes = {
   }),
 };
 
-export default MovieListItem;
+const mapStateToProps = () => ({});
+
+const mapDispatchToProps = (dispatch) => ({
+  addLikeToMovieItem: (currentMovieId) => dispatch({
+    type: 'ADD_LIKE_TO_MOVIE_ITEM',
+    payload: currentMovieId,
+  }),
+  removeLikeFromMovieItem: (currentMovieId) => dispatch({
+    type: 'REMOVE_LIKE_FROM_MOVIE_ITEM',
+    payload: currentMovieId,
+  }),
+  setActiveMovieId: (activeMovieId) => dispatch({
+    type: 'SET_ACTIVE_MOVIE_ID',
+    payload: activeMovieId,
+  }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MovieListItem);

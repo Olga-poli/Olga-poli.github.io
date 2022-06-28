@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import './MovieRating.scss';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import styles from './MovieRating.module.scss';
 
 class MovieRating extends Component {
   constructor(props) {
@@ -12,37 +13,36 @@ class MovieRating extends Component {
 
   createStarItem() {
     const { hover } = this.state;
-    const { rating, movieId, onRatingChange } = this.props;
-    const clazz = (this.idx >= rating) && (this.idx >= hover)
-      ? 'rating-button__star fa fa-star-o'
-      : 'rating-button__star fa fa-star';
-    this.idx += 1;
-    const currentIdx = this.idx;
+    const { movieId, moviesItemsList, setRatingToMovieItem } = this.props;
+    const { rating } = moviesItemsList.find(({ id }) => id === movieId);
+    const ratingStarClass = (this.index >= rating) && (this.index >= hover)
+      ? `${styles.ratingButtonStar} fa fa-star-o`
+      : `${styles.ratingButtonStar} fa fa-star`;
+    this.index += 1;
+    const currentIndex = this.index;
     const setHover = (hoveredStarMax) => {
       this.setState(({ hover: hoveredStarMax }));
     };
 
     return (
       <button
-        onClick={() => onRatingChange(movieId, currentIdx)}
-        onMouseEnter={() => setHover(currentIdx)}
+        onClick={() => setRatingToMovieItem(movieId, currentIndex)}
+        onMouseEnter={() => setHover(currentIndex)}
         onMouseLeave={() => setHover(0)}
-        className="rating-button"
-        key={`${movieId}_${currentIdx}`}
+        className={styles.ratingButton}
+        key={`${movieId}_${currentIndex}`}
         type="button"
       >
-        <span className={clazz} />
+        <span className={ratingStarClass} />
       </button>
     );
   }
 
   render() {
-    const { rating } = this.props;
-    this.idx = 0;
+    this.index = 0;
     return (
       <div
-        rating={rating}
-        className="rating"
+        className={styles.rating}
       >
         {[...Array(5)].map(() => (
           this.createStarItem()
@@ -52,10 +52,42 @@ class MovieRating extends Component {
   }
 }
 
-MovieRating.propTypes = {
-  rating: PropTypes.number.isRequired,
-  movieId: PropTypes.number.isRequired,
-  onRatingChange: PropTypes.func.isRequired,
+MovieRating.defaultProps = {
+  moviesItemsList: PropTypes.array,
 };
 
-export default MovieRating;
+MovieRating.propTypes = {
+  movieId: PropTypes.number.isRequired,
+  moviesItemsList: PropTypes.arrayOf(PropTypes.shape({
+    adult: PropTypes.bool,
+    backdrop_path: PropTypes.string,
+    genre_ids: PropTypes.arrayOf(PropTypes.number),
+    id: PropTypes.number,
+    original_language: PropTypes.string,
+    original_title: PropTypes.string,
+    overview: PropTypes.string,
+    popularity: PropTypes.number,
+    poster_path: PropTypes.string,
+    release_date: PropTypes.string,
+    title: PropTypes.string,
+    video: PropTypes.bool,
+    vote_average: PropTypes.number,
+    vote_count: PropTypes.number,
+    currentLikesCount: PropTypes.number,
+    rating: PropTypes.number,
+  })),
+  setRatingToMovieItem: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  moviesItemsList: state.appReducer.moviesItemsList,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setRatingToMovieItem: (movieId, currentIndex) => dispatch({
+    type: 'SET_RATING_TO_MOVIE_ITEM',
+    payload: { movieId, currentIndex },
+  }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MovieRating);

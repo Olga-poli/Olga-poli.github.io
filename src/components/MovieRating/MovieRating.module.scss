@@ -1,0 +1,35 @@
+.rating {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0 0;
+
+  .ratingButton {
+    display: inline-block;
+    border: none;
+    margin: 0;
+    text-decoration: none;
+    background: none;
+    color: #2a2929;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    &:hover {
+      .ratingButtonStar {
+        transform: scale(1.5, 1.5);
+      }
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:active {
+      transform: scale(0.99);
+    }
+
+    .ratingButtonStar {
+      transition: transform .1s linear;
+    }
+  }
+}

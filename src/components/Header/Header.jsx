@@ -1,9 +1,9 @@
 import React from 'react';
-import './Header.scss';
+import styles from './Header.module.scss';
 
 function Header() {
   return (
-    <header className="header">
+    <header className={styles.header}>
       <h1>Movies</h1>
     </header>
   );
