@@ -87,6 +87,7 @@ MovieListItem.propTypes = {
     vote_count: PropTypes.number,
     currentLikesCount: PropTypes.number,
     rating: PropTypes.number,
+    toShow: PropTypes.bool,
   }),
 };
 

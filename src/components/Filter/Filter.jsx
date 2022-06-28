@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setMoviesOrderAction, setFilteredMoviesByTitleAction } from '../../store/actions/actions';
@@ -21,6 +21,7 @@ function Filter(props) {
   ];
   const [filters, setStateFilters] = useState(initialState);
   const [searchInputValue, setSearchInputValue] = useState('');
+  const searchInput = useRef(null);
 
   useEffect(() => {
     const { setFilteredMoviesByTitle, setMoviesOrder } = props;
@@ -31,6 +32,7 @@ function Filter(props) {
   const onSubmit = (event) => {
     event.preventDefault();
     setSearchInputValue(event.target.elements.searchInput.value);
+    searchInput.current.value = '';
   };
 
   const onFilterButtonClick = (clickedButtonName) => {
@@ -84,9 +86,7 @@ function Filter(props) {
           type="text"
           placeholder="Search by name"
           name="searchInput"
-          onSubmit={(event) => {
-            setSearchInputValue(event.target.value);
-          }}
+          ref={searchInput}
         />
       </form>
     </div>

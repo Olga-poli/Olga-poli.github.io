@@ -10,11 +10,6 @@ export const setFilteredMoviesByTitleAction = (inputValue) => ({
   payload: inputValue,
 });
 
-export const setSearchInputValueAction = (searchInputValue) => ({
-  type: constants.SET_SEARCH_INPUT_VALUE,
-  payload: searchInputValue,
-});
-
 export const setMoviesOrderAction = (filterOrder) => ({
   type: constants.SET_MOVIES_ORDER,
   payload: filterOrder,

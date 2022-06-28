@@ -2,7 +2,6 @@ import * as constants from '../constants/constants';
 
 const initialState = {
   moviesItemsList: [],
-  visibleMoviesItemsIDs: [],
   activeMovieId: null,
 };
 
@@ -11,16 +10,21 @@ const movieItemsReducer = (state = initialState, action) => {
   const { moviesItemsList } = state;
   switch (action.type) {
     case constants.SET_MOVIES_LIST: {
-      return { ...state, moviesItemsList: action.payload, visibleMoviesItemsList: action.payload };
+      return { ...state, moviesItemsList: action.payload };
     }
 
     case constants.SET_FILTERED_MOVIES_BY_TITLE: {
       if (action.payload.length === 0) {
-        return { ...state, moviesItemsList };
+        const sortedMovies = [...moviesItemsList].map((item) => ({ ...item, toShow: true }));
+        return { ...state, moviesItemsList: sortedMovies };
       }
       const sortedMovies = [...moviesItemsList]
-        .filter(({ title }) => title.toLowerCase().indexOf(action.payload.toLowerCase()) > -1);
-      return { ...state, visibleMoviesItemsList: sortedMovies };
+        .map((item) => (
+          item.title.toLowerCase().indexOf(action.payload.toLowerCase()) > -1
+            ? { ...item, toShow: true }
+            : { ...item, toShow: false }
+        ));
+      return { ...state, moviesItemsList: sortedMovies };
     }
 
     case constants.SET_MOVIES_ORDER: {

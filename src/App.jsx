@@ -11,8 +11,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 
 function App(props) {
-  const getItemsList = () => MoviesService.getResource()
-    .then((res) => res);
+  const getItemsList = () => MoviesService.getResource();
   const { moviesItemsList } = props;
 
   useEffect(() => {
@@ -23,13 +22,16 @@ function App(props) {
         ...item,
         currentLikesCount: 0,
         rating: 0,
+        toShow: true,
       })));
     })();
   }, []);
 
   const moviesItems = moviesItemsList
     ? moviesItemsList.map((item) => (
-      <MovieListItem movieData={item} key={item.id} />
+      item.toShow
+        ? <MovieListItem movieData={item} key={item.id} />
+        : null
     ))
     : null;
 
@@ -72,6 +74,7 @@ App.propTypes = {
     vote_count: PropTypes.number,
     currentLikesCount: PropTypes.number,
     rating: PropTypes.number,
+    toShow: PropTypes.bool,
   })),
   setMoviesList: PropTypes.func.isRequired,
 };
