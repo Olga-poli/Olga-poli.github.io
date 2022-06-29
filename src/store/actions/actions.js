@@ -34,3 +34,8 @@ export const setRatingToMovieItemAction = (movieId, currentIndex) => ({
   type: constants.SET_RATING_TO_MOVIE_ITEM,
   payload: { movieId, currentIndex },
 });
+
+export const removeMovieItemAction = (movieId) => ({
+  type: constants.REMOVE_MOVIE_ITEM,
+  payload: { movieId },
+});

@@ -4,6 +4,7 @@ import {
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { removeMovieItemAction } from '../../store/actions/actions';
 import MovieRating from '../MovieRating';
 import styles from './MovieInfo.module.scss';
 
@@ -11,7 +12,7 @@ function MovieInfo(props) {
   const history = useHistory();
   const { movieID } = useParams();
 
-  const { moviesItemsList } = props;
+  const { moviesItemsList, removeMovieItem } = props;
   const activeMovieData = moviesItemsList
     ? moviesItemsList.find(({ id }) => id === Number(movieID))
     : null;
@@ -69,7 +70,7 @@ function MovieInfo(props) {
               </Link>
               <Link to="/catalog">
                 <button
-                  onClick={() => {}}
+                  onClick={() => removeMovieItem(id)}
                   type="button"
                   className={`${styles.button} btn btn-outline-danger`}
                 >
@@ -106,16 +107,19 @@ MovieInfo.propTypes = {
     currentLikesCount: PropTypes.number,
     rating: PropTypes.number,
   })).isRequired,
-  // activeMovieId: PropTypes.number,
+  removeMovieItem: PropTypes.func.isRequired,
 };
 
 // MovieInfo.defaultProps = {
 //   activeMovieId: null,
 // };
+const mapDispatchToProps = {
+  removeMovieItem: removeMovieItemAction,
+};
 
 const mapStateToProps = (state) => ({
   moviesItemsList: state.appReducer.moviesItemsList,
   // activeMovieId: state.appReducer.activeMovieId,
 });
 
-export default connect(mapStateToProps)(MovieInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(MovieInfo);

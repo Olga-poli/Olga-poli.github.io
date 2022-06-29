@@ -9,20 +9,21 @@ import MoviesService from '../../services/MoviesService';
 import styles from './Catalog.module.scss';
 
 function Catalog(props) {
-  const getItemsList = () => MoviesService.getResource();
-  const { moviesItemsList } = props;
+  const { moviesItemsList, setMoviesList, isLoaded } = props;
 
   useEffect(() => {
-    (async () => {
-      const data = await getItemsList();
-      const { setMoviesList } = props;
-      setMoviesList(data.results.map((item) => ({
+    const fetchData = async () => {
+      const fetchedData = await MoviesService.getResource();
+      setMoviesList(fetchedData.results.map((item) => ({
         ...item,
         currentLikesCount: 0,
         rating: 0,
         toShow: true,
       })));
-    })();
+    };
+    if (!isLoaded) {
+      fetchData();
+    }
   }, []);
 
   const moviesItems = moviesItemsList
@@ -66,10 +67,12 @@ Catalog.propTypes = {
     toShow: PropTypes.bool,
   })),
   setMoviesList: PropTypes.func.isRequired,
+  isLoaded: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   moviesItemsList: state.appReducer.moviesItemsList,
+  isLoaded: state.appReducer.isLoaded,
 });
 
 const mapDispatchToProps = {
