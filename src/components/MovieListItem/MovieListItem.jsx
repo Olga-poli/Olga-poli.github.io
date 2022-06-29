@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
@@ -27,7 +28,7 @@ function MovieListItem(props) {
           onKeyUp={setActiveMovieId}
           className={`mb-3 ${styles.cardTitle}`}
         >
-          {title}
+          <Link to={`/catalog/${id}`}>{title}</Link>
         </p>
         <div className={`d-flex ${styles.cardContent}`}>
           <div className={styles.cardLikes}>

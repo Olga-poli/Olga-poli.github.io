@@ -3,4 +3,15 @@
   align-items: center;
   justify-content: center;
   padding: 2rem 0 1rem;
+
+  a {
+    color: black;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color .2s linear;
+
+    &:hover {
+      color: #5b5b5b;
+    }
+  }
 }

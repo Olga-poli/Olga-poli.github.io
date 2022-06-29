@@ -2,11 +2,4 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-
-  .moviesList {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    row-gap: 1rem;
-  }
 }
