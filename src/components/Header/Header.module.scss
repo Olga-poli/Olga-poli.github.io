@@ -1,8 +1,10 @@
 .header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 2rem 0 1rem;
+  justify-content: space-between;
+  padding: 2rem 5rem 1rem;
+  width: 70%;
+  margin: 0 auto;
 
   a {
     color: black;
@@ -13,5 +15,9 @@
     &:hover {
       color: #5b5b5b;
     }
+  }
+
+  .button {
+    align-self: flex-end;
   }
 }

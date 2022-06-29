@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setMoviesListAction } from '../../store/actions/actions';
@@ -9,6 +10,8 @@ import MoviesService from '../../services/MoviesService';
 import styles from './Catalog.module.scss';
 
 function Catalog(props) {
+  const registered = JSON.parse(window.localStorage.getItem('registeredUsers'));
+  const { isLogged } = registered[registered.length - 1];
   const { moviesItemsList, setMoviesList, isLoaded } = props;
 
   useEffect(() => {
@@ -35,9 +38,15 @@ function Catalog(props) {
     : null;
 
   return (
-    <div className={styles.container}>
-      <Filter />
-      <div className={styles.moviesList}>{moviesItems}</div>
+    <div>
+      { isLogged
+        ? (
+          <div className={styles.container}>
+            <Filter />
+            <div className={styles.moviesList}>{moviesItems}</div>
+          </div>
+        )
+        : <Redirect to="/login" />}
     </div>
   );
 }
