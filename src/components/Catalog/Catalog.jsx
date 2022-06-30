@@ -10,8 +10,10 @@ import MoviesService from '../../services/MoviesService';
 import styles from './Catalog.module.scss';
 
 function Catalog(props) {
-  const isLogged = true;
-  const { moviesItemsList, setMoviesList, isLoaded } = props;
+  const {
+    // eslint-disable-next-line react/prop-types
+    moviesItemsList, setMoviesList, isLoaded, activeUserState,
+  } = props;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +40,7 @@ function Catalog(props) {
 
   return (
     <div>
-      { isLogged
+      { activeUserState
         ? (
           <div className={styles.container}>
             <Filter />

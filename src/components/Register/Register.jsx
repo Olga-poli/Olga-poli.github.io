@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import styles from './Register.module.scss';
 
-function Register() {
+function Register(props) {
   const [nameState, setNameState] = useState('');
   const [passwordState, setPasswordState] = useState('');
+  const { setActiveUserState } = props;
 
-  const registerUser = (event) => {
-    event.preventDefault();
+  const registerUser = () => {
     const user = {
       name: nameState,
       password: passwordState,
@@ -17,12 +18,18 @@ function Register() {
     const userDataStorage = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
     userDataStorage.push(user);
     localStorage.setItem('registeredUsers', JSON.stringify(userDataStorage));
+    setActiveUserState(user);
+  };
+
+  const submitForm = (event) => {
+    event.preventDefault();
+    registerUser();
   };
 
   return (
     <div className={styles.register}>
       <form
-        onSubmit={registerUser}
+        onSubmit={submitForm}
         className={styles.form}
       >
         <div className="form-outline mb-4">
@@ -48,7 +55,13 @@ function Register() {
         </div>
 
         <Link to="/catalog">
-          <button type="submit" className="btn btn-primary btn-block mb-4">Register</button>
+          <button
+            onClick={registerUser}
+            type="submit"
+            className="btn btn-primary btn-block mb-4"
+          >
+            Register
+          </button>
         </Link>
 
         <div className="text-center">
@@ -61,5 +74,9 @@ function Register() {
     </div>
   );
 }
+
+Register.propTypes = {
+  setActiveUserState: PropTypes.func.isRequired,
+};
 
 export default Register;

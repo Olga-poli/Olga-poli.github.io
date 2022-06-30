@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import styles from './Header.module.scss';
 
-function Header() {
+function Header(props) {
   const userDataStorage = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-  const initialActiveUser = userDataStorage.length > 0
-    ? [...userDataStorage].find(({ isLogged }) => isLogged === true)
-    : '';
-  const [activeUserState, setActiveUserState] = useState(initialActiveUser);
+  const { activeUserState, setActiveUserState } = props;
 
   const logoutUser = () => {
     if (userDataStorage.length > 0) {
-      const activeUserIndex = userDataStorage.findIndex(({ isLogged }) => isLogged === true);
+      const activeUserIndex = userDataStorage
+        .findIndex(({ name }) => name === activeUserState.name);
       const updatedUser = { ...userDataStorage[activeUserIndex], isLogged: false };
       const updatedUsers = [
         ...userDataStorage.slice(0, activeUserIndex),
@@ -20,7 +19,7 @@ function Header() {
         ...userDataStorage.slice(activeUserIndex + 1),
       ];
       localStorage.setItem('registeredUsers', JSON.stringify(updatedUsers));
-      setActiveUserState('');
+      setActiveUserState(null);
     }
   };
 
@@ -56,5 +55,18 @@ function Header() {
     </header>
   );
 }
+
+Header.defaultProps = {
+  activeUserState: PropTypes.shape({}),
+};
+
+Header.propTypes = {
+  activeUserState: PropTypes.shape({
+    name: PropTypes.string,
+    password: PropTypes.string,
+    isLogged: PropTypes.bool,
+  }),
+  setActiveUserState: PropTypes.func.isRequired,
+};
 
 export default Header;

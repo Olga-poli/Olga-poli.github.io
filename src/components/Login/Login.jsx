@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import styles from './Login.module.scss';
 
-function Login() {
+function Login(props) {
   const [nameState, setNameState] = useState('foo');
   const [passwordState, setPasswordState] = useState('');
   const [logMessage, setLogMessage] = useState('');
+  const { setActiveUserState } = props;
 
   const loginUser = (event) => {
     event.preventDefault();
     const user = {
       name: nameState,
       password: passwordState,
+      isLogged: true,
     };
 
     const userDataStorage = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
@@ -30,6 +33,7 @@ function Login() {
       ...userDataStorage.slice(activeUserIndex + 1),
     ];
     localStorage.setItem('registeredUsers', JSON.stringify(updatedUsers));
+    setActiveUserState(user);
     setLogMessage('Log in successfully');
   };
 
@@ -74,5 +78,9 @@ function Login() {
     </div>
   );
 }
+
+Login.propTypes = {
+  setActiveUserState: PropTypes.func.isRequired,
+};
 
 export default Login;
