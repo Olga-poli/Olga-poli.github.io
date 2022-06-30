@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setMoviesListAction } from '../../store/actions/actions';
@@ -10,10 +9,7 @@ import MoviesService from '../../services/MoviesService';
 import styles from './Catalog.module.scss';
 
 function Catalog(props) {
-  const {
-    // eslint-disable-next-line react/prop-types
-    moviesItemsList, setMoviesList, isLoaded, activeUserState,
-  } = props;
+  const { moviesItemsList, setMoviesList, isLoaded } = props;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,14 +36,10 @@ function Catalog(props) {
 
   return (
     <div>
-      { activeUserState
-        ? (
-          <div className={styles.container}>
-            <Filter />
-            <div className={styles.moviesList}>{moviesItems}</div>
-          </div>
-        )
-        : <Redirect to="/login" />}
+      <div className={styles.container}>
+        <Filter />
+        <div className={styles.moviesList}>{moviesItems}</div>
+      </div>
     </div>
   );
 }
