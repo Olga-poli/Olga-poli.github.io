@@ -25,7 +25,6 @@ function MovieInfo(props) {
       </div>
     );
   }
-
   const {
     title,
     currentLikesCount = 0,

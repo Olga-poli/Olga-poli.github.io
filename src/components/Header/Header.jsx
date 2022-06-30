@@ -1,20 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { toggleActiveUserAction } from '../../store/actions/actions';
+
 import styles from './Header.module.scss';
 
-function Header() {
-  const userDataStorage = JSON.parse(window.localStorage.getItem('registeredUsers'));
-  const { isLogged } = userDataStorage
-    ? userDataStorage[userDataStorage.length - 1]
-    : false;
-
-  const userSignOut = () => {
-    const loggedOutUser = { ...userDataStorage[userDataStorage.length - 1], isLogged: false };
-    const updatedUserDataStorage = [
-      ...userDataStorage.slice(0, userDataStorage.length - 1),
-      loggedOutUser,
-    ];
-    window.localStorage.setItem('registeredUsers', JSON.stringify(updatedUserDataStorage));
+function Header(props) {
+  const { activeUser, toggleActiveUser } = props;
+  const haveActiveUser = !!activeUser;
+  const logoutUser = () => {
+    toggleActiveUser(activeUser, false);
   };
 
   return (
@@ -24,26 +20,43 @@ function Header() {
           Movies
         </Link>
       </h1>
-      {isLogged
+      {haveActiveUser
         ? (
-          <button
-            onClick={userSignOut}
-            className={`${styles.button} btn btn-outline-primary`}
-            type="button"
-          >
-            Sign out
-          </button>
+          <Link to="/">
+            <button
+              onClick={logoutUser}
+              className={`${styles.button} btn btn-outline-primary`}
+              type="button"
+            >
+              Log out
+            </button>
+          </Link>
         )
         : (
-          <button
-            className={`${styles.button} btn btn-outline-primary`}
-            type="button"
-          >
-            Sign in
-          </button>
+          <Link to="/login">
+            <button
+              className={`${styles.button} btn btn-outline-primary`}
+              type="button"
+            >
+              Log in
+            </button>
+          </Link>
         )}
     </header>
   );
 }
 
-export default Header;
+Header.propTypes = {
+  activeUser: PropTypes.string.isRequired,
+  toggleActiveUser: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = {
+  toggleActiveUser: toggleActiveUserAction,
+};
+
+const mapStateToProps = (state) => ({
+  activeUser: state.appReducer.activeUser,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

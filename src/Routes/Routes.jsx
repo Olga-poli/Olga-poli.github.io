@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import Login from '../components/Login';
+import Register from '../components/Register';
 import Catalog from '../components/Catalog';
 import MovieInfo from '../components/MovieInfo';
 import MovieEditing from '../components/MovieEditing';
@@ -37,6 +38,9 @@ function Routes(props) {
       </Route>
       <Route path="/login">
         <Login />
+      </Route>
+      <Route path="/register">
+        <Register />
       </Route>
       <Route exact path="/">
         <MainPage />
