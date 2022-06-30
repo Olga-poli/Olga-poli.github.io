@@ -1,16 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { toggleActiveUserAction } from '../../store/actions/actions';
 
 import styles from './Header.module.scss';
 
-function Header(props) {
-  const { activeUser, toggleActiveUser } = props;
-  const haveActiveUser = !!activeUser;
+function Header() {
+  const userDataStorage = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+  const initialActiveUser = userDataStorage.length > 0
+    ? [...userDataStorage].find(({ isLogged }) => isLogged === true)
+    : '';
+  const [activeUserState, setActiveUserState] = useState(initialActiveUser);
+
   const logoutUser = () => {
-    toggleActiveUser(activeUser, false);
+    if (userDataStorage.length > 0) {
+      const activeUserIndex = userDataStorage.findIndex(({ isLogged }) => isLogged === true);
+      const updatedUser = { ...userDataStorage[activeUserIndex], isLogged: false };
+      const updatedUsers = [
+        ...userDataStorage.slice(0, activeUserIndex),
+        updatedUser,
+        ...userDataStorage.slice(activeUserIndex + 1),
+      ];
+      localStorage.setItem('registeredUsers', JSON.stringify(updatedUsers));
+      setActiveUserState('');
+    }
   };
 
   return (
@@ -20,7 +31,7 @@ function Header(props) {
           Movies
         </Link>
       </h1>
-      {haveActiveUser
+      {activeUserState
         ? (
           <Link to="/">
             <button
@@ -46,17 +57,4 @@ function Header(props) {
   );
 }
 
-Header.propTypes = {
-  activeUser: PropTypes.string.isRequired,
-  toggleActiveUser: PropTypes.func.isRequired,
-};
-
-const mapDispatchToProps = {
-  toggleActiveUser: toggleActiveUserAction,
-};
-
-const mapStateToProps = (state) => ({
-  activeUser: state.appReducer.activeUser,
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default Header;

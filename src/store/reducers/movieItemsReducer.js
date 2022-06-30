@@ -4,7 +4,6 @@ const initialState = {
   moviesItemsList: [],
   isLoaded: false,
   activeMovieId: null,
-  activeUser: '',
 };
 
 // eslint-disable-next-line default-param-last
@@ -97,12 +96,6 @@ const movieItemsReducer = (state = initialState, action) => {
         ...moviesItemsList.slice(currentMovieIndex + 1),
       ];
       return { ...state, moviesItemsList: updatedMoviesItemsList };
-    }
-
-    case constants.TOGGLE_ACTIVE_USER: {
-      const { userName, activity } = action.payload;
-      const activeUser = activity ? userName : '';
-      return { ...state, activeUser };
     }
 
     default: {

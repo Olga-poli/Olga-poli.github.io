@@ -39,8 +39,3 @@ export const removeMovieItemAction = (movieId) => ({
   type: constants.REMOVE_MOVIE_ITEM,
   payload: { movieId },
 });
-
-export const toggleActiveUserAction = (userName, activity) => ({
-  type: constants.TOGGLE_ACTIVE_USER,
-  payload: { userName, activity },
-});

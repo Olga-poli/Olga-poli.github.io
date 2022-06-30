@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { toggleActiveUserAction } from '../../store/actions/actions';
 
 import styles from './Login.module.scss';
 
-function Login(props) {
-  const { toggleActiveUser } = props;
+function Login() {
   const [nameState, setNameState] = useState('foo');
   const [passwordState, setPasswordState] = useState('');
   const [logMessage, setLogMessage] = useState('');
@@ -25,8 +21,16 @@ function Login(props) {
       setLogMessage('User didn\'t found. Please, register.');
       return;
     }
+
+    const activeUserIndex = userDataStorage.findIndex(({ name }) => name === user.name);
+    const updatedUser = { ...userDataStorage[activeUserIndex], isLogged: true };
+    const updatedUsers = [
+      ...userDataStorage.slice(0, activeUserIndex),
+      updatedUser,
+      ...userDataStorage.slice(activeUserIndex + 1),
+    ];
+    localStorage.setItem('registeredUsers', JSON.stringify(updatedUsers));
     setLogMessage('Log in successfully');
-    toggleActiveUser(user.name, true);
   };
 
   return (
@@ -71,20 +75,4 @@ function Login(props) {
   );
 }
 
-// <Link to="/catalog">
-//           <button type="submit" className="btn btn-primary btn-block mb-4">Log in</button>
-//         </Link>
-Login.propTypes = {
-  // activeUser: PropTypes.string.isRequired,
-  toggleActiveUser: PropTypes.func.isRequired,
-};
-
-const mapDispatchToProps = {
-  toggleActiveUser: toggleActiveUserAction,
-};
-
-const mapStateToProps = (state) => ({
-  activeUser: state.appReducer.activeUser,
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Login;

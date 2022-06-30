@@ -10,7 +10,6 @@ import MoviesService from '../../services/MoviesService';
 import styles from './Catalog.module.scss';
 
 function Catalog(props) {
-  // const registered = JSON.parse(window.localStorage.getItem('registeredUsers')) || [];
   const isLogged = true;
   const { moviesItemsList, setMoviesList, isLoaded } = props;
 
