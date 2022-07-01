@@ -98,6 +98,18 @@ const movieItemsReducer = (state = initialState, action) => {
       return { ...state, moviesItemsList: updatedMoviesItemsList };
     }
 
+    case constants.UPDATE_MOVIE_ITEM: {
+      const { movieId, newData } = action.payload;
+      const currentMovieIndex = moviesItemsList.findIndex(({ id }) => id === Number(movieId));
+      const updatedMovie = { ...moviesItemsList[currentMovieIndex], ...newData };
+      const updatedMoviesItemsList = [
+        ...moviesItemsList.slice(0, currentMovieIndex),
+        updatedMovie,
+        ...moviesItemsList.slice(currentMovieIndex + 1),
+      ];
+      return { ...state, moviesItemsList: updatedMoviesItemsList };
+    }
+
     default: {
       return state;
     }

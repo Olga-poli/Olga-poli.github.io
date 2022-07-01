@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
@@ -20,15 +20,20 @@ function MovieListItem(props) {
     },
   } = props;
 
+  const history = useHistory();
+
   return (
     <div className={`card ${styles.moviesListItem}`}>
       <div className={`card-body ${styles.cardBody}`}>
+        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
         <p
-          onClick={() => setActiveMovieId(id)}
-          onKeyUp={setActiveMovieId}
+          onClick={() => {
+            setActiveMovieId(id);
+            history.push(`/catalog/${id}`, { id });
+          }}
           className={`mb-3 ${styles.cardTitle}`}
         >
-          <Link to={`/catalog/${id}`}>{title}</Link>
+          {title}
         </p>
         <div className={`d-flex ${styles.cardContent}`}>
           <div className={styles.cardLikes}>

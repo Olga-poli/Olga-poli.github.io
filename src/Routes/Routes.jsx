@@ -6,6 +6,7 @@ import Login from '../components/Login';
 import Register from '../components/Register';
 import Catalog from '../components/Catalog';
 import MovieInfo from '../components/MovieInfo';
+import ActorInfo from '../components/ActorInfo';
 import MovieEditing from '../components/MovieEditing';
 import MainPage from '../components/MainPage';
 
@@ -23,6 +24,9 @@ function Routes(props) {
                   <Switch>
                     <Route path={`${match.path}/:movieID/edit`}>
                       <MovieEditing customProp={match.path} />
+                    </Route>
+                    <Route path={`${match.path}/:movieID/:actor`}>
+                      <ActorInfo customProp={match.path} />
                     </Route>
                     <Route path={`${match.path}/:movieID`}>
                       <MovieInfo customProp={match.path} />

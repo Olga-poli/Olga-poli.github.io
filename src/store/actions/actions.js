@@ -39,3 +39,8 @@ export const removeMovieItemAction = (movieId) => ({
   type: constants.REMOVE_MOVIE_ITEM,
   payload: { movieId },
 });
+
+export const updateMovieItemAction = (movieId, newData) => ({
+  type: constants.UPDATE_MOVIE_ITEM,
+  payload: { movieId, newData },
+});

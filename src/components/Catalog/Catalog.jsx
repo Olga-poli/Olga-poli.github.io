@@ -1,30 +1,30 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setMoviesListAction } from '../../store/actions/actions';
 
 import Filter from '../Filter';
 import MovieListItem from '../MovieListItem';
-import MoviesService from '../../services/MoviesService';
 import styles from './Catalog.module.scss';
 
 function Catalog(props) {
-  const { moviesItemsList, setMoviesList, isLoaded } = props;
+  // const { moviesItemsList, setMoviesList, isLoaded } = props;
+  const { moviesItemsList } = props;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const fetchedData = await MoviesService.getResource();
-      setMoviesList(fetchedData.results.map((item) => ({
-        ...item,
-        currentLikesCount: 0,
-        rating: 0,
-        toShow: true,
-      })));
-    };
-    if (!isLoaded) {
-      fetchData();
-    }
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const fetchedData = await MoviesService.getResource();
+  //     setMoviesList(fetchedData.results.map((item) => ({
+  //       ...item,
+  //       currentLikesCount: 0,
+  //       rating: 0,
+  //       toShow: true,
+  //     })));
+  //   };
+  //   if (!isLoaded) {
+  //     fetchData();
+  //   }
+  // }, []);
 
   const moviesItems = moviesItemsList
     ? moviesItemsList.map((item) => (
@@ -68,7 +68,9 @@ Catalog.propTypes = {
     rating: PropTypes.number,
     toShow: PropTypes.bool,
   })),
+  // eslint-disable-next-line react/no-unused-prop-types
   setMoviesList: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/no-unused-prop-types
   isLoaded: PropTypes.bool.isRequired,
 };
 

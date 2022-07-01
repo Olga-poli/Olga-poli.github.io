@@ -1,23 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Link, useHistory, useParams,
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { removeMovieItemAction } from '../../store/actions/actions';
+import { removeMovieItemAction, updateMovieItemAction } from '../../store/actions/actions';
+
+import MoviesService from '../../services/MoviesService';
 import MovieRating from '../MovieRating';
 import styles from './MovieInfo.module.scss';
 
 function MovieInfo(props) {
   const history = useHistory();
   const { movieID } = useParams();
+  const { moviesItemsList, updateMovieItem, removeMovieItem } = props;
 
-  const { moviesItemsList, removeMovieItem } = props;
-  const activeMovieData = moviesItemsList
+  useEffect(() => {
+    const fetchData = async () => {
+      const newData = await MoviesService.getMovieInfo(movieID);
+      updateMovieItem(movieID, newData);
+    };
+    fetchData();
+  }, []);
+
+  const movieDetails = moviesItemsList
     ? moviesItemsList.find(({ id }) => id === Number(movieID))
     : null;
 
-  if (!activeMovieData) {
+  if (!movieDetails) {
     return (
       <div className={styles.movieInfo}>
         <h2>Something went wrong...</h2>
@@ -25,6 +35,7 @@ function MovieInfo(props) {
       </div>
     );
   }
+
   const {
     title,
     currentLikesCount = 0,
@@ -34,8 +45,23 @@ function MovieInfo(props) {
     release_date: releaseDate,
     original_language: language,
     overview,
-  } = activeMovieData;
+    credits: { cast } = { cast: [] },
+  } = movieDetails;
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+
+  const actorsList = cast.filter(({ known_for_department: knownForDepartment }) => knownForDepartment === 'Acting');
+  const actors = actorsList
+    ? (actorsList.map(({ name: actorName }) => (
+      <button
+        onClick={() => history.push(`/catalog/${movieID}/${actorName}`, { id })}
+        key={actorName}
+        className={styles.actorsListItems}
+        type="button"
+      >
+        {actorName}
+      </button>
+    )))
+    : null;
 
   return (
     <div className={styles.movieInfo}>
@@ -63,6 +89,10 @@ function MovieInfo(props) {
               Description:
               <span>{` ${overview}`}</span>
             </p>
+            <div>
+              <span>Cast: </span>
+              <div className={styles.actorsList}>{actors}</div>
+            </div>
             <div className={styles.buttons}>
               <Link to={`${movieID}/edit`}>
                 <button type="button" className={`${styles.button} btn btn-primary`}>Edit</button>
@@ -88,6 +118,7 @@ function MovieInfo(props) {
 }
 
 MovieInfo.propTypes = {
+  // eslint-disable-next-line react/no-unused-prop-types
   moviesItemsList: PropTypes.arrayOf(PropTypes.shape({
     adult: PropTypes.bool,
     backdrop_path: PropTypes.string,
@@ -107,12 +138,11 @@ MovieInfo.propTypes = {
     rating: PropTypes.number,
   })).isRequired,
   removeMovieItem: PropTypes.func.isRequired,
+  updateMovieItem: PropTypes.func.isRequired,
 };
 
-// MovieInfo.defaultProps = {
-//   activeMovieId: null,
-// };
 const mapDispatchToProps = {
+  updateMovieItem: updateMovieItemAction,
   removeMovieItem: removeMovieItemAction,
 };
 
