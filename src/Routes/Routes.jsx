@@ -8,7 +8,6 @@ import Catalog from '../components/Catalog';
 import MovieInfo from '../components/MovieInfo';
 import ActorInfo from '../components/ActorInfo';
 import MovieEditing from '../components/MovieEditing';
-import MainPage from '../components/MainPage';
 
 function Routes(props) {
   const { activeUserState, setActiveUserState } = props;
@@ -39,7 +38,7 @@ function Routes(props) {
               </Route>
             </Switch>
           )
-          : <Redirect to="/" />}
+          : <Redirect to="/login" />}
       </Route>
       <Route path="/login" activeUserState={activeUserState} setActiveUserState={setActiveUserState}>
         {activeUserState
@@ -52,7 +51,9 @@ function Routes(props) {
           : <Register setActiveUserState={setActiveUserState} />}
       </Route>
       <Route exact path="/">
-        <MainPage />
+        {activeUserState
+          ? <Redirect to="/catalog" />
+          : <Redirect to="/login" />}
       </Route>
       <Route path="*">
         <h1>Not found</h1>
