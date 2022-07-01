@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  Link, useHistory, useParams,
-} from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { removeMovieItemAction, updateMovieItemAction } from '../../store/actions/actions';
@@ -45,10 +43,13 @@ function MovieInfo(props) {
     release_date: releaseDate,
     original_language: language,
     overview,
+    genres = [],
     credits: { cast } = { cast: [] },
   } = movieDetails;
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-
+  const genre = genres.map(({ id: genreID, name }) => (
+    <span key={genreID} className={styles.genresItem}>{name}</span>
+  ));
   const actorsList = cast.filter(({ known_for_department: knownForDepartment }) => knownForDepartment === 'Acting');
   const actors = actorsList
     ? (actorsList.map(({ name: actorName }) => (
@@ -68,7 +69,7 @@ function MovieInfo(props) {
       <button onClick={() => history.goBack()} type="button" className={`${styles.button} btn btn-secondary`}>Go back</button>
       <div className="card">
         <div className={`${styles.body} card-body`}>
-          <div className={styles.info}>
+          <div>
             <h3>{title}</h3>
             <MovieRating rating={rating} movieId={id} />
             <p>
@@ -85,6 +86,10 @@ function MovieInfo(props) {
               Language:
               <span>{` ${language}`}</span>
             </p>
+            <p className={styles.genres}>
+              <span>Genres: </span>
+              <span>{genre}</span>
+            </p>
             <p>
               Description:
               <span>{` ${overview}`}</span>
@@ -94,18 +99,26 @@ function MovieInfo(props) {
               <div className={styles.actorsList}>{actors}</div>
             </div>
             <div className={styles.buttons}>
-              <Link to={`${movieID}/edit`}>
-                <button type="button" className={`${styles.button} btn btn-primary`}>Edit</button>
-              </Link>
-              <Link to="/catalog">
-                <button
-                  onClick={() => removeMovieItem(id)}
-                  type="button"
-                  className={`${styles.button} btn btn-outline-danger`}
-                >
-                  Delete
-                </button>
-              </Link>
+              <button
+                onClick={() => {
+                  removeMovieItem(id);
+                  history.push(`${movieID}/edit`);
+                }}
+                type="button"
+                className={`${styles.button} btn btn-primary`}
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => {
+                  removeMovieItem(id);
+                  history.push('/catalog/');
+                }}
+                type="button"
+                className={`${styles.button} btn btn-outline-danger`}
+              >
+                Delete
+              </button>
             </div>
           </div>
           <div className={styles.imageContainer}>

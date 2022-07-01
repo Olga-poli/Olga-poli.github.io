@@ -12,14 +12,15 @@
   .cardBody {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     column-gap: 2rem;
 
     .cardTitle {
-      height: 3rem;
       width: 11rem;
       cursor: pointer;
       position: relative;
       transition: all .5s linear;
+
       &:after {
         opacity: 0;
         content: "";
@@ -34,6 +35,7 @@
 
       &:hover {
         color: #5b5b5b;
+
         &:after {
           opacity: 1;
           content: "";

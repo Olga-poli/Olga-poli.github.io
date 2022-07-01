@@ -35,34 +35,36 @@ function MovieListItem(props) {
         >
           {title}
         </p>
-        <div className={`d-flex ${styles.cardContent}`}>
-          <div className={styles.cardLikes}>
-            <div className={` mb-3 ${styles.buttons}`}>
-              <button
-                onClick={() => addLikeToMovieItem(id)}
-                type="button"
-                className="btn btn-outline-dark btn-sm"
-              >
-                <i className="fa fa-thumbs-up" />
-              </button>
-              <button
-                onClick={() => removeLikeFromMovieItem(id)}
-                type="button"
-                className="btn btn-outline-dark btn-sm"
-              >
-                <i className="fa fa-thumbs-down" />
-              </button>
+        <div>
+          <div className={`d-flex ${styles.cardContent}`}>
+            <div className={styles.cardLikes}>
+              <div className={` mb-3 ${styles.buttons}`}>
+                <button
+                  onClick={() => addLikeToMovieItem(id)}
+                  type="button"
+                  className="btn btn-outline-dark btn-sm"
+                >
+                  <i className="fa fa-thumbs-up" />
+                </button>
+                <button
+                  onClick={() => removeLikeFromMovieItem(id)}
+                  type="button"
+                  className="btn btn-outline-dark btn-sm"
+                >
+                  <i className="fa fa-thumbs-down" />
+                </button>
+              </div>
+              <span>likes</span>
+              <span>{` ${currentLikesCount}`}</span>
             </div>
-            <span>likes</span>
-            <span>{` ${currentLikesCount}`}</span>
+            <div className={styles.imageContainer}>
+              <img src={`https://image.tmdb.org/t/p/w500/${posterPath}`} alt={title} />
+            </div>
           </div>
-          <div className={styles.imageContainer}>
-            <img src={`https://image.tmdb.org/t/p/w500/${posterPath}`} alt={title} />
-          </div>
+          <MovieRating
+            movieId={id}
+          />
         </div>
-        <MovieRating
-          movieId={id}
-        />
       </div>
     </div>
   );

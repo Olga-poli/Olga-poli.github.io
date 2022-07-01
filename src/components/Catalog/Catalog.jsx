@@ -8,24 +8,8 @@ import MovieListItem from '../MovieListItem';
 import styles from './Catalog.module.scss';
 
 function Catalog(props) {
-  // const { moviesItemsList, setMoviesList, isLoaded } = props;
   const { moviesItemsList } = props;
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const fetchedData = await MoviesService.getResource();
-  //     setMoviesList(fetchedData.results.map((item) => ({
-  //       ...item,
-  //       currentLikesCount: 0,
-  //       rating: 0,
-  //       toShow: true,
-  //     })));
-  //   };
-  //   if (!isLoaded) {
-  //     fetchData();
-  //   }
-  // }, []);
-
+  console.log(moviesItemsList);
   const moviesItems = moviesItemsList
     ? moviesItemsList.map((item) => (
       item.toShow
@@ -68,10 +52,6 @@ Catalog.propTypes = {
     rating: PropTypes.number,
     toShow: PropTypes.bool,
   })),
-  // eslint-disable-next-line react/no-unused-prop-types
-  setMoviesList: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/no-unused-prop-types
-  isLoaded: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
