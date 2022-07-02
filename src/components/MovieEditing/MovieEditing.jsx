@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -15,7 +15,6 @@ function MovieEditing(props) {
     : null;
 
   const [movieTitleState, setMovieTitleState] = useState('');
-  const [movieDirectorState, setDirectorState] = useState('');
   const [moviePosterPathState, setMoviePosterPathState] = useState('');
   const [movieOverviewState, setOverviewState] = useState('');
   const [errorMessages, setErrorMessages] = useState({
@@ -24,27 +23,32 @@ function MovieEditing(props) {
     moviePosterPathState: '',
     movieOverviewState: '',
   });
-  if (!currentMovieData) {
-    return null;
-  }
 
   const {
     title,
     poster_path: posterPath,
-    credits: { crew } = { crew: [] },
     overview,
   } = currentMovieData;
-  const director = crew.length > 0
-    ? crew.find(({ known_for_department: department }) => department === 'Directing').name
-    : '';
+
+  useEffect(() => {
+    setMovieTitleState(title);
+    setMoviePosterPathState(posterPath);
+    setOverviewState(overview);
+  }, []);
+
+  if (!currentMovieData) {
+    return null;
+  }
 
   const onSubmit = ((event) => {
     event.preventDefault();
-    updateMovieItem(movieID, moviesItemsList);
-    setMovieTitleState(movieTitleState);
-    setDirectorState(movieDirectorState);
-    setMoviePosterPathState(moviePosterPathState);
-    setOverviewState(movieOverviewState);
+    const newMovieData = {
+      title: movieTitleState,
+      poster_path: moviePosterPathState,
+      overview: movieOverviewState,
+    };
+    updateMovieItem(movieID, newMovieData);
+    history.push(`/catalog/${movieID}`);
   });
 
   const handleUserInput = (event) => {
@@ -53,23 +57,17 @@ function MovieEditing(props) {
     const map = {
       movieTitleState: () => {
         setMovieTitleState(value);
-        errorMessage = /([A-Z][a-z]*\s?)+?$/.test(value) ? '' : 'Incorrect title';
+        errorMessage = /^[A-Z][a-zA-Z0-9 -—.,!?:]+/.test(value) ? '' : 'Incorrect title';
         setErrorMessages({ ...errorMessages, movieTitleState: errorMessage });
-      },
-      movieDirectorState: () => {
-        setDirectorState(value);
-        errorMessage = /([A-Z][a-z]*\s?)+?$/.test(value) ? '' : 'Incorrect name';
-        setErrorMessages({ ...errorMessages, movieDirectorState: errorMessage });
       },
       moviePosterPathState: () => {
         setMoviePosterPathState(value);
-        errorMessage = /([A-Z][a-z]*\s?)+?$/.test(value) ? '' : 'Incorrect path';
+        errorMessage = /^\/[a-zA-Z0-9]*(.jpg|.png|.gif)/.test(value) ? '' : 'Incorrect path';
         setErrorMessages({ ...errorMessages, moviePosterPathState: errorMessage });
       },
-
       movieOverviewState: () => {
         setOverviewState(value);
-        errorMessage = /([A-Z][a-z]*\s?)+?$/.test(value) ? '' : 'Overview is not long enough';
+        errorMessage = /^[A-Z][a-zA-Z0-9 -—.,!?:]+/.test(value) ? '' : 'Overview is not long enough';
         setErrorMessages({ ...errorMessages, movieOverviewState: errorMessage });
       },
     };
@@ -98,20 +96,6 @@ function MovieEditing(props) {
             required
           />
           <div className={styles.formText}>{errorMessages.movieTitleState}</div>
-        </div>
-        <div className={styles.inputBlock}>
-          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-          <label htmlFor="director">Director</label>
-          <input
-            onChange={(event) => handleUserInput(event)}
-            defaultValue={director}
-            name="movieDirectorState"
-            className="form-control"
-            type="text"
-            id="director"
-            required
-          />
-          <div className={styles.formText}>{errorMessages.movieDirectorState}</div>
         </div>
         <div className={styles.inputBlock}>
           {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}

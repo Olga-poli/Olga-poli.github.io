@@ -11,14 +11,21 @@ import styles from './MovieInfo.module.scss';
 function MovieInfo(props) {
   const history = useHistory();
   const { movieID } = useParams();
-  const { moviesItemsList, updateMovieItem, removeMovieItem } = props;
+  const {
+    moviesItemsList,
+    isUpdated,
+    updateMovieItem,
+    removeMovieItem,
+  } = props;
 
   useEffect(() => {
     const fetchData = async () => {
       const newData = await MoviesService.getMovieInfo(movieID);
       updateMovieItem(movieID, newData);
     };
-    fetchData();
+    if (!isUpdated) {
+      fetchData();
+    }
   }, []);
 
   const movieDetails = moviesItemsList
@@ -50,7 +57,7 @@ function MovieInfo(props) {
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
   const director = crew.length > 0
     ? crew.find(({ known_for_department: department }) => department === 'Directing').name
-    : null;
+    : 'Not Found';
   const genre = genres.map(({ id: genreID, name }) => (
     <span key={genreID} className={styles.genresItem}>{name}</span>
   ));
@@ -168,6 +175,7 @@ MovieInfo.propTypes = {
       })),
     }),
   })).isRequired,
+  isUpdated: PropTypes.bool.isRequired,
   removeMovieItem: PropTypes.func.isRequired,
   updateMovieItem: PropTypes.func.isRequired,
 };
@@ -179,7 +187,7 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state) => ({
   moviesItemsList: state.appReducer.moviesItemsList,
-  // activeMovieId: state.appReducer.activeMovieId,
+  isUpdated: state.appReducer.isUpdated,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieInfo);

@@ -3,6 +3,7 @@ import * as constants from '../constants/constants';
 const initialState = {
   moviesItemsList: [],
   isLoaded: false,
+  isUpdated: false,
   activeMovieId: null,
 };
 
@@ -107,7 +108,7 @@ const movieItemsReducer = (state = initialState, action) => {
         updatedMovie,
         ...moviesItemsList.slice(currentMovieIndex + 1),
       ];
-      return { ...state, moviesItemsList: updatedMoviesItemsList };
+      return { ...state, moviesItemsList: updatedMoviesItemsList, isUpdated: true };
     }
 
     default: {
