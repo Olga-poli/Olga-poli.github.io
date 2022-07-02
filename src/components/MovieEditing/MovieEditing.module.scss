@@ -13,5 +13,25 @@
   .form {
     display: flex;
     flex-direction: column;
+
+    .inputBlock {
+      margin-bottom: .6rem;
+
+      .formText {
+        opacity: 0;
+        font-size: .75rem;;
+        color: tomato;
+      }
+
+      .formTextActive {
+        opacity: 1;
+        color: tomato;
+      }
+    }
+
+    .button {
+      width: 10rem;
+      align-self: center;
+    }
   }
 }

@@ -15,7 +15,6 @@ function MovieEditing(props) {
     : null;
 
   const [movieTitleState, setMovieTitleState] = useState('');
-  // const [movieGenreState, setMovieGenreState] = useState('');
   const [movieDirectorState, setDirectorState] = useState('');
   const [moviePosterPathState, setMoviePosterPathState] = useState('');
   const [movieOverviewState, setOverviewState] = useState('');
@@ -26,26 +25,35 @@ function MovieEditing(props) {
 
   const {
     title,
-    // genres = [],
     poster_path: posterPath,
     credits: { crew } = { crew: [] },
     overview,
   } = currentMovieData;
-  // const genresList = genres.length > 0
-  //   ? [...genres].map(({ name }) => ({ genre: name }))
-  //   : '';
   const director = crew.length > 0
     ? crew.find(({ known_for_department: department }) => department === 'Directing').name
     : '';
 
-  const onSubmit = (() => {
+  const onSubmit = ((event) => {
+    event.preventDefault();
     updateMovieItem(movieID, moviesItemsList);
     setMovieTitleState(movieTitleState);
-    // setMovieGenreState(movieGenreState);
     setDirectorState(movieDirectorState);
     setMoviePosterPathState(moviePosterPathState);
     setOverviewState(movieOverviewState);
   });
+
+  const handleUserInput = (event) => {
+    const { name, value } = event.target;
+    // console.log(event.target.name, event.target.value);
+    const map = {
+      movieTitleState: () => setMovieTitleState(value),
+      movieDirectorState: () => setDirectorState(value),
+      moviePosterPathState: () => setMoviePosterPathState(value),
+      movieOverviewState: () => setOverviewState(value),
+    };
+    console.log(name, value);
+    map[name](value);
+  };
 
   return (
     <div className={styles.movieEditing}>
@@ -55,51 +63,68 @@ function MovieEditing(props) {
         onSubmit={onSubmit}
         className={styles.form}
       >
-        <label htmlFor="title">
-          Title
+        <div className={styles.inputBlock}>
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+          <label htmlFor="title" className="form-label">Title</label>
           <input
+            onChange={(event) => handleUserInput(event)}
             defaultValue={title}
+            name="movieTitleState"
+            className="form-control"
             type="text"
             id="title"
+            required
           />
-        </label>
-        <label htmlFor="director">
-          Director
+          <div id="titleHelp" className={styles.formText}>Incorrect title</div>
+        </div>
+        <div className={styles.inputBlock}>
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+          <label htmlFor="director">Director</label>
           <input
+            onChange={(event) => handleUserInput(event)}
             defaultValue={director}
+            name="movieDirectorState"
+            className="form-control"
             type="text"
             id="director"
+            required
           />
-        </label>
-        <label htmlFor="image">
-          Image url
+          <div id="directorHelp" className={styles.formText}>Incorrect name</div>
+        </div>
+        <div className={styles.inputBlock}>
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+          <label htmlFor="image">Image url</label>
           <input
+            onChange={(event) => handleUserInput(event)}
             defaultValue={posterPath}
+            name="moviePosterPathState"
+            className="form-control"
             type="text"
             id="image"
+            required
           />
-        </label>
-        <label htmlFor="description">
-          Description
-          <input
+          <div id="imageHelp" className={styles.formText}>Incorrect path</div>
+        </div>
+        <div className={styles.inputBlock}>
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+          <label htmlFor="description">Description</label>
+          <textarea
+            onChange={(event) => handleUserInput(event)}
             defaultValue={overview}
+            name="movieOverviewState"
+            className="form-control"
             type="text"
             id="description"
+            required
           />
-        </label>
+          <div id="descriptionHelp" className={styles.formText}>Incorrect description</div>
+        </div>
+        <button className={`${styles.button} btn btn-primary`} type="submit">Submit form</button>
       </form>
     </div>
   );
 }
 
-//         <label htmlFor="genres">
-//           Genres
-//           <input
-//             defaultValue={genresList}
-//             type="text"
-//             id="genres"
-//           />
-//         </label>
 MovieEditing.propTypes = {
   moviesItemsList: PropTypes.arrayOf(PropTypes.shape({
     adult: PropTypes.bool,
