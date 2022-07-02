@@ -45,8 +45,12 @@ function MovieInfo(props) {
     overview,
     genres = [],
     credits: { cast } = { cast: [] },
+    credits: { crew } = { crew: [] },
   } = movieDetails;
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  const director = crew.length > 0
+    ? crew.find(({ known_for_department: department }) => department === 'Directing').name
+    : null;
   const genre = genres.map(({ id: genreID, name }) => (
     <span key={genreID} className={styles.genresItem}>{name}</span>
   ));
@@ -91,6 +95,10 @@ function MovieInfo(props) {
               <span>{genre}</span>
             </p>
             <p>
+              Director:
+              <span>{` ${director}`}</span>
+            </p>
+            <p>
               Description:
               <span>{` ${overview}`}</span>
             </p>
@@ -101,7 +109,7 @@ function MovieInfo(props) {
             <div className={styles.buttons}>
               <button
                 onClick={() => {
-                  removeMovieItem(id);
+                  // removeMovieItem(id);
                   history.push(`${movieID}/edit`);
                 }}
                 type="button"
@@ -131,7 +139,6 @@ function MovieInfo(props) {
 }
 
 MovieInfo.propTypes = {
-  // eslint-disable-next-line react/no-unused-prop-types
   moviesItemsList: PropTypes.arrayOf(PropTypes.shape({
     adult: PropTypes.bool,
     backdrop_path: PropTypes.string,
@@ -149,6 +156,17 @@ MovieInfo.propTypes = {
     vote_count: PropTypes.number,
     currentLikesCount: PropTypes.number,
     rating: PropTypes.number,
+    genres: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string,
+    })),
+    credits: PropTypes.shape({
+      cast: PropTypes.arrayOf(PropTypes.shape({
+        name: PropTypes.string,
+      })),
+      crew: PropTypes.arrayOf(PropTypes.shape({
+        name: PropTypes.string,
+      })),
+    }),
   })).isRequired,
   removeMovieItem: PropTypes.func.isRequired,
   updateMovieItem: PropTypes.func.isRequired,

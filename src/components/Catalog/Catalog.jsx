@@ -9,7 +9,6 @@ import styles from './Catalog.module.scss';
 
 function Catalog(props) {
   const { moviesItemsList } = props;
-  console.log(moviesItemsList);
   const moviesItems = moviesItemsList
     ? moviesItemsList.map((item) => (
       item.toShow
