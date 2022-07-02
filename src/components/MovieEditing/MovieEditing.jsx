@@ -18,7 +18,12 @@ function MovieEditing(props) {
   const [movieDirectorState, setDirectorState] = useState('');
   const [moviePosterPathState, setMoviePosterPathState] = useState('');
   const [movieOverviewState, setOverviewState] = useState('');
-
+  const [errorMessages, setErrorMessages] = useState({
+    movieTitleState: '',
+    movieDirectorState: '',
+    moviePosterPathState: '',
+    movieOverviewState: '',
+  });
   if (!currentMovieData) {
     return null;
   }
@@ -44,14 +49,31 @@ function MovieEditing(props) {
 
   const handleUserInput = (event) => {
     const { name, value } = event.target;
-    // console.log(event.target.name, event.target.value);
+    let errorMessage = '';
     const map = {
-      movieTitleState: () => setMovieTitleState(value),
-      movieDirectorState: () => setDirectorState(value),
-      moviePosterPathState: () => setMoviePosterPathState(value),
-      movieOverviewState: () => setOverviewState(value),
+      movieTitleState: () => {
+        setMovieTitleState(value);
+        errorMessage = /([A-Z][a-z]*\s?)+?$/.test(value) ? '' : 'Incorrect title';
+        setErrorMessages({ ...errorMessages, movieTitleState: errorMessage });
+      },
+      movieDirectorState: () => {
+        setDirectorState(value);
+        errorMessage = /([A-Z][a-z]*\s?)+?$/.test(value) ? '' : 'Incorrect name';
+        setErrorMessages({ ...errorMessages, movieDirectorState: errorMessage });
+      },
+      moviePosterPathState: () => {
+        setMoviePosterPathState(value);
+        errorMessage = /([A-Z][a-z]*\s?)+?$/.test(value) ? '' : 'Incorrect path';
+        setErrorMessages({ ...errorMessages, moviePosterPathState: errorMessage });
+      },
+
+      movieOverviewState: () => {
+        setOverviewState(value);
+        errorMessage = /([A-Z][a-z]*\s?)+?$/.test(value) ? '' : 'Overview is not long enough';
+        setErrorMessages({ ...errorMessages, movieOverviewState: errorMessage });
+      },
     };
-    console.log(name, value);
+
     map[name](value);
   };
 
@@ -75,7 +97,7 @@ function MovieEditing(props) {
             id="title"
             required
           />
-          <div id="titleHelp" className={styles.formText}>Incorrect title</div>
+          <div className={styles.formText}>{errorMessages.movieTitleState}</div>
         </div>
         <div className={styles.inputBlock}>
           {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
@@ -89,7 +111,7 @@ function MovieEditing(props) {
             id="director"
             required
           />
-          <div id="directorHelp" className={styles.formText}>Incorrect name</div>
+          <div className={styles.formText}>{errorMessages.movieDirectorState}</div>
         </div>
         <div className={styles.inputBlock}>
           {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
@@ -103,7 +125,7 @@ function MovieEditing(props) {
             id="image"
             required
           />
-          <div id="imageHelp" className={styles.formText}>Incorrect path</div>
+          <div className={styles.formText}>{errorMessages.moviePosterPathState}</div>
         </div>
         <div className={styles.inputBlock}>
           {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
@@ -117,7 +139,7 @@ function MovieEditing(props) {
             id="description"
             required
           />
-          <div id="descriptionHelp" className={styles.formText}>Incorrect description</div>
+          <div className={styles.formText}>{errorMessages.movieOverviewState}</div>
         </div>
         <button className={`${styles.button} btn btn-primary`} type="submit">Submit form</button>
       </form>

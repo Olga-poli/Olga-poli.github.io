@@ -18,13 +18,8 @@
       margin-bottom: .6rem;
 
       .formText {
-        opacity: 0;
-        font-size: .75rem;;
-        color: tomato;
-      }
-
-      .formTextActive {
-        opacity: 1;
+        font-size: .75rem;
+        min-height: 1.5rem;
         color: tomato;
       }
     }
