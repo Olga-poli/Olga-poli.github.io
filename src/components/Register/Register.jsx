@@ -39,7 +39,6 @@ function Register(props) {
             onChange={(event) => setNameState(event.target.value)}
             className="form-control"
           />
-          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <label className="form-label" htmlFor="userName">Username</label>
         </div>
 
@@ -50,7 +49,6 @@ function Register(props) {
             onChange={(event) => setPasswordState(event.target.value)}
             className="form-control"
           />
-          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <label className="form-label" htmlFor="form2Example2">Password</label>
         </div>
 

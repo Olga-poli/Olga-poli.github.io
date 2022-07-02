@@ -84,7 +84,6 @@ function MovieEditing(props) {
         className={styles.form}
       >
         <div className={styles.inputBlock}>
-          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <label htmlFor="title" className="form-label">Title</label>
           <input
             onChange={(event) => handleUserInput(event)}
@@ -98,7 +97,6 @@ function MovieEditing(props) {
           <div className={styles.formText}>{errorMessages.movieTitleState}</div>
         </div>
         <div className={styles.inputBlock}>
-          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <label htmlFor="image">Image url</label>
           <input
             onChange={(event) => handleUserInput(event)}
@@ -112,7 +110,6 @@ function MovieEditing(props) {
           <div className={styles.formText}>{errorMessages.moviePosterPathState}</div>
         </div>
         <div className={styles.inputBlock}>
-          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <label htmlFor="description">Description</label>
           <textarea
             onChange={(event) => handleUserInput(event)}
