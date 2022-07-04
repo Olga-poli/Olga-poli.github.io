@@ -9,7 +9,7 @@ function Filter() {
     {
       name: 'likes',
       label: 'by likes',
-      isActive: true,
+      isActive: false,
       descending: true,
     },
     {
@@ -28,7 +28,7 @@ function Filter() {
   }, [searchInputValue]);
 
   useEffect(() => {
-    const activeFilter = ([...filters].find(({ isActive }) => isActive === true));
+    const activeFilter = ([...filters].find(({ isActive }) => isActive === true)) || null;
     dispatch(setMoviesOrder(activeFilter));
   }, [filters]);
 

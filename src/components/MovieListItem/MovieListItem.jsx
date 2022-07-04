@@ -23,7 +23,6 @@ function MovieListItem(props) {
         {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
         <p
           onClick={() => {
-            // setActiveMovieId(id);
             history.push(`/catalog/${id}`, { id });
           }}
           className={`mb-3 ${styles.cardTitle}`}

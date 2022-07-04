@@ -19,7 +19,6 @@ function App() {
 
   useEffect(() => {
     (async () => {
-      // const data = await getMoviesItemsList();
       dispatch(fetchMoviesList());
     })();
   }, []);
@@ -35,19 +34,4 @@ function App() {
   );
 }
 
-// App.propTypes = {
-//   setMoviesList: PropTypes.func.isRequired,
-//   isLoaded: PropTypes.bool.isRequired,
-// };
-//
-// const mapStateToProps = (state) => ({
-//   moviesItemsList: state.appReducer.moviesItemsList,
-//   isLoaded: state.appReducer.isLoaded,
-// });
-//
-// const mapDispatchToProps = {
-//   setMoviesList: setMoviesListAction,
-// };
-
 export default App;
-// export default connect(mapStateToProps, mapDispatchToProps)(App);

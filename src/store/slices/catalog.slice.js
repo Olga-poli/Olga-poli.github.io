@@ -20,8 +20,7 @@ export const fetchMoviesList = createAsyncThunk(
     }
   },
 );
-// addLikeToMovieItem
-// removeLikeFromMovieItem
+
 const catalogSlice = createSlice({
   name: 'catalog',
   initialState: {
@@ -43,6 +42,9 @@ const catalogSlice = createSlice({
       ));
     },
     setMoviesOrder: (store, action) => {
+      if (!action.payload) {
+        return;
+      }
       const map = {
         likes: (a, b) => (
           action.payload.descending
