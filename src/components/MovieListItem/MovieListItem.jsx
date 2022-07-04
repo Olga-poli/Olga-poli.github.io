@@ -5,6 +5,9 @@ import MovieRating from '../MovieRating';
 import styles from './MovieListItem.module.scss';
 
 function MovieListItem(props) {
+  console.log(props);
+
+  // return (<h2>hello</h2>);
   const {
     // setActiveMovieId,
     // addLikeToMovieItem,

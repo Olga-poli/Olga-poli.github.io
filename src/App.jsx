@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { setMoviesList } from './store/slices/catalog.slice';
+import { fetchMoviesList } from './store/slices/catalog.slice';
 
 import Routes from './Routes/Routes';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import styles from './App.module.scss';
-import MoviesService from './services/MoviesService';
 
 function App() {
   const dispatch = useDispatch();
@@ -18,22 +17,12 @@ function App() {
     : null;
   const [activeUserState, setActiveUserState] = useState(initialActiveUser);
 
-  const getMoviesItemsList = async () => {
-    const fetchedData = await MoviesService.getResource();
-    return fetchedData.results.map((item) => ({
-      ...item,
-      currentLikesCount: 0,
-      rating: 0,
-      toShow: true,
-    }));
-  };
-
   useEffect(() => {
     (async () => {
-      const data = await getMoviesItemsList();
-      dispatch(setMoviesList({ moviesItemsList: data }));
+      // const data = await getMoviesItemsList();
+      dispatch(fetchMoviesList());
     })();
-  }, []);
+  }, [dispatch]);
 
   return (
     <Router>

@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { setMoviesOrderAction, setFilteredMoviesByTitleAction } from '../../store/actions/actions';
+import { useDispatch } from 'react-redux';
+import { setFilteredMoviesByTitle } from '../../store/slices/catalog.slice';
+// eslint-disable-next-line max-len
+// import { setMoviesOrderAction, setFilteredMoviesByTitleAction } from '../../store/actions/actions';
 import styles from './Filter.module.scss';
 
-function Filter(props) {
+function Filter() {
+  const dispatch = useDispatch();
   const initialState = [
     {
       name: 'likes',
@@ -24,15 +26,13 @@ function Filter(props) {
   const searchInput = useRef(null);
 
   useEffect(() => {
-    const { setFilteredMoviesByTitle } = props;
-    setFilteredMoviesByTitle(searchInputValue);
+    dispatch(setFilteredMoviesByTitle(searchInputValue));
   }, [searchInputValue]);
 
-  useEffect(() => {
-    const { setMoviesOrder } = props;
-    const activeFilter = ([...filters].find(({ isActive }) => isActive === true));
-    setMoviesOrder(activeFilter);
-  }, [filters]);
+  // useEffect(() => {
+  //   const activeFilter = ([...filters].find(({ isActive }) => isActive === true));
+  //   dispatch(setMoviesOrder(activeFilter));
+  // }, [filters]);
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -98,14 +98,14 @@ function Filter(props) {
   );
 }
 
-Filter.propTypes = {
-  setMoviesOrder: PropTypes.func.isRequired,
-  setFilteredMoviesByTitle: PropTypes.func.isRequired,
-};
+// Filter.propTypes = {
+//   setMoviesOrder: PropTypes.func.isRequired,
+//   // setFilteredMoviesByTitle: PropTypes.func.isRequired,
+// };
+//
+// const mapDispatchToProps = {
+//   setMoviesOrder: setMoviesOrderAction,
+//   // setFilteredMoviesByTitle: setFilteredMoviesByTitleAction,
+// };
 
-const mapDispatchToProps = {
-  setMoviesOrder: setMoviesOrderAction,
-  setFilteredMoviesByTitle: setFilteredMoviesByTitleAction,
-};
-
-export default connect(null, mapDispatchToProps)(Filter);
+export default Filter;

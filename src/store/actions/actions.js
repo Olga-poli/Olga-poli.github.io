@@ -1,5 +1,7 @@
-import { createAction } from '@reduxjs/toolkit';
+// import { createAsyncThunk } from '@reduxjs/toolkit';
 import * as constants from '../constants/constants';
+
+// import MoviesService from '../../services/MoviesService';
 
 export const setMoviesListAction = (movies) => ({
   type: constants.SET_MOVIES_LIST,
@@ -46,15 +48,14 @@ export const updateMovieItemAction = (movieId, newData) => ({
   payload: { movieId, newData },
 });
 
-export const setMoviesList = createAction('catalog/setMoviesList');
-
-// export const setMoviesList = createAsyncThunk(
+// export const fetchMoviesList = createAsyncThunk(
 //   'catalog/setMoviesList',
 //   async (thunkAPI) => {
 //     try {
-//       const data = await MoviesService.getResource();
+//       const response = await MoviesService.getResource();
+//       const data = await response.json();
 //
-//       return { ...data };
+//       return data;
 //     } catch (error) {
 //       console.error(error);
 //       return thunkAPI.rejectWithValue({
