@@ -1,0 +1,32 @@
+.movieEditing {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  margin: 0 auto;
+  row-gap: 1rem;
+
+  .button {
+    width: 8rem;
+    align-self: flex-start;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+
+    .inputBlock {
+      margin-bottom: .6rem;
+
+      .formText {
+        font-size: .75rem;
+        min-height: 1.5rem;
+        color: tomato;
+      }
+    }
+
+    .button {
+      width: 10rem;
+      align-self: center;
+    }
+  }
+}

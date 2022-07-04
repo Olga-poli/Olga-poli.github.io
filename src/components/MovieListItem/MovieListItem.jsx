@@ -1,65 +1,74 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import {
+  setActiveMovieIdAction,
+  addLikeToMovieItemAction,
+  removeLikeFromMovieItemAction,
+} from '../../store/actions/actions';
 import MovieRating from '../MovieRating';
 import styles from './MovieListItem.module.scss';
 
 function MovieListItem(props) {
   const {
+    setActiveMovieId,
     addLikeToMovieItem,
     removeLikeFromMovieItem,
-    setActiveMovieId,
     movieData: {
       title, poster_path: posterPath, id, currentLikesCount = 0,
     },
   } = props;
 
+  const history = useHistory();
+
   return (
     <div className={`card ${styles.moviesListItem}`}>
       <div className={`card-body ${styles.cardBody}`}>
+        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
         <p
-          onClick={() => setActiveMovieId(id)}
-          onKeyUp={setActiveMovieId}
+          onClick={() => {
+            setActiveMovieId(id);
+            history.push(`/catalog/${id}`, { id });
+          }}
           className={`mb-3 ${styles.cardTitle}`}
         >
           {title}
         </p>
-        <div className={`d-flex ${styles.cardContent}`}>
-          <div className={styles.cardLikes}>
-            <div className={` mb-3 ${styles.buttons}`}>
-              <button
-                onClick={() => addLikeToMovieItem(id)}
-                type="button"
-                className="btn btn-outline-dark btn-sm"
-              >
-                <i className="fa fa-thumbs-up" />
-              </button>
-              <button
-                onClick={() => removeLikeFromMovieItem(id)}
-                type="button"
-                className="btn btn-outline-dark btn-sm"
-              >
-                <i className="fa fa-thumbs-down" />
-              </button>
+        <div>
+          <div className={`d-flex ${styles.cardContent}`}>
+            <div className={styles.cardLikes}>
+              <div className={` mb-3 ${styles.buttons}`}>
+                <button
+                  onClick={() => addLikeToMovieItem(id)}
+                  type="button"
+                  className="btn btn-outline-dark btn-sm"
+                >
+                  <i className="fa fa-thumbs-up" />
+                </button>
+                <button
+                  onClick={() => removeLikeFromMovieItem(id)}
+                  type="button"
+                  className="btn btn-outline-dark btn-sm"
+                >
+                  <i className="fa fa-thumbs-down" />
+                </button>
+              </div>
+              <span>likes</span>
+              <span>{` ${currentLikesCount}`}</span>
             </div>
-            <span>likes</span>
-            <span>{` ${currentLikesCount}`}</span>
+            <div className={styles.imageContainer}>
+              <img src={`https://image.tmdb.org/t/p/w500/${posterPath}`} alt={title} />
+            </div>
           </div>
-          <div className={styles.imageContainer}>
-            <img src={`https://image.tmdb.org/t/p/w500/${posterPath}`} alt={title} />
-          </div>
+          <MovieRating
+            movieId={id}
+          />
         </div>
-        <MovieRating
-          movieId={id}
-        />
       </div>
     </div>
   );
 }
-
-MovieListItem.defaultProps = {
-  movieData: PropTypes.shape({}),
-};
 
 MovieListItem.propTypes = {
   addLikeToMovieItem: PropTypes.func.isRequired,
@@ -82,24 +91,16 @@ MovieListItem.propTypes = {
     vote_count: PropTypes.number,
     currentLikesCount: PropTypes.number,
     rating: PropTypes.number,
-  }),
+    toShow: PropTypes.bool,
+  }).isRequired,
 };
 
 const mapStateToProps = () => ({});
 
-const mapDispatchToProps = (dispatch) => ({
-  addLikeToMovieItem: (currentMovieId) => dispatch({
-    type: 'ADD_LIKE_TO_MOVIE_ITEM',
-    payload: currentMovieId,
-  }),
-  removeLikeFromMovieItem: (currentMovieId) => dispatch({
-    type: 'REMOVE_LIKE_FROM_MOVIE_ITEM',
-    payload: currentMovieId,
-  }),
-  setActiveMovieId: (activeMovieId) => dispatch({
-    type: 'SET_ACTIVE_MOVIE_ID',
-    payload: activeMovieId,
-  }),
-});
+const mapDispatchToProps = {
+  setActiveMovieId: setActiveMovieIdAction,
+  addLikeToMovieItem: addLikeToMovieItemAction,
+  removeLikeFromMovieItem: removeLikeFromMovieItemAction,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(MovieListItem);

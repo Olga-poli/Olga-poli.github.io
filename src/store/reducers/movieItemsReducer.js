@@ -2,8 +2,9 @@ import * as constants from '../constants/constants';
 
 const initialState = {
   moviesItemsList: [],
+  isLoaded: false,
+  isUpdated: false,
   activeMovieId: null,
-  searchInputValue: '',
 };
 
 // eslint-disable-next-line default-param-last
@@ -11,14 +12,27 @@ const movieItemsReducer = (state = initialState, action) => {
   const { moviesItemsList } = state;
   switch (action.type) {
     case constants.SET_MOVIES_LIST: {
-      return { ...state, moviesItemsList: action.payload };
+      return { ...state, moviesItemsList: action.payload, isLoaded: true };
     }
 
-    case constants.SET_SEARCH_INPUT_VALUE: {
-      return { ...state, searchInputValue: action.payload };
+    case constants.SET_FILTERED_MOVIES_BY_TITLE: {
+      if (action.payload.length === 0) {
+        const sortedMovies = [...moviesItemsList].map((item) => ({ ...item, toShow: true }));
+        return { ...state, moviesItemsList: sortedMovies };
+      }
+      const sortedMovies = [...moviesItemsList]
+        .map((item) => (
+          item.title.toLowerCase().indexOf(action.payload.toLowerCase()) > -1
+            ? { ...item, toShow: true }
+            : { ...item, toShow: false }
+        ));
+      return { ...state, moviesItemsList: sortedMovies };
     }
 
     case constants.SET_MOVIES_ORDER: {
+      if (!action.payload) {
+        return { ...state };
+      }
       const map = {
         likes: (a, b) => (
           action.payload.descending
@@ -73,6 +87,28 @@ const movieItemsReducer = (state = initialState, action) => {
         ...moviesItemsList.slice(currentMovieIndex + 1),
       ];
       return { ...state, moviesItemsList: updatedMoviesItemsList };
+    }
+
+    case constants.REMOVE_MOVIE_ITEM: {
+      const { movieId } = action.payload;
+      const currentMovieIndex = moviesItemsList.findIndex(({ id }) => id === movieId);
+      const updatedMoviesItemsList = [
+        ...moviesItemsList.slice(0, currentMovieIndex),
+        ...moviesItemsList.slice(currentMovieIndex + 1),
+      ];
+      return { ...state, moviesItemsList: updatedMoviesItemsList };
+    }
+
+    case constants.UPDATE_MOVIE_ITEM: {
+      const { movieId, newData } = action.payload;
+      const currentMovieIndex = moviesItemsList.findIndex(({ id }) => id === Number(movieId));
+      const updatedMovie = { ...moviesItemsList[currentMovieIndex], ...newData };
+      const updatedMoviesItemsList = [
+        ...moviesItemsList.slice(0, currentMovieIndex),
+        updatedMovie,
+        ...moviesItemsList.slice(currentMovieIndex + 1),
+      ];
+      return { ...state, moviesItemsList: updatedMoviesItemsList, isUpdated: true };
     }
 
     default: {
