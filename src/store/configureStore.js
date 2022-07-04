@@ -2,6 +2,14 @@ import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import rootReducer from './rootReducer';
 
+const customThunk = (store) => (dispatch) => (action) => {
+  if (typeof action === 'function') {
+    action(store.dispatch, store.getState);
+  } else {
+    dispatch(action);
+  }
+};
+
 const customLogger = (store) => (dispatch) => (action) => {
   console.group(
     `%c${action.type}`,
@@ -18,7 +26,7 @@ const customLogger = (store) => (dispatch) => (action) => {
 const store = createStore(
   rootReducer,
   undefined,
-  composeWithDevTools(applyMiddleware(customLogger)),
+  composeWithDevTools(applyMiddleware(customThunk, customLogger)),
 );
 
 export default store;
