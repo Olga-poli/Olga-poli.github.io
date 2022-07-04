@@ -12,7 +12,7 @@ import MoviesService from './services/MoviesService';
 
 function App(props) {
   const { setMoviesList, isLoaded } = props;
-  const userDataStorage = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+  const userDataStorage = JSON.parse(localStorage.getItem('registeredUsers')) || [];
   const activeRegisteredUser = userDataStorage.find(({ isLogged }) => isLogged === true);
   const initialActiveUser = userDataStorage.length > 0 && activeRegisteredUser
     ? activeRegisteredUser

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { removeMovieItemAction, updateMovieItemAction } from '../../store/actions/actions';
 
 import MoviesService from '../../services/MoviesService';
-import MovieRating from '../MovieRating';
+import MovieRating from '../../components/MovieRating';
 import styles from './MovieInfo.module.scss';
 
 function MovieInfo(props) {

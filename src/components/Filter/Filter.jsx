@@ -40,7 +40,7 @@ function Filter(props) {
     searchInput.current.value = '';
   };
 
-  const onFilterButtonClick = (clickedButtonName) => {
+  const handleFilterButtonClick = (clickedButtonName) => {
     const currentButton = [...filters].find(({ name }) => name === clickedButtonName);
     const updatedButton = {
       ...currentButton,
@@ -65,7 +65,7 @@ function Filter(props) {
         key={name}
         type="button"
         className={`btn btn-sm ${filterButtonClass}`}
-        onClick={() => onFilterButtonClick(name)}
+        onClick={() => handleFilterButtonClick(name)}
       >
         <span>{`${label} `}</span>
         <span className={orderDirectionSpanClass} />

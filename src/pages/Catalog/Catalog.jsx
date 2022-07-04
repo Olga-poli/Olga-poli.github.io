@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setMoviesListAction } from '../../store/actions/actions';
 
-import Filter from '../Filter';
-import MovieListItem from '../MovieListItem';
+import Filter from '../../components/Filter';
+import MovieListItem from '../../components/MovieListItem';
 import styles from './Catalog.module.scss';
 
 function Catalog(props) {
