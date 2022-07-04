@@ -71,6 +71,13 @@ const catalogSlice = createSlice({
           : item
       ));
     },
+    setRatingToMovieItem: (store, action) => {
+      store.moviesItemsList = store.moviesItemsList.map((item) => (
+        item.id === action.payload.movieId
+          ? { ...item, rating: action.payload.index }
+          : item
+      ));
+    },
   },
   extraReducers: {
     [fetchMoviesList.pending]: (store) => {
@@ -93,5 +100,6 @@ export const {
   setMoviesOrder,
   addLikeToMovieItem,
   removeLikeFromMovieItem,
+  setRatingToMovieItem,
 } = actions;
 export default catalogSlice.reducer;
