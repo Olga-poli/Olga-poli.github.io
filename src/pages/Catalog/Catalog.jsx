@@ -14,20 +14,22 @@ function Catalog() {
       {isError ? (
         <h2>Error...</h2>
       ) : (
-        <>
-          <Filter />
+        <div>
           {isLoading
             ? (<img src="../../assets/images/loader.gif" alt="loader" width="200" />)
             : (
-              <div className={styles.moviesList}>
-                {moviesItemsList.map((item) => (
-                  item.toShow
-                    ? <MovieListItem movieData={item} key={item.id} />
-                    : null
-                ))}
-              </div>
+              <>
+                <Filter />
+                <div className={styles.moviesList}>
+                  {moviesItemsList.map((item) => (
+                    item.toShow
+                      ? <MovieListItem movieData={item} key={item.id} />
+                      : null
+                  ))}
+                </div>
+              </>
             )}
-        </>
+        </div>
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setFilteredMoviesByTitle } from '../../store/slices/catalog.slice';
+import { setFilteredMoviesByTitle, setMoviesOrder } from '../../store/slices/catalog.slice';
 import styles from './Filter.module.scss';
 
 function Filter() {
@@ -9,7 +9,7 @@ function Filter() {
     {
       name: 'likes',
       label: 'by likes',
-      isActive: false,
+      isActive: true,
       descending: true,
     },
     {
@@ -27,10 +27,10 @@ function Filter() {
     dispatch(setFilteredMoviesByTitle(searchInputValue));
   }, [searchInputValue]);
 
-  // useEffect(() => {
-  //   const activeFilter = ([...filters].find(({ isActive }) => isActive === true));
-  //   dispatch(setMoviesOrder(activeFilter));
-  // }, [filters]);
+  useEffect(() => {
+    const activeFilter = ([...filters].find(({ isActive }) => isActive === true));
+    dispatch(setMoviesOrder(activeFilter));
+  }, [filters]);
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -95,15 +95,5 @@ function Filter() {
     </div>
   );
 }
-
-// Filter.propTypes = {
-//   setMoviesOrder: PropTypes.func.isRequired,
-//   // setFilteredMoviesByTitle: PropTypes.func.isRequired,
-// };
-//
-// const mapDispatchToProps = {
-//   setMoviesOrder: setMoviesOrderAction,
-//   // setFilteredMoviesByTitle: setFilteredMoviesByTitleAction,
-// };
 
 export default Filter;

@@ -42,11 +42,6 @@ const catalogSlice = createSlice({
       ));
     },
     setMoviesOrder: (store, action) => {
-      if (!action.payload) {
-        console.log(action.payload);
-        // eslint-disable-next-line no-self-assign
-        store.moviesItemsList = store.moviesItemsList;
-      }
       const map = {
         likes: (a, b) => (
           action.payload.descending
