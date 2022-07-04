@@ -95,6 +95,13 @@ const catalogSlice = createSlice({
     removeMovieItem: (store, action) => {
       store.moviesItemsList = store.moviesItemsList.filter(({ id }) => id !== action.payload);
     },
+    updateMovieItem: (store, action) => {
+      store.moviesItemsList = store.moviesItemsList.map((item) => (
+        item.id === action.payload.id
+          ? { ...item, ...action.payload.newMovieData }
+          : item
+      ));
+    },
   },
   extraReducers: {
     [fetchMoviesList.pending]: (store) => {
@@ -134,6 +141,7 @@ export const {
   removeLikeFromMovieItem,
   setRatingToMovieItem,
   removeMovieItem,
+  updateMovieItem,
 } = actions;
 
 export default catalogSlice.reducer;

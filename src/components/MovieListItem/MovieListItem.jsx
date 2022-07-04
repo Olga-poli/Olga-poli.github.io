@@ -12,14 +12,13 @@ import MovieRating from '../MovieRating';
 import styles from './MovieListItem.module.scss';
 
 function MovieListItem({ movieId }) {
+  const history = useHistory();
   const dispatch = useDispatch();
   const movieData = useSelector((state) => state.catalogReducer.moviesItemsList)
     .find(({ id }) => id === movieId);
   const {
     title, poster_path: posterPath, id, currentLikesCount = 0,
   } = movieData;
-
-  const history = useHistory();
 
   return (
     <div className={`card ${styles.moviesListItem}`}>
