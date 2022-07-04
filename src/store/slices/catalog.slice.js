@@ -1,21 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import MoviesService from '../../services/MoviesService';
 
-// import { fetchMoviesList } from '../actions/actions';
-
 export const fetchMoviesList = createAsyncThunk(
   'catalog/setMoviesList',
   async (thunkAPI) => {
     try {
       const response = await MoviesService.getResource();
-      const moviesItemsList = response.results.map((item) => ({
+      return response.results.map((item) => ({
         ...item,
         currentLikesCount: 0,
         rating: 0,
         toShow: true,
       }));
-
-      return moviesItemsList;
     } catch (error) {
       console.error(error);
       return thunkAPI.rejectWithValue({
@@ -31,22 +27,18 @@ const catalogSlice = createSlice({
     moviesItemsList: [],
     isError: false,
     isLoading: false,
-    isLoaded: false,
     isUpdated: false,
     activeMovieId: null,
   },
   reducers: {
-    // setMoviesList: (store, action) => {
-    //   store.moviesItemsList = action.payload.moviesItemsList;
-    // },
     setFilteredMoviesByTitle: (store, action) => {
       if (action.payload.length === 0) {
         store.moviesItemsList = store.moviesItemsList.map((item) => ({ ...item, toShow: true }));
       }
       store.moviesItemsList = store.moviesItemsList.map((item) => (
         item.title.toLowerCase().indexOf(action.payload.toLowerCase()) > -1
-          ? { item, toShow: true }
-          : { item, toShow: false }
+          ? { ...item, toShow: true }
+          : { ...item, toShow: false }
       ));
     },
     setMoviesOrder: (store, action) => {
@@ -87,11 +79,7 @@ const catalogSlice = createSlice({
 
 const { actions } = catalogSlice;
 export const {
-  setMoviesList,
   setFilteredMoviesByTitle,
   setMoviesOrder,
 } = actions;
 export default catalogSlice.reducer;
-
-// export const { setMoviesList } = catalogSlice.actions;
-// export default catalogSlice.reducer;

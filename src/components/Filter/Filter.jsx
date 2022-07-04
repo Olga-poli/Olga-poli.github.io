@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setFilteredMoviesByTitle } from '../../store/slices/catalog.slice';
-// eslint-disable-next-line max-len
-// import { setMoviesOrderAction, setFilteredMoviesByTitleAction } from '../../store/actions/actions';
 import styles from './Filter.module.scss';
 
 function Filter() {

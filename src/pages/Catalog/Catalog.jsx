@@ -21,7 +21,9 @@ function Catalog() {
             : (
               <div className={styles.moviesList}>
                 {moviesItemsList.map((item) => (
-                  <MovieListItem key={item.id} movieData={item} />
+                  item.toShow
+                    ? <MovieListItem movieData={item} key={item.id} />
+                    : null
                 ))}
               </div>
             )}

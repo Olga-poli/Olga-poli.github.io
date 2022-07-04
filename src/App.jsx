@@ -22,7 +22,7 @@ function App() {
       // const data = await getMoviesItemsList();
       dispatch(fetchMoviesList());
     })();
-  }, [dispatch]);
+  }, []);
 
   return (
     <Router>
