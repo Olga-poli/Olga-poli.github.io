@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import MoviesService from '../../services/MoviesService';
 
 export const fetchMoviesList = createAsyncThunk(
-  'catalog/setMoviesList',
+  'catalog/fetchMoviesList',
   async (thunkAPI) => {
     try {
       const response = await MoviesService.getResource();
@@ -21,14 +21,26 @@ export const fetchMoviesList = createAsyncThunk(
   },
 );
 
+export const fetchMovieDetails = createAsyncThunk(
+  'catalog/fetchMovieDetails',
+  async (movieID, thunkAPI) => {
+    try {
+      return await MoviesService.getMovieInfo(movieID);
+    } catch (error) {
+      console.error(error);
+      return thunkAPI.rejectWithValue({
+        message: 'Error',
+      });
+    }
+  },
+);
+
 const catalogSlice = createSlice({
   name: 'catalog',
   initialState: {
     moviesItemsList: [],
     isError: false,
     isLoading: false,
-    isUpdated: false,
-    activeMovieId: null,
   },
   reducers: {
     setFilteredMoviesByTitle: (store, action) => {
@@ -80,6 +92,7 @@ const catalogSlice = createSlice({
           : item
       ));
     },
+    // removeMovieItem
   },
   extraReducers: {
     [fetchMoviesList.pending]: (store) => {
@@ -90,6 +103,21 @@ const catalogSlice = createSlice({
       store.moviesItemsList = action.payload;
     },
     [fetchMoviesList.rejected]: (store) => {
+      store.isLoading = false;
+      store.isError = true;
+    },
+    [fetchMovieDetails.pending]: (store) => {
+      store.isLoading = true;
+    },
+    [fetchMovieDetails.fulfilled]: (store, action) => {
+      store.isLoading = false;
+      store.moviesItemsList = store.moviesItemsList.map((item) => (
+        item.id === action.payload.id
+          ? { ...item, ...action.payload }
+          : item
+      ));
+    },
+    [fetchMovieDetails.rejected]: (store) => {
       store.isLoading = false;
       store.isError = true;
     },
@@ -104,4 +132,5 @@ export const {
   removeLikeFromMovieItem,
   setRatingToMovieItem,
 } = actions;
+
 export default catalogSlice.reducer;

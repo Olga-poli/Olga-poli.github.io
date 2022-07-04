@@ -1,19 +1,23 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { addLikeToMovieItem, removeLikeFromMovieItem } from '../../store/slices/catalog.slice';
+import {
+  addLikeToMovieItem,
+  removeLikeFromMovieItem,
+  fetchMovieDetails,
+} from '../../store/slices/catalog.slice';
 import MovieRating from '../MovieRating';
 import styles from './MovieListItem.module.scss';
 
-function MovieListItem(props) {
+function MovieListItem({ movieId }) {
   const dispatch = useDispatch();
+  const movieData = useSelector((state) => state.catalogReducer.moviesItemsList)
+    .find(({ id }) => id === movieId);
   const {
-    movieData: {
-      title, poster_path: posterPath, id, currentLikesCount = 0,
-    },
-  } = props;
+    title, poster_path: posterPath, id, currentLikesCount = 0,
+  } = movieData;
 
   const history = useHistory();
 
@@ -23,6 +27,7 @@ function MovieListItem(props) {
         {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
         <p
           onClick={() => {
+            dispatch(fetchMovieDetails(id));
             history.push(`/catalog/${id}`, { id });
           }}
           className={`mb-3 ${styles.cardTitle}`}
@@ -65,25 +70,7 @@ function MovieListItem(props) {
 }
 
 MovieListItem.propTypes = {
-  movieData: PropTypes.shape({
-    adult: PropTypes.bool,
-    backdrop_path: PropTypes.string,
-    genre_ids: PropTypes.arrayOf(PropTypes.number),
-    id: PropTypes.number,
-    original_language: PropTypes.string,
-    original_title: PropTypes.string,
-    overview: PropTypes.string,
-    popularity: PropTypes.number,
-    poster_path: PropTypes.string,
-    release_date: PropTypes.string,
-    title: PropTypes.string,
-    video: PropTypes.bool,
-    vote_average: PropTypes.number,
-    vote_count: PropTypes.number,
-    currentLikesCount: PropTypes.number,
-    rating: PropTypes.number,
-    toShow: PropTypes.bool,
-  }).isRequired,
+  movieId: PropTypes.number.isRequired,
 };
 
 export default MovieListItem;
