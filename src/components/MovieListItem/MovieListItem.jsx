@@ -1,14 +1,15 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
+
+import { addLikeToMovieItem, removeLikeFromMovieItem } from '../../store/slices/catalog.slice';
 import MovieRating from '../MovieRating';
 import styles from './MovieListItem.module.scss';
 
 function MovieListItem(props) {
+  const dispatch = useDispatch();
   const {
-    // setActiveMovieId,
-    // addLikeToMovieItem,
-    // removeLikeFromMovieItem,
     movieData: {
       title, poster_path: posterPath, id, currentLikesCount = 0,
     },
@@ -34,14 +35,14 @@ function MovieListItem(props) {
             <div className={styles.cardLikes}>
               <div className={` mb-3 ${styles.buttons}`}>
                 <button
-                  // onClick={() => addLikeToMovieItem(id)}
+                  onClick={() => dispatch(addLikeToMovieItem(id))}
                   type="button"
                   className="btn btn-outline-dark btn-sm"
                 >
                   <i className="fa fa-thumbs-up" />
                 </button>
                 <button
-                  // onClick={() => removeLikeFromMovieItem(id)}
+                  onClick={() => dispatch(removeLikeFromMovieItem(id))}
                   type="button"
                   className="btn btn-outline-dark btn-sm"
                 >

@@ -20,7 +20,8 @@ export const fetchMoviesList = createAsyncThunk(
     }
   },
 );
-
+// addLikeToMovieItem
+// removeLikeFromMovieItem
 const catalogSlice = createSlice({
   name: 'catalog',
   initialState: {
@@ -56,6 +57,20 @@ const catalogSlice = createSlice({
       };
       store.moviesItemsList = store.moviesItemsList.sort(map[action.payload.name]);
     },
+    addLikeToMovieItem: (store, action) => {
+      store.moviesItemsList = store.moviesItemsList.map((item) => (
+        item.id === action.payload
+          ? { ...item, currentLikesCount: item.currentLikesCount + 1 }
+          : item
+      ));
+    },
+    removeLikeFromMovieItem: (store, action) => {
+      store.moviesItemsList = store.moviesItemsList.map((item) => (
+        item.id === action.payload
+          ? { ...item, currentLikesCount: item.currentLikesCount - 1 }
+          : item
+      ));
+    },
   },
   extraReducers: {
     [fetchMoviesList.pending]: (store) => {
@@ -76,5 +91,7 @@ const { actions } = catalogSlice;
 export const {
   setFilteredMoviesByTitle,
   setMoviesOrder,
+  addLikeToMovieItem,
+  removeLikeFromMovieItem,
 } = actions;
 export default catalogSlice.reducer;
