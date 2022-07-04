@@ -1,12 +1,14 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+import { removeMovieItem } from '../../store/slices/catalog.slice';
 import MovieRating from '../MovieRating';
 import styles from './MovieInfoItem.module.scss';
 
 function MovieInfoItem({ movieID }) {
+  const dispatch = useDispatch();
   const history = useHistory();
 
   const moviesItemsList = useSelector((state) => state.catalogReducer.moviesItemsList);
@@ -92,7 +94,7 @@ function MovieInfoItem({ movieID }) {
               </button>
               <button
                 onClick={() => {
-                  // removeMovieItem(id);
+                  dispatch(removeMovieItem(id));
                   history.push('/catalog/');
                 }}
                 type="button"
