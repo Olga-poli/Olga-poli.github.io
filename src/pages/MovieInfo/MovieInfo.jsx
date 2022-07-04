@@ -19,7 +19,7 @@ function MovieInfo() {
       ) : (
         <div>
           {isLoading
-            ? (<img src="../../assets/images/loader.gif" alt="loader" width="200" />)
+            ? (<h2>Loading...</h2>)
             : (
               <div className={styles.movieInfo}>
                 <button onClick={() => history.goBack()} type="button" className={`${styles.button} btn btn-secondary`}>Go back</button>

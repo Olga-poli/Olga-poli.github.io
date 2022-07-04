@@ -16,7 +16,7 @@ function Catalog() {
       ) : (
         <div>
           {isLoading
-            ? (<img src="../../assets/images/loader.gif" alt="loader" width="200" />)
+            ? (<h2>Loading...</h2>)
             : (
               <>
                 <Filter />
