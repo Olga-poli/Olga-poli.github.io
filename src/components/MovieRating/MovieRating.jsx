@@ -1,46 +1,49 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { setRatingToMovieItemAction } from '../../store/actions/actions';
 import styles from './MovieRating.module.scss';
 
-function MovieRating(props) {
-  const [hoveredStarIndex, setHoveredStarIndex] = useState(0);
+function MovieRating() {
+  // const [hoveredStarIndex, setHoveredStarIndex] = useState(0);
 
-  const createStarItem = (index) => {
-    const { movieId, moviesItemsList, setRatingToMovieItem } = props;
-    const { rating } = moviesItemsList.find(({ id }) => id === movieId);
-    const ratingStarClass = (index > rating) && (index > hoveredStarIndex)
-      ? `${styles.ratingButtonStar} fa fa-star-o`
-      : `${styles.ratingButtonStar} fa fa-star`;
-
-    return (
-      <button
-        onClick={() => setRatingToMovieItem(movieId, index)}
-        onMouseEnter={() => setHoveredStarIndex(index)}
-        onMouseLeave={() => setHoveredStarIndex(0)}
-        className={styles.ratingButton}
-        key={`${movieId}_${index}`}
-        type="button"
-      >
-        <span className={ratingStarClass} />
-      </button>
-    );
-  };
+  // const createStarItem = (index) => {
+  //   // eslint-disable-next-line react/prop-types
+  //   const { movieId, moviesItemsList, setRatingToMovieItem } = props;
+  //   const { rating } = moviesItemsList.find(({ id }) => id === movieId);
+  //   const ratingStarClass = (index > rating) && (index > hoveredStarIndex)
+  //     ? `${styles.ratingButtonStar} fa fa-star-o`
+  //     : `${styles.ratingButtonStar} fa fa-star`;
+  //
+  //   return (
+  //     <button
+  //       onClick={() => setRatingToMovieItem(movieId, index)}
+  //       onMouseEnter={() => setHoveredStarIndex(index)}
+  //       onMouseLeave={() => setHoveredStarIndex(0)}
+  //       className={styles.ratingButton}
+  //       key={`${movieId}_${index}`}
+  //       type="button"
+  //     >
+  //       <span className={ratingStarClass} />
+  //     </button>
+  //   );
+  // };
 
   return (
     <div
       className={styles.rating}
     >
-      {[...Array(5)].map((item, index) => (
-        createStarItem(index + 1)
-      ))}
+      rating
     </div>
   );
 }
 
 MovieRating.propTypes = {
+  moviesItemsList: PropTypes.shape({}),
+};
+
+MovieRating.propTypes = {
+  // eslint-disable-next-line react/no-unused-prop-types
   movieId: PropTypes.number.isRequired,
+  // eslint-disable-next-line react/require-default-props,react/no-unused-prop-types
   moviesItemsList: PropTypes.arrayOf(PropTypes.shape({
     adult: PropTypes.bool,
     backdrop_path: PropTypes.string,
@@ -58,16 +61,17 @@ MovieRating.propTypes = {
     vote_count: PropTypes.number,
     currentLikesCount: PropTypes.number,
     rating: PropTypes.number,
-  })).isRequired,
-  setRatingToMovieItem: PropTypes.func.isRequired,
+  })),
+  // eslint-disable-next-line react/require-default-props
+  // setRatingToMovieItem: PropTypes.func,
 };
 
-const mapStateToProps = (state) => ({
-  moviesItemsList: state.appReducer.moviesItemsList,
-});
+// const mapStateToProps = (state) => ({
+//   moviesItemsList: state.appReducer.moviesItemsList,
+// });
+//
+// const mapDispatchToProps = {
+//   setRatingToMovieItem: setRatingToMovieItemAction,
+// };
 
-const mapDispatchToProps = {
-  setRatingToMovieItem: setRatingToMovieItemAction,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MovieRating);
+export default MovieRating;

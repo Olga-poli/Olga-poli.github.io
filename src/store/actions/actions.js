@@ -1,3 +1,4 @@
+import { createAction } from '@reduxjs/toolkit';
 import * as constants from '../constants/constants';
 
 export const setMoviesListAction = (movies) => ({
@@ -44,3 +45,21 @@ export const updateMovieItemAction = (movieId, newData) => ({
   type: constants.UPDATE_MOVIE_ITEM,
   payload: { movieId, newData },
 });
+
+export const setMoviesList = createAction('catalog/setMoviesList');
+
+// export const setMoviesList = createAsyncThunk(
+//   'catalog/setMoviesList',
+//   async (thunkAPI) => {
+//     try {
+//       const data = await MoviesService.getResource();
+//
+//       return { ...data };
+//     } catch (error) {
+//       console.error(error);
+//       return thunkAPI.rejectWithValue({
+//         message: 'Error',
+//       });
+//     }
+//   },
+// );

@@ -1,5 +1,4 @@
-import { applyMiddleware, createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { configureStore } from '@reduxjs/toolkit';
 import rootReducer from './rootReducer';
 
 const customThunk = (store) => (dispatch) => (action) => {
@@ -23,10 +22,11 @@ const customLogger = (store) => (dispatch) => (action) => {
   console.groupEnd();
 };
 
-const store = createStore(
-  rootReducer,
-  undefined,
-  composeWithDevTools(applyMiddleware(customThunk, customLogger)),
-);
+export const store = configureStore({
+  reducer: { rootReducer },
+  middleware: [customThunk, customLogger],
+  devTools: true,
+  preloadedState: {},
+});
 
 export default store;
