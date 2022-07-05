@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-
-import { fetchActorDetails } from '../../store/slices/actors.slice';
+import { fetchActorDetails } from '../../store/actions/actions';
 import styles from './ActorInfo.module.scss';
 
 function ActorInfo() {

@@ -1,19 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import MoviesService from '../../services/MoviesService';
-
-export const fetchActorDetails = createAsyncThunk(
-  'actors/fetchActorDetails',
-  async (actorName, thunkAPI) => {
-    try {
-      return await MoviesService.getActorInfo(actorName);
-    } catch (error) {
-      console.error(error);
-      return thunkAPI.rejectWithValue({
-        message: 'Error',
-      });
-    }
-  },
-);
+import { createSlice } from '@reduxjs/toolkit';
+import { fetchActorDetails } from '../actions/actions';
 
 const actorsSlice = createSlice({
   name: 'actors',
@@ -37,4 +23,4 @@ const actorsSlice = createSlice({
   },
 });
 
-export const actorsReducer = actorsSlice.reducer;
+export default actorsSlice.reducer;

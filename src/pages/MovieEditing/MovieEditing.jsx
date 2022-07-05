@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
-// import PropTypes from 'prop-types';
-// import { updateMovieItemAction } from '../../store/actions/actions';
 import { updateMovieItem } from '../../store/slices/catalog.slice';
 import styles from './MovieEditing.module.scss';
 
@@ -116,7 +114,6 @@ function MovieEditing() {
             defaultValue={overview}
             name="movieOverviewState"
             className="form-control"
-            type="text"
             id="description"
             required
           />
@@ -127,35 +124,5 @@ function MovieEditing() {
     </div>
   );
 }
-
-// MovieEditing.propTypes = {
-//   moviesItemsList: PropTypes.arrayOf(PropTypes.shape({
-//     adult: PropTypes.bool,
-//     backdrop_path: PropTypes.string,
-//     genre_ids: PropTypes.arrayOf(PropTypes.number),
-//     id: PropTypes.number,
-//     original_language: PropTypes.string,
-//     original_title: PropTypes.string,
-//     overview: PropTypes.string,
-//     popularity: PropTypes.number,
-//     poster_path: PropTypes.string,
-//     release_date: PropTypes.string,
-//     title: PropTypes.string,
-//     video: PropTypes.bool,
-//     vote_average: PropTypes.number,
-//     vote_count: PropTypes.number,
-//     currentLikesCount: PropTypes.number,
-//     rating: PropTypes.number,
-//     genres: PropTypes.arrayOf(PropTypes.shape({
-//       name: PropTypes.string,
-//     })),
-//     credits: PropTypes.shape({
-//       crew: PropTypes.arrayOf(PropTypes.shape({
-//         name: PropTypes.string,
-//       })),
-//     }),
-//   })).isRequired,
-//   updateMovieItem: PropTypes.func.isRequired,
-// };
 
 export default MovieEditing;

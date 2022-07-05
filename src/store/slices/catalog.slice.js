@@ -1,39 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import MoviesService from '../../services/MoviesService';
-
-export const fetchMoviesList = createAsyncThunk(
-  'catalog/fetchMoviesList',
-  async (thunkAPI) => {
-    try {
-      const response = await MoviesService.getResource();
-      return response.results.map((item) => ({
-        ...item,
-        currentLikesCount: 0,
-        rating: 0,
-        toShow: true,
-      }));
-    } catch (error) {
-      console.error(error);
-      return thunkAPI.rejectWithValue({
-        message: 'Error',
-      });
-    }
-  },
-);
-
-export const fetchMovieDetails = createAsyncThunk(
-  'catalog/fetchMovieDetails',
-  async (movieID, thunkAPI) => {
-    try {
-      return await MoviesService.getMovieInfo(movieID);
-    } catch (error) {
-      console.error(error);
-      return thunkAPI.rejectWithValue({
-        message: 'Error',
-      });
-    }
-  },
-);
+import { createSlice } from '@reduxjs/toolkit';
+import { fetchMoviesList, fetchMovieDetails } from '../actions/actions';
 
 const catalogSlice = createSlice({
   name: 'catalog',
@@ -133,7 +99,6 @@ const catalogSlice = createSlice({
   },
 });
 
-const { actions } = catalogSlice;
 export const {
   setFilteredMoviesByTitle,
   setMoviesOrder,
@@ -142,6 +107,6 @@ export const {
   setRatingToMovieItem,
   removeMovieItem,
   updateMovieItem,
-} = actions;
+} = catalogSlice.actions;
 
-export const catalogReducer = catalogSlice.reducer;
+export default catalogSlice.reducer;

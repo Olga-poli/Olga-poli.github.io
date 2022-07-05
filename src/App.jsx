@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { fetchMoviesList } from './store/slices/catalog.slice';
+import { fetchMoviesList } from './store/actions/actions';
 
 import Routes from './Routes/Routes';
 import Header from './components/Header';

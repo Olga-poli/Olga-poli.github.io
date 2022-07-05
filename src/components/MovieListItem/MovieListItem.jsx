@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 import {
   addLikeToMovieItem,
   removeLikeFromMovieItem,
-  fetchMovieDetails,
 } from '../../store/slices/catalog.slice';
+import { fetchMovieDetails } from '../../store/actions/actions';
 import MovieRating from '../MovieRating';
 import styles from './MovieListItem.module.scss';
 
