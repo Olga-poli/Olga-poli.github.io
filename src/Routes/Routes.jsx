@@ -2,12 +2,12 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import Login from '../components/Login';
-import Register from '../components/Register';
-import Catalog from '../components/Catalog';
-import MovieInfo from '../components/MovieInfo';
-import ActorInfo from '../components/ActorInfo';
-import MovieEditing from '../components/MovieEditing';
+import Login from '../pages/Login';
+import Register from '../pages/Register';
+import Catalog from '../pages/Catalog';
+import MovieInfo from '../pages/MovieInfo';
+import ActorInfo from '../pages/ActorInfo';
+import MovieEditing from '../pages/MovieEditing';
 
 function Routes(props) {
   const { activeUserState, setActiveUserState } = props;

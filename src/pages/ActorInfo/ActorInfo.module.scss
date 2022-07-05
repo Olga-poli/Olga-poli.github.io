@@ -1,0 +1,11 @@
+.actorInfo {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  margin: 0 auto;
+  row-gap: 1rem;
+  .button {
+    width: 8rem;
+    align-self: flex-start;
+  }
+}

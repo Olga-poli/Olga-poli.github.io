@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux';
-import movieItemsReducer from './reducers/movieItemsReducer';
+import catalogReducer from './slices/catalog.slice';
+import actorsReducer from './slices/actors.slice';
 
 const rootReducer = combineReducers({
-  appReducer: movieItemsReducer,
+  catalogReducer, actorsReducer,
 });
 
 export default rootReducer;

@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { setRatingToMovieItemAction } from '../../store/actions/actions';
+import { setRatingToMovieItem } from '../../store/slices/catalog.slice';
 import styles from './MovieRating.module.scss';
 
 function MovieRating(props) {
+  const dispatch = useDispatch();
+  const moviesItemsList = useSelector((state) => state.catalogReducer.moviesItemsList);
   const [hoveredStarIndex, setHoveredStarIndex] = useState(0);
 
   const createStarItem = (index) => {
-    const { movieId, moviesItemsList, setRatingToMovieItem } = props;
+    const { movieId } = props;
     const { rating } = moviesItemsList.find(({ id }) => id === movieId);
     const ratingStarClass = (index > rating) && (index > hoveredStarIndex)
       ? `${styles.ratingButtonStar} fa fa-star-o`
@@ -16,7 +18,7 @@ function MovieRating(props) {
 
     return (
       <button
-        onClick={() => setRatingToMovieItem(movieId, index)}
+        onClick={() => dispatch(setRatingToMovieItem({ movieId, index }))}
         onMouseEnter={() => setHoveredStarIndex(index)}
         onMouseLeave={() => setHoveredStarIndex(0)}
         className={styles.ratingButton}
@@ -41,33 +43,6 @@ function MovieRating(props) {
 
 MovieRating.propTypes = {
   movieId: PropTypes.number.isRequired,
-  moviesItemsList: PropTypes.arrayOf(PropTypes.shape({
-    adult: PropTypes.bool,
-    backdrop_path: PropTypes.string,
-    genre_ids: PropTypes.arrayOf(PropTypes.number),
-    id: PropTypes.number,
-    original_language: PropTypes.string,
-    original_title: PropTypes.string,
-    overview: PropTypes.string,
-    popularity: PropTypes.number,
-    poster_path: PropTypes.string,
-    release_date: PropTypes.string,
-    title: PropTypes.string,
-    video: PropTypes.bool,
-    vote_average: PropTypes.number,
-    vote_count: PropTypes.number,
-    currentLikesCount: PropTypes.number,
-    rating: PropTypes.number,
-  })).isRequired,
-  setRatingToMovieItem: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  moviesItemsList: state.appReducer.moviesItemsList,
-});
-
-const mapDispatchToProps = {
-  setRatingToMovieItem: setRatingToMovieItemAction,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MovieRating);
+export default MovieRating;

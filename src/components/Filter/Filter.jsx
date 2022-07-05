@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { setMoviesOrderAction, setFilteredMoviesByTitleAction } from '../../store/actions/actions';
+import { useDispatch } from 'react-redux';
+import { setFilteredMoviesByTitle, setMoviesOrder } from '../../store/slices/catalog.slice';
 import styles from './Filter.module.scss';
 
-function Filter(props) {
+function Filter() {
+  const dispatch = useDispatch();
   const initialState = [
     {
       name: 'likes',
@@ -24,14 +24,12 @@ function Filter(props) {
   const searchInput = useRef(null);
 
   useEffect(() => {
-    const { setFilteredMoviesByTitle } = props;
-    setFilteredMoviesByTitle(searchInputValue);
+    dispatch(setFilteredMoviesByTitle(searchInputValue));
   }, [searchInputValue]);
 
   useEffect(() => {
-    const { setMoviesOrder } = props;
-    const activeFilter = ([...filters].find(({ isActive }) => isActive === true));
-    setMoviesOrder(activeFilter);
+    const activeFilter = ([...filters].find(({ isActive }) => isActive === true)) || null;
+    dispatch(setMoviesOrder(activeFilter));
   }, [filters]);
 
   const onSubmit = (event) => {
@@ -40,7 +38,7 @@ function Filter(props) {
     searchInput.current.value = '';
   };
 
-  const onFilterButtonClick = (clickedButtonName) => {
+  const handleFilterButtonClick = (clickedButtonName) => {
     const currentButton = [...filters].find(({ name }) => name === clickedButtonName);
     const updatedButton = {
       ...currentButton,
@@ -65,7 +63,7 @@ function Filter(props) {
         key={name}
         type="button"
         className={`btn btn-sm ${filterButtonClass}`}
-        onClick={() => onFilterButtonClick(name)}
+        onClick={() => handleFilterButtonClick(name)}
       >
         <span>{`${label} `}</span>
         <span className={orderDirectionSpanClass} />
@@ -98,14 +96,4 @@ function Filter(props) {
   );
 }
 
-Filter.propTypes = {
-  setMoviesOrder: PropTypes.func.isRequired,
-  setFilteredMoviesByTitle: PropTypes.func.isRequired,
-};
-
-const mapDispatchToProps = {
-  setMoviesOrder: setMoviesOrderAction,
-  setFilteredMoviesByTitle: setFilteredMoviesByTitleAction,
-};
-
-export default connect(null, mapDispatchToProps)(Filter);
+export default Filter;
