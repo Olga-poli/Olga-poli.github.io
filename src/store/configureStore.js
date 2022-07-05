@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import catalogReducer from './slices/catalog.slice';
+import rootReducer from './rootReducer';
 
 const customThunk = (store) => (dispatch) => (action) => {
   if (typeof action === 'function') {
@@ -23,7 +23,7 @@ const customLogger = (store) => (dispatch) => (action) => {
 };
 
 export const store = configureStore({
-  reducer: { catalogReducer },
+  reducer: rootReducer,
   middleware: [customThunk, customLogger],
   devTools: true,
   preloadedState: {},

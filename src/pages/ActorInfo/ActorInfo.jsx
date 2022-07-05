@@ -1,60 +1,60 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
+import { fetchActorDetails } from '../../store/slices/actors.slice';
 import styles from './ActorInfo.module.scss';
-import MoviesService from '../../services/MoviesService';
 
 function ActorInfo() {
+  const dispatch = useDispatch();
   const { actor } = useParams();
-  const [actorDataState, setActorDataState] = useState(null);
+  const actorData = useSelector((state) => state.actorsReducer.actorData);
+  const isLoading = useSelector((state) => state.actorsReducer.isLoading);
+  const isError = useSelector((state) => state.actorsReducer.isError);
+
   const history = useHistory();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const actorData = await MoviesService.getActorInfo(actor);
-      setActorDataState(actorData);
-    };
-    fetchData();
+    (async () => {
+      dispatch(fetchActorDetails(actor));
+    })();
   }, []);
 
-  if (!actorDataState) {
-    return <h2>Something go wrong...r</h2>;
-  }
-
-  const placeholderText = 'No info found';
-  const {
-    biography = placeholderText,
-    birthday,
-    place_of_birth: placeOfBirth = placeholderText,
-  } = actorDataState;
+  const placeOfBirth = 'place_of_birth';
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
 
   return (
     <div className={styles.actorInfo}>
       <button onClick={() => history.goBack()} type="button" className={`${styles.button} btn btn-secondary`}>Go back</button>
-      <p>
-        Name:
-        <span>{` ${actor}`}</span>
-      </p>
-      <p>
-        Birthday:
-        <span>{` ${new Date(birthday).toLocaleDateString('en-US', dateOptions)}`}</span>
-      </p>
-      <p>
-        Place of birth:
-        <span>{` ${placeOfBirth}`}</span>
-      </p>
-      <p>
-        Biography:
-        <span>{` ${biography}`}</span>
-      </p>
+      {isError ? (
+        <h2>Error...</h2>
+      ) : (
+        <div>
+          {isLoading ? (<h2>Loading...</h2>)
+            : (
+              <>
+                <p>
+                  Name:
+                  <span>{` ${actor}`}</span>
+                </p>
+                <p>
+                  Birthday:
+                  <span>{` ${new Date(actorData.birthday).toLocaleDateString('en-US', dateOptions)}`}</span>
+                </p>
+                <p>
+                  Place of birth:
+                  <span>{` ${actorData[placeOfBirth]}`}</span>
+                </p>
+                <p>
+                  Biography:
+                  <span>{` ${actorData.biography}`}</span>
+                </p>
+              </>
+            )}
+        </div>
+      )}
     </div>
   );
 }
 
-const mapStateToProps = (state) => ({
-  moviesItemsList: state.appReducer.moviesItemsList,
-});
-
-export default connect(mapStateToProps)(ActorInfo);
+export default ActorInfo;

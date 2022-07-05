@@ -144,4 +144,4 @@ export const {
   updateMovieItem,
 } = actions;
 
-export default catalogSlice.reducer;
+export const catalogReducer = catalogSlice.reducer;
