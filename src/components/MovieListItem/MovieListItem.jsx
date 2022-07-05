@@ -1,20 +1,19 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import {
   addLikeToMovieItem,
   removeLikeFromMovieItem,
 } from '../../store/slices/catalog.slice';
-import { fetchMovieDetails } from '../../store/actions/actions';
 import MovieRating from '../MovieRating';
 import styles from './MovieListItem.module.scss';
 
 function MovieListItem({ movieId }) {
-  const history = useHistory();
   const dispatch = useDispatch();
-  const movieData = useSelector((state) => state.catalogReducer.moviesItemsList)
+  const moviesList = useSelector((state) => state.catalogReducer.moviesItemsList);
+  const movieData = moviesList
     .find(({ id }) => id === movieId);
   const {
     title, poster_path: posterPath, id, currentLikesCount = 0,
@@ -23,15 +22,12 @@ function MovieListItem({ movieId }) {
   return (
     <div className={`card ${styles.moviesListItem}`}>
       <div className={`card-body ${styles.cardBody}`}>
-        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
         <p
-          onClick={() => {
-            dispatch(fetchMovieDetails(id));
-            history.push(`/catalog/${id}`, { id });
-          }}
           className={`mb-3 ${styles.cardTitle}`}
         >
-          {title}
+          <Link to={`/catalog/${id}`}>
+            {title}
+          </Link>
         </p>
         <div>
           <div className={`d-flex ${styles.cardContent}`}>

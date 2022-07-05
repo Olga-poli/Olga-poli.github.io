@@ -4,7 +4,9 @@ import { fetchActorDetails } from '../actions/actions';
 const actorsSlice = createSlice({
   name: 'actors',
   initialState: {
-    actorData: [],
+    actorData: {
+      place_of_birth: null,
+    },
     isError: false,
     isLoading: false,
   },

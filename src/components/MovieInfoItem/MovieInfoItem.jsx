@@ -13,6 +13,11 @@ function MovieInfoItem({ movieID }) {
 
   const moviesItemsList = useSelector((state) => state.catalogReducer.moviesItemsList);
   const movieData = moviesItemsList.find(({ id }) => id === Number(movieID));
+
+  if (!movieData?.isLoaded) {
+    return (<h2>Loading...</h2>);
+  }
+
   const {
     title,
     currentLikesCount = 0,

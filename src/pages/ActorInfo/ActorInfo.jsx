@@ -8,6 +8,7 @@ function ActorInfo() {
   const dispatch = useDispatch();
   const { actor } = useParams();
   const actorData = useSelector((state) => state.actorsReducer.actorData);
+  console.log(actorData);
   const isLoading = useSelector((state) => state.actorsReducer.isLoading);
   const isError = useSelector((state) => state.actorsReducer.isError);
 
@@ -19,7 +20,6 @@ function ActorInfo() {
     })();
   }, []);
 
-  const placeOfBirth = 'place_of_birth';
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
 
   return (
@@ -42,7 +42,7 @@ function ActorInfo() {
                 </p>
                 <p>
                   Place of birth:
-                  <span>{` ${actorData[placeOfBirth]}`}</span>
+                  <span>{` ${actorData.place_of_birth}`}</span>
                 </p>
                 <p>
                   Biography:

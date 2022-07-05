@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import MovieInfoItem from '../../components/MovieInfoItem';
 import styles from './MovieInfo.module.scss';
+import { fetchMovieDetails } from '../../store/actions/actions';
 
 function MovieInfo() {
   const history = useHistory();
-
+  const dispatch = useDispatch();
+  const { movieID } = useParams();
   const isLoading = useSelector((state) => state.catalogReducer.isLoading);
   const isError = useSelector((state) => state.catalogReducer.isError);
-  const { movieID } = useParams();
+  useEffect(() => {
+    dispatch(fetchMovieDetails(Number(movieID)));
+  }, []);
 
   return (
     <div>
