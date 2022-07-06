@@ -9,7 +9,7 @@ export const getUserStatus = () => {
     return false;
   }
   const activeUser = userDataStorage.find(({ isLoggedIn }) => isLoggedIn === true);
-  return activeUser.isLoggedIn;
+  return activeUser?.isLoggedIn || false;
 };
 
 const withAuthorization = (Component) => {

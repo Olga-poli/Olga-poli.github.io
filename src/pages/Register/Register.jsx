@@ -1,14 +1,13 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
 
 import styles from './Register.module.scss';
 import withAuthorization from '../../components/hoc-helpers';
 
-function Register(props) {
-  const { isLogged } = props;
-
+function Register({ isLogged }) {
+  const history = useHistory();
   const registerUser = (userCredits) => {
     if (!localStorage.getItem('registeredUsers')) {
       localStorage.setItem('registeredUsers', JSON.stringify([]));
@@ -16,9 +15,10 @@ function Register(props) {
     const storage = JSON.parse(localStorage.getItem('registeredUsers'));
     storage.push(userCredits);
     localStorage.setItem('registeredUsers', JSON.stringify(storage));
+    history.push('/catalog');
   };
 
-  const onFormSubmit = (event) => {
+  const handleRegisterFormSubmit = (event) => {
     event.preventDefault();
     const userName = event.target.elements.userName.value;
     const userPassword = event.target.elements.userPassword.value;
@@ -34,7 +34,7 @@ function Register(props) {
   return (
     <div className={styles.register}>
       <form
-        onSubmit={onFormSubmit}
+        onSubmit={handleRegisterFormSubmit}
         className={styles.form}
       >
         <div className="form-outline mb-4">

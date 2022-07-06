@@ -1,35 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-// import { compose } from 'redux';
-// import PropTypes from 'prop-types';
+import { compose } from 'redux';
+import PropTypes from 'prop-types';
 
 import styles from './Header.module.scss';
-// import withAuthorization from '../hoc-helpers';
+import withAuthorization from '../hoc-helpers';
 
-function Header() {
-  const isLogged = true;
-  // const [activeUserState, setActiveUserState] = useState(true);
-  // const loggedOutUser = () => {
-  //   if (userDataStorage.length > 0) {
-  //     const activeUserIndex = userDataStorage
-  //       .findIndex(({ name }) => name === activeUserState.name);
-  //     const updatedUser = { ...userDataStorage[activeUserIndex], isLogged: false };
-  //     const updatedUsers = [
-  //       ...userDataStorage.slice(0, activeUserIndex),
-  //       updatedUser,
-  //       ...userDataStorage.slice(activeUserIndex + 1),
-  //     ];
-  //     localStorage.setItem('registeredUsers', JSON.stringify(updatedUsers));
-  //     setActiveUserState(null);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const userDataStorage = JSON.parse(localStorage.getItem('registeredUsers')) || [];
-  //   if (userDataStorage.length > 1) {
-  //     const activeUser = userDataStorage.find(({ isLoggedIn }) => isLoggedIn === true);
-  //   }
-  // }, [activeUserState]);
+function Header({ isLogged }) {
+  const handleLogOutButtonClick = () => {
+    if (!localStorage.getItem('registeredUsers')) {
+      localStorage.setItem('registeredUsers', JSON.stringify([]));
+    }
+    const storage = JSON.parse(localStorage.getItem('registeredUsers'));
+    if (storage.length < 1) {
+      return;
+    }
+    const updatedStorage = storage.map((user) => ({ ...user, isLoggedIn: false }));
+    localStorage.setItem('registeredUsers', JSON.stringify(updatedStorage));
+  };
 
   return (
     <header className={styles.header}>
@@ -42,7 +30,7 @@ function Header() {
         ? (
           <Link to="/">
             <button
-              // onClick={loggedOutUser}
+              onClick={handleLogOutButtonClick}
               className={`${styles.button} btn btn-outline-primary`}
               type="button"
             >
@@ -64,8 +52,8 @@ function Header() {
   );
 }
 
-// Header.propTypes = {
-//   isLogged: PropTypes.bool.isRequired,
-// };
+Header.propTypes = {
+  isLogged: PropTypes.bool.isRequired,
+};
 
-export default Header;
+export default compose(withAuthorization)(Header);
