@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { fetchMoviesList } from './store/actions/actions';
@@ -10,12 +10,6 @@ import styles from './App.module.scss';
 
 function App() {
   const dispatch = useDispatch();
-  const userDataStorage = JSON.parse(localStorage.getItem('registeredUsers')) || [];
-  const activeRegisteredUser = userDataStorage.find(({ isLogged }) => isLogged === true);
-  const initialActiveUser = userDataStorage.length > 0 && activeRegisteredUser
-    ? activeRegisteredUser
-    : null;
-  const [activeUserState, setActiveUserState] = useState(initialActiveUser);
 
   useEffect(() => {
     (async () => {
@@ -26,8 +20,8 @@ function App() {
   return (
     <Router>
       <div className={styles.App}>
-        <Header activeUserState={activeUserState} setActiveUserState={setActiveUserState} />
-        <Routes activeUserState={activeUserState} setActiveUserState={setActiveUserState} />
+        <Header />
+        <Routes />
         <Footer />
       </div>
     </Router>

@@ -1,42 +1,47 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, Redirect } from 'react-router-dom';
+import { compose } from 'redux';
 import PropTypes from 'prop-types';
 
 import styles from './Register.module.scss';
+import withAuthorization from '../../components/hoc-helpers';
 
 function Register(props) {
-  const [nameState, setNameState] = useState('');
-  const [passwordState, setPasswordState] = useState('');
-  const { setActiveUserState } = props;
+  const { isLogged } = props;
 
-  const registerUser = () => {
-    const user = {
-      name: nameState,
-      password: passwordState,
-      isLogged: true,
-    };
-    const userDataStorage = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-    userDataStorage.push(user);
-    localStorage.setItem('registeredUsers', JSON.stringify(userDataStorage));
-    setActiveUserState(user);
+  const registerUser = (userCredits) => {
+    if (!localStorage.getItem('registeredUsers')) {
+      localStorage.setItem('registeredUsers', JSON.stringify([]));
+    }
+    const storage = JSON.parse(localStorage.getItem('registeredUsers'));
+    storage.push(userCredits);
+    localStorage.setItem('registeredUsers', JSON.stringify(storage));
   };
 
-  const submitForm = (event) => {
+  const onFormSubmit = (event) => {
     event.preventDefault();
-    registerUser();
+    const userName = event.target.elements.userName.value;
+    const userPassword = event.target.elements.userPassword.value;
+    registerUser({ name: userName, password: userPassword, isLoggedIn: true });
   };
+
+  if (isLogged) {
+    return (
+      <Redirect to="/catalog" />
+    );
+  }
 
   return (
     <div className={styles.register}>
       <form
-        onSubmit={submitForm}
+        onSubmit={onFormSubmit}
         className={styles.form}
       >
         <div className="form-outline mb-4">
           <input
             type="text"
             id="userName"
-            onChange={(event) => setNameState(event.target.value)}
+            name="userName"
             className="form-control"
           />
           <label className="form-label" htmlFor="userName">Username</label>
@@ -46,22 +51,17 @@ function Register(props) {
           <input
             type="password"
             id="form2Example2"
-            onChange={(event) => setPasswordState(event.target.value)}
+            name="userPassword"
             className="form-control"
           />
           <label className="form-label" htmlFor="form2Example2">Password</label>
         </div>
-
-        <Link to="/catalog">
-          <button
-            onClick={registerUser}
-            type="submit"
-            className="btn btn-primary btn-block mb-4"
-          >
-            Register
-          </button>
-        </Link>
-
+        <button
+          type="submit"
+          className="btn btn-primary btn-block mb-4"
+        >
+          Register
+        </button>
         <div className="text-center">
           <p>
             Already  have an account?
@@ -74,7 +74,7 @@ function Register(props) {
 }
 
 Register.propTypes = {
-  setActiveUserState: PropTypes.func.isRequired,
+  isLogged: PropTypes.bool.isRequired,
 };
 
-export default Register;
+export default compose(withAuthorization)(Register);

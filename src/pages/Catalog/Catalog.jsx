@@ -1,42 +1,55 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { compose } from 'redux';
+import PropTypes from 'prop-types';
 import Filter from '../../components/Filter';
 import MovieListItem from '../../components/MovieListItem';
+import withAuthorization from '../../components/hoc-helpers';
 import styles from './Catalog.module.scss';
 
-function Catalog() {
+function Catalog({ isLogged }) {
   const moviesItemsList = useSelector((state) => state.catalogReducer.moviesItemsList);
   const isLoading = useSelector((state) => state.catalogReducer.isLoading);
   const isError = useSelector((state) => state.catalogReducer.isError);
 
+  if (!isLogged) {
+    return (
+      <div>
+        <h2>Login to see content</h2>
+        <Link to="/login">Go to login page</Link>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <h2>Error...</h2>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <h2>Loading...</h2>
+    );
+  }
+
   return (
     <div className={styles.container}>
-      {isError ? (
-        <h2>Error...</h2>
-      ) : (
-        <div>
-          {isLoading
-            ? (<h2>Loading...</h2>)
-            : (
-              <>
-                <Filter />
-                <div className={styles.moviesList}>
-                  {moviesItemsList.map((item) => (
-                    item.toShow
-                      ? <MovieListItem movieId={item.id} key={item.id} />
-                      : null
-                  ))}
-                </div>
-              </>
-            )}
-        </div>
-      )}
+      <Filter />
+      <div className={styles.moviesList}>
+        {moviesItemsList.map((item) => (
+          item.toShow
+            ? <MovieListItem movieId={item.id} key={item.id} />
+            : null
+        ))}
+      </div>
     </div>
   );
 }
 
-Catalog.defaultProps = {
-  moviesItemsList: [],
+Catalog.propTypes = {
+  isLogged: PropTypes.bool.isRequired,
 };
 
-export default Catalog;
+export default compose(withAuthorization)(Catalog);

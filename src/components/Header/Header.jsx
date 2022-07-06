@@ -1,27 +1,35 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
+// import { compose } from 'redux';
+// import PropTypes from 'prop-types';
 
 import styles from './Header.module.scss';
+// import withAuthorization from '../hoc-helpers';
 
-function Header(props) {
-  const userDataStorage = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-  const { activeUserState, setActiveUserState } = props;
+function Header() {
+  const isLogged = true;
+  // const [activeUserState, setActiveUserState] = useState(true);
+  // const loggedOutUser = () => {
+  //   if (userDataStorage.length > 0) {
+  //     const activeUserIndex = userDataStorage
+  //       .findIndex(({ name }) => name === activeUserState.name);
+  //     const updatedUser = { ...userDataStorage[activeUserIndex], isLogged: false };
+  //     const updatedUsers = [
+  //       ...userDataStorage.slice(0, activeUserIndex),
+  //       updatedUser,
+  //       ...userDataStorage.slice(activeUserIndex + 1),
+  //     ];
+  //     localStorage.setItem('registeredUsers', JSON.stringify(updatedUsers));
+  //     setActiveUserState(null);
+  //   }
+  // };
 
-  const logoutUser = () => {
-    if (userDataStorage.length > 0) {
-      const activeUserIndex = userDataStorage
-        .findIndex(({ name }) => name === activeUserState.name);
-      const updatedUser = { ...userDataStorage[activeUserIndex], isLogged: false };
-      const updatedUsers = [
-        ...userDataStorage.slice(0, activeUserIndex),
-        updatedUser,
-        ...userDataStorage.slice(activeUserIndex + 1),
-      ];
-      localStorage.setItem('registeredUsers', JSON.stringify(updatedUsers));
-      setActiveUserState(null);
-    }
-  };
+  // useEffect(() => {
+  //   const userDataStorage = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+  //   if (userDataStorage.length > 1) {
+  //     const activeUser = userDataStorage.find(({ isLoggedIn }) => isLoggedIn === true);
+  //   }
+  // }, [activeUserState]);
 
   return (
     <header className={styles.header}>
@@ -30,11 +38,11 @@ function Header(props) {
           Movies
         </Link>
       </h1>
-      {activeUserState
+      {isLogged
         ? (
           <Link to="/">
             <button
-              onClick={logoutUser}
+              // onClick={loggedOutUser}
               className={`${styles.button} btn btn-outline-primary`}
               type="button"
             >
@@ -56,17 +64,8 @@ function Header(props) {
   );
 }
 
-Header.defaultProps = {
-  activeUserState: PropTypes.shape({}),
-};
-
-Header.propTypes = {
-  activeUserState: PropTypes.shape({
-    name: PropTypes.string,
-    password: PropTypes.string,
-    isLogged: PropTypes.bool,
-  }),
-  setActiveUserState: PropTypes.func.isRequired,
-};
+// Header.propTypes = {
+//   isLogged: PropTypes.bool.isRequired,
+// };
 
 export default Header;
