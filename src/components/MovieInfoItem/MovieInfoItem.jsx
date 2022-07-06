@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { removeMovieItem } from '../../store/slices/catalog.slice';
@@ -9,7 +9,6 @@ import styles from './MovieInfoItem.module.scss';
 
 function MovieInfoItem({ movieID }) {
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const moviesItemsList = useSelector((state) => state.catalogReducer.moviesItemsList);
   const movieData = moviesItemsList.find(({ id }) => id === Number(movieID));
@@ -40,12 +39,11 @@ function MovieInfoItem({ movieID }) {
     .filter(({ known_for_department: knownForDepartment }) => knownForDepartment === 'Acting')
     .map(({ name: actorName }) => (
       <button
-        onClick={() => history.push(`/catalog/${movieID}/${actorName}`, { id })}
         key={actorName}
         className={styles.actorsListItems}
         type="button"
       >
-        {actorName}
+        <Link to={`/catalog/${movieID}/${actorName}`}>{actorName}</Link>
       </button>
     ));
 
@@ -88,24 +86,23 @@ function MovieInfoItem({ movieID }) {
             </div>
             <div className={styles.buttons}>
               <button
-                onClick={() => {
-                  // removeMovieItem(id);
-                  history.push(`${movieID}/edit`);
-                }}
                 type="button"
                 className={`${styles.button} btn btn-primary`}
               >
-                Edit
+                <Link to={`${movieID}/edit`}>Edit</Link>
               </button>
               <button
-                onClick={() => {
-                  dispatch(removeMovieItem(id));
-                  history.push('/catalog/');
-                }}
                 type="button"
                 className={`${styles.button} btn btn-outline-danger`}
               >
-                Delete
+                <Link
+                  to="/catalog/"
+                  onClick={() => {
+                    dispatch(removeMovieItem(id));
+                  }}
+                >
+                  Delete
+                </Link>
               </button>
             </div>
           </div>
