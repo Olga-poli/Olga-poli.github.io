@@ -22,7 +22,7 @@ function Login({ isLogged }) {
     const storage = JSON.parse(localStorage.getItem('registeredUsers'));
     const isRegister = storage.some(({ name }) => name === userCredits.name);
     if (!isRegister) {
-      setLogMessage('User didn\'t found. Please, register.');
+      setLogMessage('app-login-notexist-message');
       return;
     }
     const activeUserIndex = storage.findIndex(({ name }) => name === userCredits.name);
@@ -100,7 +100,7 @@ function Login({ isLogged }) {
           </p>
         </div>
       </form>
-      <p>{logMessage}</p>
+      <p>{translate(logMessage)}</p>
     </div>
   );
 }

@@ -10,9 +10,9 @@ const dictionary = {
     'app-form-label-password': 'Password',
     'app-form-login-button': 'Login',
     'app-form-register-button': 'Register',
+    'app-login-notexist-message': 'User didn\'t found. Please, register. ',
     'app-login-redirect-message': 'Not a member? ',
     'app-register-redirect-message': 'Already  have an account? ',
-    // 'app-register-redirect-message': 'Already  have an account? ',
 
     'app-filter-title': 'Sort movies',
     'app-filter-likes-label': 'by likes',
@@ -48,6 +48,7 @@ const dictionary = {
     'app-form-label-password': 'Пароль',
     'app-form-login-button': 'Увійти',
     'app-form-register-button': 'Зареєструватись',
+    'app-login-notexist-message': 'Користувача не знайдено. Будь ласка, зареєструйтесь',
     'app-login-redirect-message': 'Нема аккаунту? ',
     'app-register-redirect-message': 'Вже є аккаунт? ',
 
