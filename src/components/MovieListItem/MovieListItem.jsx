@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import classNames from 'classnames/bind';
 
 import {
   addLikeToMovieItem,
@@ -9,6 +10,8 @@ import {
 } from '../../store/slices/catalog.slice';
 import MovieRating from '../MovieRating';
 import styles from './MovieListItem.module.scss';
+
+const cx = classNames.bind(styles);
 
 function MovieListItem({ movieId }) {
   const dispatch = useDispatch();
@@ -19,39 +22,50 @@ function MovieListItem({ movieId }) {
     title, poster_path: posterPath, id, currentLikesCount = 0,
   } = movieData;
 
+  const moviesListItemClassName = cx('moviesListItem', 'card');
+  const cardBodyClassName = cx('cardBody', 'card-body');
+  const cardTitleClassName = cx('cardTitle', 'mb-3');
+  const cardContentClassName = cx('cardContent', 'd-flex');
+  const cardLikesClassName = cx('cardLikes');
+  const buttonsClassName = cx('buttons', 'mb-3');
+  const likeButtonClassName = cx('btn btn-outline-dark btn-sm');
+  const likeIconClassName = cx('fa fa-thumbs-up');
+  const dislikeIconClassName = cx('fa fa-thumbs-down');
+  const imageContainerClassName = cx('imageContainer');
+
   return (
-    <div className={`card ${styles.moviesListItem}`}>
-      <div className={`card-body ${styles.cardBody}`}>
+    <div className={moviesListItemClassName}>
+      <div className={cardBodyClassName}>
         <p
-          className={`mb-3 ${styles.cardTitle}`}
+          className={cardTitleClassName}
         >
           <Link to={`/catalog/${id}`}>
             {title}
           </Link>
         </p>
         <div>
-          <div className={`d-flex ${styles.cardContent}`}>
-            <div className={styles.cardLikes}>
-              <div className={` mb-3 ${styles.buttons}`}>
+          <div className={cardContentClassName}>
+            <div className={cardLikesClassName}>
+              <div className={buttonsClassName}>
                 <button
                   onClick={() => dispatch(addLikeToMovieItem(id))}
                   type="button"
-                  className="btn btn-outline-dark btn-sm"
+                  className={likeButtonClassName}
                 >
-                  <i className="fa fa-thumbs-up" />
+                  <i className={likeIconClassName} />
                 </button>
                 <button
                   onClick={() => dispatch(removeLikeFromMovieItem(id))}
                   type="button"
-                  className="btn btn-outline-dark btn-sm"
+                  className={likeButtonClassName}
                 >
-                  <i className="fa fa-thumbs-down" />
+                  <i className={dislikeIconClassName} />
                 </button>
               </div>
               <span>likes</span>
               <span>{` ${currentLikesCount}`}</span>
             </div>
-            <div className={styles.imageContainer}>
+            <div className={imageContainerClassName}>
               <img src={`https://image.tmdb.org/t/p/w500/${posterPath}`} alt={title} />
             </div>
           </div>

@@ -2,10 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
+import classNames from 'classnames/bind';
 
-import styles from './Header.module.scss';
 import withAuthorization from '../hoc-helpers';
 import useTranslation from '../hook-helpers';
+import styles from './Header.module.scss';
+
+const cx = classNames.bind(styles);
 
 function Header({ isLogged }) {
   const {
@@ -31,8 +34,12 @@ function Header({ isLogged }) {
     setLanguage(toggleTo);
   };
 
+  const headerClassName = cx('header');
+  const langButtonClassName = cx('langButton', 'btn btn-outline-primary ml-3');
+  const loginButtonClassName = cx('button', 'btn btn-outline-primary');
+
   return (
-    <header className={styles.header}>
+    <header className={headerClassName}>
       <h1>
         <Link to="/">
           {translate('app-header-title')}
@@ -41,7 +48,7 @@ function Header({ isLogged }) {
       <div>
         <button
           type="button"
-          className={`${styles.langButton} btn btn-outline-primary ml-3`}
+          className={langButtonClassName}
           onClick={handleLangButtonClick}
         >
           {language}
@@ -51,7 +58,7 @@ function Header({ isLogged }) {
             <Link to="/">
               <button
                 onClick={handleLogOutButtonClick}
-                className={`${styles.button} btn btn-outline-primary`}
+                className={loginButtonClassName}
                 type="button"
               >
                 {translate('app-header-logout')}
@@ -61,7 +68,7 @@ function Header({ isLogged }) {
           : (
             <Link to="/login">
               <button
-                className={`${styles.button} btn btn-outline-primary`}
+                className={loginButtonClassName}
                 type="button"
               >
                 {translate('app-header-login')}

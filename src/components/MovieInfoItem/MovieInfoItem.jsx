@@ -2,10 +2,13 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import classNames from 'classnames/bind';
 
 import { removeMovieItem } from '../../store/slices/catalog.slice';
 import MovieRating from '../MovieRating';
 import styles from './MovieInfoItem.module.scss';
+
+const cx = classNames.bind(styles);
 
 function MovieInfoItem({ movieID }) {
   const dispatch = useDispatch();
@@ -16,6 +19,18 @@ function MovieInfoItem({ movieID }) {
   if (!movieData?.isLoaded) {
     return (<h2>Loading...</h2>);
   }
+  const movieInfoClassName = cx('movieInfo');
+  const cardClassName = cx('card');
+  const cardBodyClassName = cx('body', 'card-body');
+  const genreItemClassName = cx('genresItem');
+  const genresClassName = cx('genres');
+  const actorsListClassName = cx('actorsList');
+  const actorItemClassName = cx('actorsListItems');
+  const buttonsClassName = cx('buttons');
+  const primaryButtonClassName = cx('button', 'btn btn-primary');
+  const deleteButtonClassName = cx('button', 'btn btn-outline-danger');
+  const imageContainerClassName = cx('imageContainer');
+  const imageClassName = cx('image');
 
   const {
     title,
@@ -33,14 +48,14 @@ function MovieInfoItem({ movieID }) {
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
   const director = crew.find(({ known_for_department: department }) => department === 'Directing').name;
   const genre = genres.map(({ id: genreID, name }) => (
-    <span key={genreID} className={styles.genresItem}>{name}</span>
+    <span key={genreID} className={genreItemClassName}>{name}</span>
   ));
   const actors = cast
     .filter(({ known_for_department: knownForDepartment }) => knownForDepartment === 'Acting')
     .map(({ name: actorName }) => (
       <button
         key={actorName}
-        className={styles.actorsListItems}
+        className={actorItemClassName}
         type="button"
       >
         <Link to={`/catalog/${movieID}/${actorName}`}>{actorName}</Link>
@@ -48,9 +63,9 @@ function MovieInfoItem({ movieID }) {
     ));
 
   return (
-    <div className={styles.movieInfo}>
-      <div className="card">
-        <div className={`${styles.body} card-body`}>
+    <div className={movieInfoClassName}>
+      <div className={cardClassName}>
+        <div className={cardBodyClassName}>
           <div>
             <h3>{title}</h3>
             <MovieRating rating={rating} movieId={id} />
@@ -68,7 +83,7 @@ function MovieInfoItem({ movieID }) {
               Language:
               <span>{` ${language}`}</span>
             </p>
-            <p className={styles.genres}>
+            <p className={genresClassName}>
               <span>Genres: </span>
               <span>{genre}</span>
             </p>
@@ -82,18 +97,18 @@ function MovieInfoItem({ movieID }) {
             </p>
             <div>
               <span>Cast: </span>
-              <div className={styles.actorsList}>{actors}</div>
+              <div className={actorsListClassName}>{actors}</div>
             </div>
-            <div className={styles.buttons}>
+            <div className={buttonsClassName}>
               <button
                 type="button"
-                className={`${styles.button} btn btn-primary`}
+                className={primaryButtonClassName}
               >
                 <Link to={`${movieID}/edit`}>Edit</Link>
               </button>
               <button
                 type="button"
-                className={`${styles.button} btn btn-outline-danger`}
+                className={deleteButtonClassName}
               >
                 <Link
                   to="/catalog/"
@@ -106,8 +121,8 @@ function MovieInfoItem({ movieID }) {
               </button>
             </div>
           </div>
-          <div className={styles.imageContainer}>
-            <img src={`https://image.tmdb.org/t/p/w500/${posterPath}`} alt={posterPath} className={styles.image} />
+          <div className={imageContainerClassName}>
+            <img src={`https://image.tmdb.org/t/p/w500/${posterPath}`} alt={posterPath} className={imageClassName} />
           </div>
         </div>
       </div>

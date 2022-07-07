@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import classNames from 'classnames/bind';
 import { setFilteredMoviesByTitle, setMoviesOrder } from '../../store/slices/catalog.slice';
 import styles from './Filter.module.scss';
+
+const cx = classNames.bind(styles);
 
 function Filter() {
   const dispatch = useDispatch();
@@ -56,13 +59,20 @@ function Filter() {
   const buttons = filters.map(({
     name, label, isActive, descending,
   }) => {
-    const filterButtonClass = isActive ? 'btn-primary' : 'btn-outline-secondary';
-    const orderDirectionSpanClass = descending ? 'fa fa-long-arrow-down' : 'fa fa-long-arrow-up';
+    const filterButtonClass = cx('btn btn-sm', {
+      'btn-primary': isActive,
+      'btn-outline-secondary': !isActive,
+    });
+    const orderDirectionSpanClass = cx({
+      'fa fa-long-arrow-down': descending,
+      'fa fa-long-arrow-up': !descending,
+    });
+
     return (
       <button
         key={name}
         type="button"
-        className={`btn btn-sm ${filterButtonClass}`}
+        className={filterButtonClass}
         onClick={() => handleFilterButtonClick(name)}
       >
         <span>{`${label} `}</span>
@@ -71,21 +81,28 @@ function Filter() {
     );
   });
 
+  const h2ClassName = cx('mb-2');
+  const buttonsClassName = cx('buttons', 'mb-3');
+  const formClassName = cx('input-group', 'mb-3');
+  const searchButtonClassName = cx('btn btn-outline-secondary');
+  const searchIconClassName = cx('fa fa-search');
+  const inputClassName = cx('form-control');
+
   return (
-    <div className={styles.filter}>
-      <h2 className="mb-2">Sort movies</h2>
-      <div className={`${styles.buttons} mb-3`}>
+    <div className={cx('filter')}>
+      <h2 className={h2ClassName}>Sort movies</h2>
+      <div className={buttonsClassName}>
         {buttons}
       </div>
       <form
         onSubmit={onSubmit}
-        className="input-group mb-3"
+        className={formClassName}
       >
-        <button type="button" className="btn btn-outline-secondary">
-          <i className="fa fa-search" />
+        <button type="button" className={searchButtonClassName}>
+          <i className={searchIconClassName} />
         </button>
         <input
-          className="form-control"
+          className={inputClassName}
           type="text"
           placeholder="Search by name"
           name="searchInput"

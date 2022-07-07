@@ -8,6 +8,7 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "classnames": "^2.3.1",
     "formik": "^2.2.9",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
@@ -36,32 +37,58 @@
     ],
     "rules": {
       "no-param-reassign": [
-        "error", {
+        "error",
+        {
           "props": true,
           "ignorePropertyModificationsFor": [
             "store"
           ]
-        }],
+        }
+      ],
       "react/jsx-props-no-spreading": "off",
-      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+      "react/jsx-filename-extension": [
+        1,
+        {
+          "extensions": [
+            ".js",
+            ".jsx"
+          ]
+        }
+      ],
       "jsx-a11y/no-noninteractive-element-interactions": [
-      "error", {
+        "error",
+        {
           "handlers": [
-           "onMouseDown","onMouseUp","onKeyPress","onKeyDown"
+            "onMouseDown",
+            "onMouseUp",
+            "onKeyPress",
+            "onKeyDown"
           ]
         }
       ],
       "jsx-ally/click-events-have-key-events": "off",
-      "jsx-a11y/label-has-associated-control": ["error", {
-        "required": {
-          "some": ["nesting", "id"]
+      "jsx-a11y/label-has-associated-control": [
+        "error",
+        {
+          "required": {
+            "some": [
+              "nesting",
+              "id"
+            ]
+          }
         }
-      }],
-      "jsx-a11y/label-has-for": ["error", {
-        "required": {
-          "some": ["nesting", "id"]
+      ],
+      "jsx-a11y/label-has-for": [
+        "error",
+        {
+          "required": {
+            "some": [
+              "nesting",
+              "id"
+            ]
+          }
         }
-      }]
+      ]
     }
   },
   "browserslist": {
