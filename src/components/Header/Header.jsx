@@ -5,8 +5,17 @@ import PropTypes from 'prop-types';
 
 import styles from './Header.module.scss';
 import withAuthorization from '../hoc-helpers';
+import useTranslation from '../hook-helpers';
 
 function Header({ isLogged }) {
+  const {
+    language,
+    languages,
+    setLanguage,
+    translate,
+  } = useTranslation();
+  console.log(language, languages, setLanguage, translate);
+
   const handleLogOutButtonClick = () => {
     if (!localStorage.getItem('registeredUsers')) {
       localStorage.setItem('registeredUsers', JSON.stringify([]));
@@ -19,35 +28,49 @@ function Header({ isLogged }) {
     localStorage.setItem('registeredUsers', JSON.stringify(updatedStorage));
   };
 
+  const handleLangButtonClick = () => {
+    const toggleTo = language === 'en' ? 'ua' : 'en';
+    setLanguage(toggleTo);
+  };
+
   return (
     <header className={styles.header}>
       <h1>
         <Link to="/">
-          Movies
+          {translate('header')}
         </Link>
       </h1>
-      {isLogged
-        ? (
-          <Link to="/">
-            <button
-              onClick={handleLogOutButtonClick}
-              className={`${styles.button} btn btn-outline-primary`}
-              type="button"
-            >
-              Log out
-            </button>
-          </Link>
-        )
-        : (
-          <Link to="/login">
-            <button
-              className={`${styles.button} btn btn-outline-primary`}
-              type="button"
-            >
-              Log in
-            </button>
-          </Link>
-        )}
+      <div>
+        <button
+          type="button"
+          className={`${styles.langButton} btn btn-outline-primary ml-3`}
+          onClick={handleLangButtonClick}
+        >
+          {language}
+        </button>
+        {isLogged
+          ? (
+            <Link to="/">
+              <button
+                onClick={handleLogOutButtonClick}
+                className={`${styles.button} btn btn-outline-primary`}
+                type="button"
+              >
+                {translate('logout')}
+              </button>
+            </Link>
+          )
+          : (
+            <Link to="/login">
+              <button
+                className={`${styles.button} btn btn-outline-primary`}
+                type="button"
+              >
+                {translate('login')}
+              </button>
+            </Link>
+          )}
+      </div>
     </header>
   );
 }

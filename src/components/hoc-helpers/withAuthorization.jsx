@@ -21,23 +21,10 @@ const withAuthorization = (Component) => {
 
     // eslint-disable-next-line no-param-reassign
     Component.displayName = `withAuthorization(${Component.displayName || Component.name || 'Component'})`;
-    console.log('withAuthorization', isUserLoggedIn);
     return <Component isLogged={isUserLoggedIn} {...props} />;
   }
 
   return WithAuthorization;
 };
-
-// function ProtectedPageComponent(props) {
-//   return (
-//     <div>
-//       {
-//         props.isLogged ? <h2>{props.intl["app-homepage-greeting"]}</h2> : (
-//           <h2>{props.intl["app-homepage-banish"]}</h2>
-//         )
-//       }
-//     </div>
-//   );
-// };
 
 export default withAuthorization;
