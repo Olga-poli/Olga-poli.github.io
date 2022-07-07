@@ -10,11 +10,9 @@ import useTranslation from '../hook-helpers';
 function Header({ isLogged }) {
   const {
     language,
-    languages,
     setLanguage,
     translate,
   } = useTranslation();
-  console.log(language, languages, setLanguage, translate);
 
   const handleLogOutButtonClick = () => {
     if (!localStorage.getItem('registeredUsers')) {
@@ -37,7 +35,7 @@ function Header({ isLogged }) {
     <header className={styles.header}>
       <h1>
         <Link to="/">
-          {translate('header')}
+          {translate('app-header-title')}
         </Link>
       </h1>
       <div>
@@ -56,7 +54,7 @@ function Header({ isLogged }) {
                 className={`${styles.button} btn btn-outline-primary`}
                 type="button"
               >
-                {translate('logout')}
+                {translate('app-header-logout')}
               </button>
             </Link>
           )
@@ -66,7 +64,7 @@ function Header({ isLogged }) {
                 className={`${styles.button} btn btn-outline-primary`}
                 type="button"
               >
-                {translate('login')}
+                {translate('app-header-login')}
               </button>
             </Link>
           )}

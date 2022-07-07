@@ -2,14 +2,16 @@ import React, { useEffect } from 'react';
 
 const dictionary = {
   en: {
-    login: 'Login',
-    header: 'Movies',
-    logout: 'Logout',
+    'app-header-login': 'Login',
+    'app-header-title': 'Movies',
+    'app-header-logout': 'Logout',
+    'app-catalog-banish': 'Login to see content',
   },
   ua: {
-    login: 'Логін',
-    header: 'Фільми',
-    logout: 'Вихід',
+    'app-header-login': 'Логін',
+    'app-header-title': 'Фільми',
+    'app-header-logout': 'Вихід',
+    'app-catalog-banish': 'Увійдіть, щоб побачити контент',
   },
 };
 
@@ -17,16 +19,13 @@ let currentLanguage = 'en';
 
 const useTranslation = () => {
   const [language, setLanguage] = React.useState(currentLanguage);
-  const languages = Object.keys(dictionary);
 
   useEffect(() => {
     currentLanguage = language || 'en';
   }, [language]);
 
   const translate = (key) => dictionary?.[language]?.[key];
-  return {
-    translate, setLanguage, language, languages,
-  };
+  return { translate, setLanguage, language };
 };
 
 export default useTranslation;

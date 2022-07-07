@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { compose } from 'redux';
@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import Filter from '../../components/Filter';
 import MovieListItem from '../../components/MovieListItem';
 import withAuthorization from '../../components/hoc-helpers';
+import useTranslation from '../../components/hook-helpers';
 import styles from './Catalog.module.scss';
 
 function Catalog({ isLogged }) {
@@ -13,10 +14,22 @@ function Catalog({ isLogged }) {
   const isLoading = useSelector((state) => state.catalogReducer.isLoading);
   const isError = useSelector((state) => state.catalogReducer.isError);
 
+  const {
+    language,
+    translate,
+  } = useTranslation();
+
+  const [words, setWords] = useState(language);
+
+  useEffect(() => {
+    console.log(language);
+    setWords(translate('app-catalog-banish'));
+  }, [language]);
+
   if (!isLogged) {
     return (
       <div>
-        <h2>Login to see content</h2>
+        <h2>{words}</h2>
         <Link to="/login">Go to login page</Link>
       </div>
     );
