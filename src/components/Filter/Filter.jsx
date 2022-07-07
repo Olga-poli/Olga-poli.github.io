@@ -2,29 +2,34 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames/bind';
 import { setFilteredMoviesByTitle, setMoviesOrder } from '../../store/slices/catalog.slice';
+
 import styles from './Filter.module.scss';
+import useTranslation from '../hook-helpers';
 
 const cx = classNames.bind(styles);
 
 function Filter() {
   const dispatch = useDispatch();
+
   const initialState = [
     {
       name: 'likes',
-      label: 'by likes',
+      label: 'app-filter-likes-label',
       isActive: false,
       descending: true,
     },
     {
       name: 'rating',
-      label: 'by rating',
+      label: 'app-filter-rating-label',
       isActive: false,
       descending: true,
     },
   ];
+
   const [filters, setStateFilters] = useState(initialState);
   const [searchInputValue, setSearchInputValue] = useState('');
   const searchInput = useRef(null);
+  const { translate } = useTranslation();
 
   useEffect(() => {
     dispatch(setFilteredMoviesByTitle(searchInputValue));
@@ -75,7 +80,8 @@ function Filter() {
         className={filterButtonClass}
         onClick={() => handleFilterButtonClick(name)}
       >
-        <span>{`${label} `}</span>
+        <span>{translate(label)}</span>
+        <span> </span>
         <span className={orderDirectionSpanClass} />
       </button>
     );
@@ -90,7 +96,7 @@ function Filter() {
 
   return (
     <div className={cx('filter')}>
-      <h2 className={h2ClassName}>Sort movies</h2>
+      <h2 className={h2ClassName}>{translate('app-filter-title')}</h2>
       <div className={buttonsClassName}>
         {buttons}
       </div>

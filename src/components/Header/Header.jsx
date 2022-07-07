@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { compose } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
+import { setAppLanguage } from '../../store/slices/catalog.slice';
 
 import withAuthorization from '../hoc-helpers';
 import useTranslation from '../hook-helpers';
@@ -11,9 +13,10 @@ import styles from './Header.module.scss';
 const cx = classNames.bind(styles);
 
 function Header({ isLogged }) {
+  const dispatch = useDispatch();
+  const language = useSelector((state) => state.catalogReducer.language);
   const {
-    language,
-    setLanguage,
+    // setLanguage,
     translate,
   } = useTranslation();
 
@@ -31,7 +34,8 @@ function Header({ isLogged }) {
 
   const handleLangButtonClick = () => {
     const toggleTo = language === 'en' ? 'ua' : 'en';
-    setLanguage(toggleTo);
+    dispatch(setAppLanguage(toggleTo));
+    // setLanguage(toggleTo);
   };
 
   const headerClassName = cx('header');

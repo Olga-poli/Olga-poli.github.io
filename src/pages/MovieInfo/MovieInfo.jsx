@@ -6,6 +6,7 @@ import classNames from 'classnames/bind';
 import { fetchMovieDetails } from '../../store/actions/actions';
 import MovieInfoItem from '../../components/MovieInfoItem';
 import styles from './MovieInfo.module.scss';
+import useTranslation from '../../components/hook-helpers';
 
 const cx = classNames.bind(styles);
 
@@ -15,6 +16,8 @@ function MovieInfo() {
   const { movieID } = useParams();
   const isLoading = useSelector((state) => state.catalogReducer.isLoading);
   const isError = useSelector((state) => state.catalogReducer.isError);
+  const { translate } = useTranslation();
+
   useEffect(() => {
     dispatch(fetchMovieDetails(Number(movieID)));
   }, []);
@@ -25,14 +28,16 @@ function MovieInfo() {
   return (
     <div>
       {isError ? (
-        <h2>Error...</h2>
+        <h2>{translate('app-catalog-error')}</h2>
       ) : (
         <div>
           {isLoading
-            ? (<h2>Loading...</h2>)
+            ? (<h2>{translate('app-catalog-loading')}</h2>)
             : (
               <div className={movieInfoClassName}>
-                <button onClick={() => history.goBack()} type="button" className={backButtonClassName}>Go back</button>
+                <button onClick={() => history.goBack()} type="button" className={backButtonClassName}>
+                  {translate('app-catalog-back-button')}
+                </button>
                 <MovieInfoItem key={movieID} movieID={movieID} />
               </div>
             )}

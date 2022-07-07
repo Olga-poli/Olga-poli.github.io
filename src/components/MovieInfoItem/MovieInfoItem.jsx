@@ -7,17 +7,19 @@ import classNames from 'classnames/bind';
 import { removeMovieItem } from '../../store/slices/catalog.slice';
 import MovieRating from '../MovieRating';
 import styles from './MovieInfoItem.module.scss';
+import useTranslation from '../hook-helpers';
 
 const cx = classNames.bind(styles);
 
 function MovieInfoItem({ movieID }) {
   const dispatch = useDispatch();
+  const { translate } = useTranslation();
 
   const moviesItemsList = useSelector((state) => state.catalogReducer.moviesItemsList);
   const movieData = moviesItemsList.find(({ id }) => id === Number(movieID));
 
   if (!movieData?.isLoaded) {
-    return (<h2>Loading...</h2>);
+    return (<h2>{translate('app-catalog-loading')}</h2>);
   }
   const movieInfoClassName = cx('movieInfo');
   const cardClassName = cx('card');
@@ -104,7 +106,9 @@ function MovieInfoItem({ movieID }) {
                 type="button"
                 className={primaryButtonClassName}
               >
-                <Link to={`${movieID}/edit`}>Edit</Link>
+                <Link to={`${movieID}/edit`}>
+                  {translate('app-movie-edit-button')}
+                </Link>
               </button>
               <button
                 type="button"
@@ -116,7 +120,7 @@ function MovieInfoItem({ movieID }) {
                     dispatch(removeMovieItem(id));
                   }}
                 >
-                  Delete
+                  {translate('app-movie-remove-button')}
                 </Link>
               </button>
             </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { compose } from 'redux';
@@ -18,22 +18,12 @@ function Catalog({ isLogged }) {
   const isLoading = useSelector((state) => state.catalogReducer.isLoading);
   const isError = useSelector((state) => state.catalogReducer.isError);
 
-  const {
-    language,
-    translate,
-  } = useTranslation();
-
-  const [words, setWords] = useState(language);
-
-  useEffect(() => {
-    console.log(language);
-    setWords(translate('app-catalog-banish'));
-  }, [language]);
+  const { translate } = useTranslation();
 
   if (!isLogged) {
     return (
       <div>
-        <h2>{words}</h2>
+        <h2>{translate('app-catalog-banish')}</h2>
         <Link to="/login">Go to login page</Link>
       </div>
     );
@@ -41,13 +31,13 @@ function Catalog({ isLogged }) {
 
   if (isError) {
     return (
-      <h2>Error...</h2>
+      <h2>{translate('app-catalog-error')}</h2>
     );
   }
 
   if (isLoading) {
     return (
-      <h2>Loading...</h2>
+      <h2>{translate('app-catalog-loading')}</h2>
     );
   }
 

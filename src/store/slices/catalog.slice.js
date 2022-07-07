@@ -5,6 +5,7 @@ const catalogSlice = createSlice({
   name: 'catalog',
   initialState: {
     moviesItemsList: [],
+    language: 'en',
     isError: false,
     isLoading: false,
   },
@@ -68,6 +69,9 @@ const catalogSlice = createSlice({
           : item
       ));
     },
+    setAppLanguage: (store, action) => {
+      store.language = action.payload;
+    },
   },
   extraReducers: {
     [fetchMoviesList.pending]: (store) => {
@@ -110,6 +114,7 @@ export const {
   setRatingToMovieItem,
   removeMovieItem,
   updateMovieItem,
+  setAppLanguage,
 } = catalogSlice.actions;
 
 export default catalogSlice.reducer;
