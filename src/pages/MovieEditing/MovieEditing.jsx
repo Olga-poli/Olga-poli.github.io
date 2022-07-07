@@ -6,6 +6,7 @@ import classNames from 'classnames/bind';
 
 import { updateMovieItem } from '../../store/slices/catalog.slice';
 import styles from './MovieEditing.module.scss';
+import useTranslation from '../../components/hook-helpers/useTranslation';
 
 const cx = classNames.bind(styles);
 
@@ -36,6 +37,7 @@ function MovieEditing() {
   const dispatch = useDispatch();
   const history = useHistory();
   const { movieID } = useParams();
+  const { translate } = useTranslation();
 
   const moviesItemsList = useSelector((state) => state.catalogReducer.moviesItemsList);
   const currentMovieData = moviesItemsList.find(({ id }) => id === Number(movieID));
@@ -74,14 +76,18 @@ function MovieEditing() {
 
   return (
     <div className={movieEditingClassName}>
-      <button onClick={() => history.goBack()} type="button" className={backButtonClassName}>Go back</button>
-      <h2>Edit</h2>
+      <button onClick={() => history.goBack()} type="button" className={backButtonClassName}>
+        {translate('app-catalog-back-button')}
+      </button>
+      <h2>{translate('app-movie-edit-button')}</h2>
       <form
         onSubmit={formik.handleSubmit}
         className={formClassName}
       >
         <div className={inputBlockClassName}>
-          <label htmlFor="title" className={labelClassName}>Title</label>
+          <label htmlFor="title" className={labelClassName}>
+            {translate('app-movie-edit-subtitle-title')}
+          </label>
           <input
             onChange={formik.handleChange}
             value={formik.values.movieTitle}
@@ -94,7 +100,9 @@ function MovieEditing() {
           {formik.errors.movieTitle ? <div>{formik.errors.movieTitle}</div> : null}
         </div>
         <div className={styles.inputBlock}>
-          <label htmlFor="image" className={labelClassName}>Image url</label>
+          <label htmlFor="image" className={labelClassName}>
+            {translate('app-movie-edit-subtitle-imageurl')}
+          </label>
           <input
             onChange={formik.handleChange}
             value={formik.values.moviePosterPath}
@@ -107,7 +115,9 @@ function MovieEditing() {
           {formik.errors.moviePosterPath ? <div>{formik.errors.moviePosterPath}</div> : null}
         </div>
         <div className={styles.inputBlock}>
-          <label htmlFor="description" className={labelClassName}>Description</label>
+          <label htmlFor="description" className={labelClassName}>
+            {translate('app-movie-edit-subtitle-description')}
+          </label>
           <textarea
             onChange={formik.handleChange}
             value={formik.values.movieOverview}
@@ -118,7 +128,9 @@ function MovieEditing() {
           />
           {formik.errors.movieOverview ? <div>{formik.errors.movieOverview}</div> : null}
         </div>
-        <button className={submitButtonClassName} type="submit">Submit form</button>
+        <button className={submitButtonClassName} type="submit">
+          {translate('app-movie-edit-form-submit-button')}
+        </button>
       </form>
     </div>
   );

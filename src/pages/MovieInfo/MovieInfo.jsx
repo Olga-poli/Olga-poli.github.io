@@ -28,11 +28,17 @@ function MovieInfo() {
   return (
     <div>
       {isError ? (
-        <h2>{translate('app-catalog-error')}</h2>
+        <div className={movieInfoClassName}>
+          <h2>{translate('app-catalog-error')}</h2>
+        </div>
       ) : (
         <div>
           {isLoading
-            ? (<h2>{translate('app-catalog-loading')}</h2>)
+            ? (
+              <div className={movieInfoClassName}>
+                <h2>{translate('app-catalog-loading')}</h2>
+              </div>
+            )
             : (
               <div className={movieInfoClassName}>
                 <button onClick={() => history.goBack()} type="button" className={backButtonClassName}>

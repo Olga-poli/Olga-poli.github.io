@@ -1,3 +1,3 @@
-import useTranslation from './withTranslation';
+import useTranslation from './useTranslation';
 
 export default useTranslation;

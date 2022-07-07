@@ -6,11 +6,13 @@ import classNames from 'classnames/bind';
 
 import withAuthorization from '../../components/hoc-helpers';
 import styles from './Register.module.scss';
+import useTranslation from '../../components/hook-helpers';
 
 const cx = classNames.bind(styles);
 
 function Register({ isLogged }) {
   const history = useHistory();
+  const { translate } = useTranslation();
   const registerUser = (userCredits) => {
     if (!localStorage.getItem('registeredUsers')) {
       localStorage.setItem('registeredUsers', JSON.stringify([]));
@@ -55,7 +57,9 @@ function Register({ isLogged }) {
             name="userName"
             className={inputClassName}
           />
-          <label className={labelClassName} htmlFor="userName">Username</label>
+          <label className={labelClassName} htmlFor="userName">
+            {translate('app-form-label-login')}
+          </label>
         </div>
 
         <div className={inputBlockClassName}>
@@ -65,18 +69,22 @@ function Register({ isLogged }) {
             name="userPassword"
             className={inputClassName}
           />
-          <label className={labelClassName} htmlFor="form2Example2">Password</label>
+          <label className={labelClassName} htmlFor="form2Example2">
+            {translate('app-form-label-password')}
+          </label>
         </div>
         <button
           type="submit"
           className={submitButtonClassName}
         >
-          Register
+          {translate('app-form-register-button')}
         </button>
         <div className={redirectMessageClassName}>
           <p>
-            Already  have an account?
-            <Link to="/login">Go to login page</Link>
+            {translate('app-register-redirect-message')}
+            <Link to="/login">
+              {translate('app-form-login-button')}
+            </Link>
           </p>
         </div>
       </form>

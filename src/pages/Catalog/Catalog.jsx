@@ -19,30 +19,33 @@ function Catalog({ isLogged }) {
   const isError = useSelector((state) => state.catalogReducer.isError);
 
   const { translate } = useTranslation();
+  const containerClassName = cx('container');
+  const moviesListClassName = cx('moviesList');
 
   if (!isLogged) {
     return (
-      <div>
+      <div className={containerClassName}>
         <h2>{translate('app-catalog-banish')}</h2>
-        <Link to="/login">Go to login page</Link>
+        <Link to="/login">{translate('app-form-login-button')}</Link>
       </div>
     );
   }
 
   if (isError) {
     return (
-      <h2>{translate('app-catalog-error')}</h2>
+      <div className={containerClassName}>
+        <h2>{translate('app-catalog-error')}</h2>
+      </div>
     );
   }
 
   if (isLoading) {
     return (
-      <h2>{translate('app-catalog-loading')}</h2>
+      <div className={containerClassName}>
+        <h2>{translate('app-catalog-loading')}</h2>
+      </div>
     );
   }
-
-  const containerClassName = cx('container');
-  const moviesListClassName = cx('moviesList');
 
   return (
     <div className={containerClassName}>

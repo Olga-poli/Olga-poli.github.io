@@ -6,12 +6,14 @@ import classNames from 'classnames/bind';
 
 import withAuthorization from '../../components/hoc-helpers';
 import styles from './Login.module.scss';
+import useTranslation from '../../components/hook-helpers';
 
 const cx = classNames.bind(styles);
 
 function Login({ isLogged }) {
   const history = useHistory();
   const [logMessage, setLogMessage] = useState('');
+  const { translate } = useTranslation();
 
   const loginUser = (userCredits) => {
     if (!localStorage.getItem('registeredUsers')) {
@@ -68,7 +70,9 @@ function Login({ isLogged }) {
             name="userName"
             className={inputClassName}
           />
-          <label className={labelClassName} htmlFor="userName">Username</label>
+          <label className={labelClassName} htmlFor="userName">
+            {translate('app-form-label-login')}
+          </label>
         </div>
 
         <div className={inputBlockClassName}>
@@ -78,15 +82,21 @@ function Login({ isLogged }) {
             name="userPassword"
             className={inputClassName}
           />
-          <label className={labelClassName} htmlFor="form2Example2">Password</label>
+          <label className={labelClassName} htmlFor="form2Example2">
+            {translate('app-form-label-password')}
+          </label>
         </div>
 
-        <button type="submit" className={submitButtonClassName}>Log in</button>
+        <button type="submit" className={submitButtonClassName}>
+          {translate('app-form-login-button')}
+        </button>
 
         <div className={redirectMessageClassName}>
           <p>
-            Not a member?
-            <Link to="/register">Register</Link>
+            {translate('app-login-redirect-message')}
+            <Link to="/register">
+              {translate('app-form-register-button')}
+            </Link>
           </p>
         </div>
       </form>

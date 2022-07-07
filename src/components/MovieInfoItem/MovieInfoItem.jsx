@@ -73,32 +73,32 @@ function MovieInfoItem({ movieID }) {
             <MovieRating rating={rating} movieId={id} />
             <p>
               <span>
-                Likes:
-                <span>{` ${currentLikesCount}`}</span>
+                {translate('app-movie-subtitle-likes')}
+                <span>{currentLikesCount}</span>
               </span>
             </p>
             <p>
-              Release:
-              <span>{` ${new Date(releaseDate).toLocaleDateString('en-US', dateOptions)}`}</span>
+              {translate('app-movie-subtitle-release')}
+              <span>{new Date(releaseDate).toLocaleDateString('en-US', dateOptions)}</span>
             </p>
             <p>
-              Language:
-              <span>{` ${language}`}</span>
+              {translate('app-movie-subtitle-language')}
+              <span>{language}</span>
             </p>
             <p className={genresClassName}>
-              <span>Genres: </span>
+              {translate('app-movie-subtitle-genres')}
               <span>{genre}</span>
             </p>
             <p>
-              Director:
-              <span>{` ${director}`}</span>
+              {translate('app-movie-subtitle-director')}
+              <span>{director}</span>
             </p>
             <p>
-              Description:
-              <span>{` ${overview}`}</span>
+              {translate('app-movie-subtitle-description')}
+              <span>{overview}</span>
             </p>
             <div>
-              <span>Cast: </span>
+              {translate('app-movie-subtitle-cast')}
               <div className={actorsListClassName}>{actors}</div>
             </div>
             <div className={buttonsClassName}>

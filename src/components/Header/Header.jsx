@@ -15,10 +15,7 @@ const cx = classNames.bind(styles);
 function Header({ isLogged }) {
   const dispatch = useDispatch();
   const language = useSelector((state) => state.catalogReducer.language);
-  const {
-    // setLanguage,
-    translate,
-  } = useTranslation();
+  const { translate } = useTranslation();
 
   const handleLogOutButtonClick = () => {
     if (!localStorage.getItem('registeredUsers')) {
@@ -35,7 +32,6 @@ function Header({ isLogged }) {
   const handleLangButtonClick = () => {
     const toggleTo = language === 'en' ? 'ua' : 'en';
     dispatch(setAppLanguage(toggleTo));
-    // setLanguage(toggleTo);
   };
 
   const headerClassName = cx('header');
