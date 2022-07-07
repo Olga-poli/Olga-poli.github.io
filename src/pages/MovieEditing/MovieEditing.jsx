@@ -2,8 +2,12 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { useHistory, useParams } from 'react-router-dom';
+import classNames from 'classnames/bind';
+
 import { updateMovieItem } from '../../store/slices/catalog.slice';
 import styles from './MovieEditing.module.scss';
+
+const cx = classNames.bind(styles);
 
 const validate = (values) => {
   const errors = {};
@@ -60,21 +64,29 @@ function MovieEditing() {
     },
   });
 
+  const movieEditingClassName = cx('movieEditing');
+  const backButtonClassName = cx('button', 'btn btn-secondary');
+  const formClassName = cx('form');
+  const inputBlockClassName = cx('inputBlock');
+  const inputClassName = cx('form-control');
+  const labelClassName = cx('form-label');
+  const submitButtonClassName = cx('button', 'btn btn-primary');
+
   return (
-    <div className={styles.movieEditing}>
-      <button onClick={() => history.goBack()} type="button" className={`${styles.button} btn btn-secondary`}>Go back</button>
+    <div className={movieEditingClassName}>
+      <button onClick={() => history.goBack()} type="button" className={backButtonClassName}>Go back</button>
       <h2>Edit</h2>
       <form
         onSubmit={formik.handleSubmit}
-        className={styles.form}
+        className={formClassName}
       >
-        <div className={styles.inputBlock}>
-          <label htmlFor="title" className="form-label">Title</label>
+        <div className={inputBlockClassName}>
+          <label htmlFor="title" className={labelClassName}>Title</label>
           <input
             onChange={formik.handleChange}
             value={formik.values.movieTitle}
             name="movieTitle"
-            className="form-control"
+            className={inputClassName}
             type="text"
             id="title"
             required
@@ -82,12 +94,12 @@ function MovieEditing() {
           {formik.errors.movieTitle ? <div>{formik.errors.movieTitle}</div> : null}
         </div>
         <div className={styles.inputBlock}>
-          <label htmlFor="image">Image url</label>
+          <label htmlFor="image" className={labelClassName}>Image url</label>
           <input
             onChange={formik.handleChange}
             value={formik.values.moviePosterPath}
             name="moviePosterPath"
-            className="form-control"
+            className={inputClassName}
             type="text"
             id="image"
             required
@@ -95,18 +107,18 @@ function MovieEditing() {
           {formik.errors.moviePosterPath ? <div>{formik.errors.moviePosterPath}</div> : null}
         </div>
         <div className={styles.inputBlock}>
-          <label htmlFor="description">Description</label>
+          <label htmlFor="description" className={labelClassName}>Description</label>
           <textarea
             onChange={formik.handleChange}
             value={formik.values.movieOverview}
             name="movieOverview"
-            className="form-control"
+            className={inputClassName}
             id="description"
             required
           />
           {formik.errors.movieOverview ? <div>{formik.errors.movieOverview}</div> : null}
         </div>
-        <button className={`${styles.button} btn btn-primary`} type="submit">Submit form</button>
+        <button className={submitButtonClassName} type="submit">Submit form</button>
       </form>
     </div>
   );

@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import classNames from 'classnames/bind';
 
+import { fetchMovieDetails } from '../../store/actions/actions';
 import MovieInfoItem from '../../components/MovieInfoItem';
 import styles from './MovieInfo.module.scss';
-import { fetchMovieDetails } from '../../store/actions/actions';
+
+const cx = classNames.bind(styles);
 
 function MovieInfo() {
   const history = useHistory();
@@ -16,6 +19,9 @@ function MovieInfo() {
     dispatch(fetchMovieDetails(Number(movieID)));
   }, []);
 
+  const movieInfoClassName = cx('movieInfo');
+  const backButtonClassName = cx('button', 'btn btn-secondary');
+
   return (
     <div>
       {isError ? (
@@ -25,8 +31,8 @@ function MovieInfo() {
           {isLoading
             ? (<h2>Loading...</h2>)
             : (
-              <div className={styles.movieInfo}>
-                <button onClick={() => history.goBack()} type="button" className={`${styles.button} btn btn-secondary`}>Go back</button>
+              <div className={movieInfoClassName}>
+                <button onClick={() => history.goBack()} type="button" className={backButtonClassName}>Go back</button>
                 <MovieInfoItem key={movieID} movieID={movieID} />
               </div>
             )}

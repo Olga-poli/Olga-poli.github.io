@@ -2,9 +2,12 @@ import React from 'react';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
+import classNames from 'classnames/bind';
 
-import styles from './Register.module.scss';
 import withAuthorization from '../../components/hoc-helpers';
+import styles from './Register.module.scss';
+
+const cx = classNames.bind(styles);
 
 function Register({ isLogged }) {
   const history = useHistory();
@@ -31,38 +34,46 @@ function Register({ isLogged }) {
     );
   }
 
+  const registerClassName = cx('register');
+  const formClassName = cx('form');
+  const inputBlockClassName = cx('mb-4');
+  const inputClassName = cx('form-control');
+  const labelClassName = cx('form-label');
+  const submitButtonClassName = cx('btn btn-primary btn-block mb-4');
+  const redirectMessageClassName = cx('text-center');
+
   return (
-    <div className={styles.register}>
+    <div className={registerClassName}>
       <form
         onSubmit={handleRegisterFormSubmit}
-        className={styles.form}
+        className={formClassName}
       >
-        <div className="form-outline mb-4">
+        <div className={inputBlockClassName}>
           <input
             type="text"
             id="userName"
             name="userName"
-            className="form-control"
+            className={inputClassName}
           />
-          <label className="form-label" htmlFor="userName">Username</label>
+          <label className={labelClassName} htmlFor="userName">Username</label>
         </div>
 
-        <div className="form-outline mb-4">
+        <div className={inputBlockClassName}>
           <input
             type="password"
             id="form2Example2"
             name="userPassword"
-            className="form-control"
+            className={inputClassName}
           />
-          <label className="form-label" htmlFor="form2Example2">Password</label>
+          <label className={labelClassName} htmlFor="form2Example2">Password</label>
         </div>
         <button
           type="submit"
-          className="btn btn-primary btn-block mb-4"
+          className={submitButtonClassName}
         >
           Register
         </button>
-        <div className="text-center">
+        <div className={redirectMessageClassName}>
           <p>
             Already  have an account?
             <Link to="/login">Go to login page</Link>

@@ -1,8 +1,12 @@
 import React, { useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import classNames from 'classnames/bind';
+
 import { fetchActorDetails } from '../../store/actions/actions';
 import styles from './ActorInfo.module.scss';
+
+const cx = classNames.bind(styles);
 
 function ActorInfo() {
   const dispatch = useDispatch();
@@ -21,10 +25,12 @@ function ActorInfo() {
   }, []);
 
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  const actorInfoClassName = cx('actorInfo');
+  const backButtonClassName = cx('button', 'btn btn-secondary');
 
   return (
-    <div className={styles.actorInfo}>
-      <button onClick={() => history.goBack()} type="button" className={`${styles.button} btn btn-secondary`}>Go back</button>
+    <div className={actorInfoClassName}>
+      <button onClick={() => history.goBack()} type="button" className={backButtonClassName}>Go back</button>
       {isError ? (
         <h2>Error...</h2>
       ) : (
