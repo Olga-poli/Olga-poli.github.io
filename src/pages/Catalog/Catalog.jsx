@@ -7,8 +7,8 @@ import classNames from 'classnames/bind';
 
 import Filter from '../../components/Filter';
 import MovieListItem from '../../components/MovieListItem';
-import withAuthorization from '../../components/hoc-helpers';
-import useTranslation from '../../components/hook-helpers';
+import withAuthorization from '../../hocs';
+import { useTranslation } from '../../hooks';
 import styles from './Catalog.module.scss';
 
 const cx = classNames.bind(styles);

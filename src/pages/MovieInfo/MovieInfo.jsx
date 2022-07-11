@@ -6,7 +6,7 @@ import classNames from 'classnames/bind';
 import { fetchMovieDetails } from '../../store/actions/actions';
 import MovieInfoItem from '../../components/MovieInfoItem';
 import styles from './MovieInfo.module.scss';
-import useTranslation from '../../components/hook-helpers';
+import { useTranslation } from '../../hooks';
 
 const cx = classNames.bind(styles);
 

@@ -4,9 +4,9 @@ import { Link, Redirect, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
-import withAuthorization from '../../components/hoc-helpers';
+import withAuthorization from '../../hocs';
 import styles from './Login.module.scss';
-import useTranslation from '../../components/hook-helpers';
+import { useTranslation } from '../../hooks';
 
 const cx = classNames.bind(styles);
 

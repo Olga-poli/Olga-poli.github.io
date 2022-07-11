@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import { setFilteredMoviesByTitle, setMoviesOrder } from '../../store/slices/catalog.slice';
 
 import styles from './Filter.module.scss';
-import useTranslation from '../hook-helpers';
+import { useTranslation } from '../../hooks';
 
 const cx = classNames.bind(styles);
 

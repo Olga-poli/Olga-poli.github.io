@@ -5,6 +5,7 @@ import classNames from 'classnames/bind';
 
 import { fetchActorDetails } from '../../store/actions/actions';
 import styles from './ActorInfo.module.scss';
+import { useTranslation } from '../../hooks';
 
 const cx = classNames.bind(styles);
 
@@ -12,11 +13,11 @@ function ActorInfo() {
   const dispatch = useDispatch();
   const { actor } = useParams();
   const actorData = useSelector((state) => state.actorsReducer.actorData);
-  console.log(actorData);
   const isLoading = useSelector((state) => state.actorsReducer.isLoading);
   const isError = useSelector((state) => state.actorsReducer.isError);
 
   const history = useHistory();
+  const { translate } = useTranslation();
 
   useEffect(() => {
     (async () => {
@@ -30,28 +31,28 @@ function ActorInfo() {
 
   return (
     <div className={actorInfoClassName}>
-      <button onClick={() => history.goBack()} type="button" className={backButtonClassName}>Go back</button>
+      <button onClick={() => history.goBack()} type="button" className={backButtonClassName}>{translate('app-catalog-back-button')}</button>
       {isError ? (
-        <h2>Error...</h2>
+        <h2>{translate('app-catalog-error')}</h2>
       ) : (
         <div>
-          {isLoading ? (<h2>Loading...</h2>)
+          {isLoading ? (<h2>{translate('app-catalog-loading')}</h2>)
             : (
               <>
                 <p>
-                  Name:
-                  <span>{` ${actor}`}</span>
+                  {translate('app-actor-name')}
+                  <span>{actor}</span>
                 </p>
                 <p>
-                  Birthday:
-                  <span>{` ${new Date(actorData.birthday).toLocaleDateString('en-US', dateOptions)}`}</span>
+                  {translate('app-actor-birthday')}
+                  <span>{new Date(actorData.birthday).toLocaleDateString('en-US', dateOptions)}</span>
                 </p>
                 <p>
-                  Place of birth:
-                  <span>{` ${actorData.place_of_birth}`}</span>
+                  {translate('app-actor-place')}
+                  <span>{actorData.place_of_birth}</span>
                 </p>
                 <p>
-                  Biography:
+                  {translate('app-actor-biography')}
                   <span>{` ${actorData.biography}`}</span>
                 </p>
               </>

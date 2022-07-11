@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { setAppLanguage } from '../../store/slices/catalog.slice';
 
-import withAuthorization from '../hoc-helpers';
-import useTranslation from '../hook-helpers';
+import withAuthorization from '../../hocs';
+import { useTranslation } from '../../hooks';
 import styles from './Header.module.scss';
 
 const cx = classNames.bind(styles);

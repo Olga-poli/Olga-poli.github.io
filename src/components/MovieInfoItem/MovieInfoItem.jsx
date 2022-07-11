@@ -7,7 +7,7 @@ import classNames from 'classnames/bind';
 import { removeMovieItem } from '../../store/slices/catalog.slice';
 import MovieRating from '../MovieRating';
 import styles from './MovieInfoItem.module.scss';
-import useTranslation from '../hook-helpers';
+import { useTranslation } from '../../hooks';
 
 const cx = classNames.bind(styles);
 

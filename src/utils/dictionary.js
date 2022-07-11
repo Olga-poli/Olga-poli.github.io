@@ -1,5 +1,3 @@
-import { useSelector } from 'react-redux';
-
 const dictionary = {
   en: {
     'app-header-login': 'Login',
@@ -38,6 +36,15 @@ const dictionary = {
     'app-movie-subtitle-director': 'Director: ',
     'app-movie-subtitle-description': 'Description: ',
     'app-movie-subtitle-cast': 'Cast: ',
+
+    'app-actor-name': 'Name: ',
+    'app-actor-birthday': 'Birthday: ',
+    'app-actor-place': 'Place of birth: ',
+    'app-actor-biography': 'Biography: ',
+
+    'app-validation-title-error': 'Must have title case and two symbols at least',
+    'app-validation-path-error': 'Must have right file extension and start with "/"',
+    'app-validation-overview-error': 'Overview is not long enough',
   },
   ua: {
     'app-header-login': 'Логін',
@@ -76,13 +83,16 @@ const dictionary = {
     'app-movie-subtitle-director': 'Постановник: ',
     'app-movie-subtitle-description': 'Опис: ',
     'app-movie-subtitle-cast': 'В ролях: ',
+
+    'app-actor-name': 'Ім\'я: ',
+    'app-actor-birthday': 'Дата народження: ',
+    'app-actor-place': 'Місце народження: ',
+    'app-actor-biography': 'Біографія: ',
+
+    'app-validation-title-error': 'Назва повинна починатися з заглавної букви та містити хоча б два символи',
+    'app-validation-path-error': 'Шлях має починатися з "/" та мати корректний тип файлу',
+    'app-validation-overview-error': 'Огляд занадто короткий',
   },
 };
 
-const useTranslation = () => {
-  const appStateLanguage = useSelector((state) => state.catalogReducer.language);
-  const translate = (key) => dictionary?.[appStateLanguage]?.[key];
-  return { translate };
-};
-
-export default useTranslation;
+export default dictionary;

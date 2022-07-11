@@ -6,38 +6,21 @@ import classNames from 'classnames/bind';
 
 import { updateMovieItem } from '../../store/slices/catalog.slice';
 import styles from './MovieEditing.module.scss';
-import useTranslation from '../../components/hook-helpers/useTranslation';
+import { useTranslation, useValidate } from '../../hooks';
 
 const cx = classNames.bind(styles);
-
-const validate = (values) => {
-  const errors = {};
-  if (!values.movieTitle) {
-    errors.movieTitle = 'Required';
-  } else if (!/^[A-Z][a-zA-Z0-9 -—.,!?:]+/.test(values.movieTitle)) {
-    errors.movieTitle = 'Must have title case and two symbols at least';
-  }
-
-  if (!values.moviePosterPath) {
-    errors.moviePosterPath = 'Required';
-  } else if (!/^\/[a-zA-Z0-9]*(.jpg|.jpeg|.png|.gif)/.test(values.moviePosterPath)) {
-    errors.moviePosterPath = 'Must have right file extension and start with "/"';
-  }
-
-  if (!values.movieOverview) {
-    errors.movieOverview = 'Required';
-  } else if (!/^[A-Z][a-zA-Z0-9 -—.,!?:]+/.test(values.movieOverview)) {
-    errors.movieOverview = 'Overview is not long enough';
-  }
-
-  return errors;
-};
 
 function MovieEditing() {
   const dispatch = useDispatch();
   const history = useHistory();
   const { movieID } = useParams();
   const { translate } = useTranslation();
+  const validate = useValidate(translate);
+
+  const nameInputRef = useRef(null);
+  useEffect(() => {
+    nameInputRef.current.focus();
+  }, []);
 
   const moviesItemsList = useSelector((state) => state.catalogReducer.moviesItemsList);
   const currentMovieData = moviesItemsList.find(({ id }) => id === Number(movieID));
@@ -73,12 +56,6 @@ function MovieEditing() {
   const inputClassName = cx('form-control');
   const labelClassName = cx('form-label');
   const submitButtonClassName = cx('button', 'btn btn-primary');
-
-  const nameInputRef = useRef(null);
-
-  useEffect(() => {
-    nameInputRef.current.focus();
-  }, [translate]);
 
   return (
     <div className={movieEditingClassName}>
