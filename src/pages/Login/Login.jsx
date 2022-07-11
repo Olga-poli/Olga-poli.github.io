@@ -1,84 +1,112 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { compose } from 'redux';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import classNames from 'classnames/bind';
 
+import withAuthorization from '../../components/hoc-helpers';
 import styles from './Login.module.scss';
+import useTranslation from '../../components/hook-helpers';
 
-function Login(props) {
-  const [nameState, setNameState] = useState('foo');
-  const [passwordState, setPasswordState] = useState('');
+const cx = classNames.bind(styles);
+
+function Login({ isLogged }) {
+  const history = useHistory();
   const [logMessage, setLogMessage] = useState('');
-  const { setActiveUserState } = props;
+  const { translate } = useTranslation();
 
-  const loginUser = (event) => {
-    event.preventDefault();
-    const user = {
-      name: nameState,
-      password: passwordState,
-      isLogged: true,
-    };
-
-    const userDataStorage = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-    const isRegister = userDataStorage.some(({ name }) => name === user.name);
+  const loginUser = (userCredits) => {
+    if (!localStorage.getItem('registeredUsers')) {
+      localStorage.setItem('registeredUsers', JSON.stringify([]));
+    }
+    const storage = JSON.parse(localStorage.getItem('registeredUsers'));
+    const isRegister = storage.some(({ name }) => name === userCredits.name);
     if (!isRegister) {
-      setLogMessage('User didn\'t found. Please, register.');
+      setLogMessage('app-login-notexist-message');
       return;
     }
-
-    const activeUserIndex = userDataStorage.findIndex(({ name }) => name === user.name);
-    const updatedUser = { ...userDataStorage[activeUserIndex], isLogged: true };
+    const activeUserIndex = storage.findIndex(({ name }) => name === userCredits.name);
+    const updatedUser = { ...storage[activeUserIndex], isLoggedIn: true };
     const updatedUsers = [
-      ...userDataStorage.slice(0, activeUserIndex),
+      ...storage.slice(0, activeUserIndex),
       updatedUser,
-      ...userDataStorage.slice(activeUserIndex + 1),
+      ...storage.slice(activeUserIndex + 1),
     ];
     localStorage.setItem('registeredUsers', JSON.stringify(updatedUsers));
-    setActiveUserState(user);
-    setLogMessage('Log in successfully');
+    history.push('/catalog');
   };
 
+  const handleLoginFormSubmit = (event) => {
+    event.preventDefault();
+    const userName = event.target.elements.userName.value;
+    const userPassword = event.target.elements.userPassword.value;
+    loginUser({ name: userName, password: userPassword, isLoggedIn: true });
+  };
+
+  if (isLogged) {
+    return (
+      <Redirect to="/catalog" />
+    );
+  }
+
+  const loginClassName = cx('login');
+  const formClassName = cx('form');
+  const inputBlockClassName = cx('mb-4');
+  const inputClassName = cx('form-control');
+  const labelClassName = cx('form-label');
+  const submitButtonClassName = cx('btn btn-primary btn-block mb-4');
+  const redirectMessageClassName = cx('text-center');
+
   return (
-    <div className={styles.login}>
+    <div className={loginClassName}>
       <form
-        onSubmit={loginUser}
-        className={styles.form}
+        onSubmit={handleLoginFormSubmit}
+        className={formClassName}
       >
-        <div className="form-outline mb-4">
+        <div className={inputBlockClassName}>
           <input
             type="text"
             id="userName"
-            onChange={(event) => setNameState(event.target.value)}
-            className="form-control"
+            name="userName"
+            className={inputClassName}
           />
-          <label className="form-label" htmlFor="userName">Username</label>
+          <label className={labelClassName} htmlFor="userName">
+            {translate('app-form-label-login')}
+          </label>
         </div>
 
-        <div className="form-outline mb-4">
+        <div className={inputBlockClassName}>
           <input
             type="password"
             id="form2Example2"
-            onChange={(event) => setPasswordState(event.target.value)}
-            className="form-control"
+            name="userPassword"
+            className={inputClassName}
           />
-          <label className="form-label" htmlFor="form2Example2">Password</label>
+          <label className={labelClassName} htmlFor="form2Example2">
+            {translate('app-form-label-password')}
+          </label>
         </div>
 
-        <button type="submit" className="btn btn-primary btn-block mb-4">Log in</button>
+        <button type="submit" className={submitButtonClassName}>
+          {translate('app-form-login-button')}
+        </button>
 
-        <div className="text-center">
+        <div className={redirectMessageClassName}>
           <p>
-            Not a member?
-            <Link to="/register">Register</Link>
+            {translate('app-login-redirect-message')}
+            <Link to="/register">
+              {translate('app-form-register-button')}
+            </Link>
           </p>
         </div>
-        <div>{logMessage}</div>
       </form>
+      <p>{translate(logMessage)}</p>
     </div>
   );
 }
 
 Login.propTypes = {
-  setActiveUserState: PropTypes.func.isRequired,
+  isLogged: PropTypes.bool.isRequired,
 };
 
-export default Login;
+export default compose(withAuthorization)(Login);

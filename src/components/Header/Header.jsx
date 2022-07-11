@@ -1,72 +1,87 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { compose } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import classNames from 'classnames/bind';
+import { setAppLanguage } from '../../store/slices/catalog.slice';
 
+import withAuthorization from '../hoc-helpers';
+import useTranslation from '../hook-helpers';
 import styles from './Header.module.scss';
 
-function Header(props) {
-  const userDataStorage = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-  const { activeUserState, setActiveUserState } = props;
+const cx = classNames.bind(styles);
 
-  const logoutUser = () => {
-    if (userDataStorage.length > 0) {
-      const activeUserIndex = userDataStorage
-        .findIndex(({ name }) => name === activeUserState.name);
-      const updatedUser = { ...userDataStorage[activeUserIndex], isLogged: false };
-      const updatedUsers = [
-        ...userDataStorage.slice(0, activeUserIndex),
-        updatedUser,
-        ...userDataStorage.slice(activeUserIndex + 1),
-      ];
-      localStorage.setItem('registeredUsers', JSON.stringify(updatedUsers));
-      setActiveUserState(null);
+function Header({ isLogged }) {
+  const dispatch = useDispatch();
+  const language = useSelector((state) => state.catalogReducer.language);
+  const { translate } = useTranslation();
+
+  const handleLogOutButtonClick = () => {
+    if (!localStorage.getItem('registeredUsers')) {
+      localStorage.setItem('registeredUsers', JSON.stringify([]));
     }
+    const storage = JSON.parse(localStorage.getItem('registeredUsers'));
+    if (storage.length < 1) {
+      return;
+    }
+    const updatedStorage = storage.map((user) => ({ ...user, isLoggedIn: false }));
+    localStorage.setItem('registeredUsers', JSON.stringify(updatedStorage));
   };
 
+  const handleLangButtonClick = () => {
+    const toggleTo = language === 'en' ? 'ua' : 'en';
+    dispatch(setAppLanguage(toggleTo));
+  };
+
+  const headerClassName = cx('header');
+  const langButtonClassName = cx('langButton', 'btn btn-outline-primary ml-3');
+  const loginButtonClassName = cx('button', 'btn btn-outline-primary');
+
   return (
-    <header className={styles.header}>
+    <header className={headerClassName}>
       <h1>
         <Link to="/">
-          Movies
+          {translate('app-header-title')}
         </Link>
       </h1>
-      {activeUserState
-        ? (
-          <Link to="/">
-            <button
-              onClick={logoutUser}
-              className={`${styles.button} btn btn-outline-primary`}
-              type="button"
-            >
-              Log out
-            </button>
-          </Link>
-        )
-        : (
-          <Link to="/login">
-            <button
-              className={`${styles.button} btn btn-outline-primary`}
-              type="button"
-            >
-              Log in
-            </button>
-          </Link>
-        )}
+      <div>
+        <button
+          type="button"
+          className={langButtonClassName}
+          onClick={handleLangButtonClick}
+        >
+          {language}
+        </button>
+        {isLogged
+          ? (
+            <Link to="/">
+              <button
+                onClick={handleLogOutButtonClick}
+                className={loginButtonClassName}
+                type="button"
+              >
+                {translate('app-header-logout')}
+              </button>
+            </Link>
+          )
+          : (
+            <Link to="/login">
+              <button
+                className={loginButtonClassName}
+                type="button"
+              >
+                {translate('app-header-login')}
+              </button>
+            </Link>
+          )}
+      </div>
     </header>
   );
 }
 
-Header.defaultProps = {
-  activeUserState: PropTypes.shape({}),
-};
-
 Header.propTypes = {
-  activeUserState: PropTypes.shape({
-    name: PropTypes.string,
-    password: PropTypes.string,
-    isLogged: PropTypes.bool,
-  }),
-  setActiveUserState: PropTypes.func.isRequired,
+  isLogged: PropTypes.bool.isRequired,
 };
 
-export default Header;
+export default compose(withAuthorization)(Header);

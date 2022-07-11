@@ -1,18 +1,39 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import classNames from 'classnames/bind';
 
 import { removeMovieItem } from '../../store/slices/catalog.slice';
 import MovieRating from '../MovieRating';
 import styles from './MovieInfoItem.module.scss';
+import useTranslation from '../hook-helpers';
+
+const cx = classNames.bind(styles);
 
 function MovieInfoItem({ movieID }) {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const { translate } = useTranslation();
 
   const moviesItemsList = useSelector((state) => state.catalogReducer.moviesItemsList);
   const movieData = moviesItemsList.find(({ id }) => id === Number(movieID));
+
+  if (!movieData?.isLoaded) {
+    return (<h2>{translate('app-catalog-loading')}</h2>);
+  }
+  const movieInfoClassName = cx('movieInfo');
+  const cardClassName = cx('card');
+  const cardBodyClassName = cx('body', 'card-body');
+  const genreItemClassName = cx('genresItem');
+  const genresClassName = cx('genres');
+  const actorsListClassName = cx('actorsList');
+  const actorItemClassName = cx('actorsListItems');
+  const buttonsClassName = cx('buttons');
+  const primaryButtonClassName = cx('button', 'btn btn-primary');
+  const deleteButtonClassName = cx('button', 'btn btn-outline-danger');
+  const imageContainerClassName = cx('imageContainer');
+  const imageClassName = cx('image');
+
   const {
     title,
     currentLikesCount = 0,
@@ -29,83 +50,83 @@ function MovieInfoItem({ movieID }) {
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
   const director = crew.find(({ known_for_department: department }) => department === 'Directing').name;
   const genre = genres.map(({ id: genreID, name }) => (
-    <span key={genreID} className={styles.genresItem}>{name}</span>
+    <span key={genreID} className={genreItemClassName}>{name}</span>
   ));
   const actors = cast
     .filter(({ known_for_department: knownForDepartment }) => knownForDepartment === 'Acting')
     .map(({ name: actorName }) => (
       <button
-        onClick={() => history.push(`/catalog/${movieID}/${actorName}`, { id })}
         key={actorName}
-        className={styles.actorsListItems}
+        className={actorItemClassName}
         type="button"
       >
-        {actorName}
+        <Link to={`/catalog/${movieID}/${actorName}`}>{actorName}</Link>
       </button>
     ));
 
   return (
-    <div className={styles.movieInfo}>
-      <div className="card">
-        <div className={`${styles.body} card-body`}>
+    <div className={movieInfoClassName}>
+      <div className={cardClassName}>
+        <div className={cardBodyClassName}>
           <div>
             <h3>{title}</h3>
             <MovieRating rating={rating} movieId={id} />
             <p>
               <span>
-                Likes:
-                <span>{` ${currentLikesCount}`}</span>
+                {translate('app-movie-subtitle-likes')}
+                <span>{currentLikesCount}</span>
               </span>
             </p>
             <p>
-              Release:
-              <span>{` ${new Date(releaseDate).toLocaleDateString('en-US', dateOptions)}`}</span>
+              {translate('app-movie-subtitle-release')}
+              <span>{new Date(releaseDate).toLocaleDateString('en-US', dateOptions)}</span>
             </p>
             <p>
-              Language:
-              <span>{` ${language}`}</span>
+              {translate('app-movie-subtitle-language')}
+              <span>{language}</span>
             </p>
-            <p className={styles.genres}>
-              <span>Genres: </span>
+            <p className={genresClassName}>
+              {translate('app-movie-subtitle-genres')}
               <span>{genre}</span>
             </p>
             <p>
-              Director:
-              <span>{` ${director}`}</span>
+              {translate('app-movie-subtitle-director')}
+              <span>{director}</span>
             </p>
             <p>
-              Description:
-              <span>{` ${overview}`}</span>
+              {translate('app-movie-subtitle-description')}
+              <span>{overview}</span>
             </p>
             <div>
-              <span>Cast: </span>
-              <div className={styles.actorsList}>{actors}</div>
+              {translate('app-movie-subtitle-cast')}
+              <div className={actorsListClassName}>{actors}</div>
             </div>
-            <div className={styles.buttons}>
+            <div className={buttonsClassName}>
               <button
-                onClick={() => {
-                  // removeMovieItem(id);
-                  history.push(`${movieID}/edit`);
-                }}
                 type="button"
-                className={`${styles.button} btn btn-primary`}
+                className={primaryButtonClassName}
               >
-                Edit
+                <Link to={`${movieID}/edit`}>
+                  {translate('app-movie-edit-button')}
+                </Link>
               </button>
               <button
-                onClick={() => {
-                  dispatch(removeMovieItem(id));
-                  history.push('/catalog/');
-                }}
                 type="button"
-                className={`${styles.button} btn btn-outline-danger`}
+                className={deleteButtonClassName}
               >
-                Delete
+                <Link
+                  to="/catalog/"
+                  onClick={() => {
+                    dispatch(removeMovieItem(id));
+                  }}
+                >
+                  {translate('app-movie-remove-button')}
+                </Link>
               </button>
             </div>
           </div>
-          <div className={styles.imageContainer}>
-            <img src={`https://image.tmdb.org/t/p/w500/${posterPath}`} alt={posterPath} className={styles.image} />
+          <div className={imageContainerClassName}>
+            <img src={`https://image.tmdb.org/t/p/w500/${posterPath}`} alt={posterPath} className={imageClassName} />
           </div>
         </div>
       </div>

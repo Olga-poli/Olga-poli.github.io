@@ -30,6 +30,11 @@
     margin-top: 2rem;
   }
 
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
   .actorsList {
     display: flex;
     flex-wrap: wrap;

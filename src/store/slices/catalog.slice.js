@@ -5,6 +5,7 @@ const catalogSlice = createSlice({
   name: 'catalog',
   initialState: {
     moviesItemsList: [],
+    language: 'en',
     isError: false,
     isLoading: false,
   },
@@ -68,17 +69,23 @@ const catalogSlice = createSlice({
           : item
       ));
     },
+    setAppLanguage: (store, action) => {
+      store.language = action.payload;
+    },
   },
   extraReducers: {
     [fetchMoviesList.pending]: (store) => {
       store.isLoading = true;
+      store.isLoaded = false;
     },
     [fetchMoviesList.fulfilled]: (store, action) => {
       store.isLoading = false;
+      store.isLoaded = true;
       store.moviesItemsList = action.payload;
     },
     [fetchMoviesList.rejected]: (store) => {
       store.isLoading = false;
+      store.isLoaded = false;
       store.isError = true;
     },
     [fetchMovieDetails.pending]: (store) => {
@@ -88,7 +95,7 @@ const catalogSlice = createSlice({
       store.isLoading = false;
       store.moviesItemsList = store.moviesItemsList.map((item) => (
         item.id === action.payload.id
-          ? { ...item, ...action.payload }
+          ? { ...action.payload, ...item, isLoaded: true }
           : item
       ));
     },
@@ -107,6 +114,7 @@ export const {
   setRatingToMovieItem,
   removeMovieItem,
   updateMovieItem,
+  setAppLanguage,
 } = catalogSlice.actions;
 
 export default catalogSlice.reducer;
