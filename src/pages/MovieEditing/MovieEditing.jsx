@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { useHistory, useParams } from 'react-router-dom';
@@ -74,6 +74,12 @@ function MovieEditing() {
   const labelClassName = cx('form-label');
   const submitButtonClassName = cx('button', 'btn btn-primary');
 
+  const nameInputRef = useRef(null);
+
+  useEffect(() => {
+    nameInputRef.current.focus();
+  }, [translate]);
+
   return (
     <div className={movieEditingClassName}>
       <button onClick={() => history.goBack()} type="button" className={backButtonClassName}>
@@ -89,6 +95,7 @@ function MovieEditing() {
             {translate('app-movie-edit-subtitle-title')}
           </label>
           <input
+            ref={nameInputRef}
             onChange={formik.handleChange}
             value={formik.values.movieTitle}
             name="movieTitle"
