@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserAuthorization } from '../store/slices/catalog.slice';
 
 import { getUserStatus } from '../utils';
 
 const withAuthorization = (Component) => {
   function WithAuthorization(props) {
+    const isLoggedState = useSelector((state) => state.catalogReducer.isAuthorized);
     const userStatus = getUserStatus();
-    const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+    const [isUserLoggedIn, setIsUserLoggedIn] = useState(isLoggedState);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
+      dispatch(setUserAuthorization(userStatus));
       setIsUserLoggedIn(userStatus);
     }, [userStatus]);
 

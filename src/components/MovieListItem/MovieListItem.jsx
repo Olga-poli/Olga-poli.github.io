@@ -36,13 +36,9 @@ function MovieListItem({ movieId }) {
   return (
     <div className={moviesListItemClassName}>
       <div className={cardBodyClassName}>
-        <p
-          className={cardTitleClassName}
-        >
-          <Link to={`/catalog/${id}`}>
-            {title}
-          </Link>
-        </p>
+        <Link to={`/catalog/${id}`} className={cardTitleClassName}>
+          {title}
+        </Link>
         <div>
           <div className={cardContentClassName}>
             <div className={cardLikesClassName}>

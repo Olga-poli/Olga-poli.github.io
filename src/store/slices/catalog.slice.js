@@ -8,6 +8,7 @@ const catalogSlice = createSlice({
     language: 'en',
     isError: false,
     isLoading: false,
+    isAuthorized: false,
   },
   reducers: {
     setFilteredMoviesByTitle: (store, action) => {
@@ -72,6 +73,9 @@ const catalogSlice = createSlice({
     setAppLanguage: (store, action) => {
       store.language = action.payload;
     },
+    setUserAuthorization: (store, action) => {
+      store.isAuthorized = action.payload;
+    },
   },
   extraReducers: {
     [fetchMoviesList.pending]: (store) => {
@@ -115,6 +119,7 @@ export const {
   removeMovieItem,
   updateMovieItem,
   setAppLanguage,
+  setUserAuthorization,
 } = catalogSlice.actions;
 
 export default catalogSlice.reducer;
