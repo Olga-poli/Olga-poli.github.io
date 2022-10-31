@@ -45,7 +45,7 @@ function Routes() {
         <Catalog />
       </Route>
       <Route path="*">
-        <h1>Not found</h1>
+        <Login />
       </Route>
     </Switch>
   );
