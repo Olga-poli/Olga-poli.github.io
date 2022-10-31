@@ -18,7 +18,7 @@ function App() {
   }, []);
 
   return (
-    <Router>
+    <Router basename="/movieDB">
       <div className={styles.App}>
         <Header />
         <Routes />
