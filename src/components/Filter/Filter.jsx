@@ -46,6 +46,11 @@ function Filter() {
     searchInput.current.value = '';
   };
 
+  const handleSearchClick = () => {
+    setSearchInputValue(searchInput.current.value);
+    searchInput.current.value = '';
+  };
+
   const handleFilterButtonClick = (clickedButtonName) => {
     const currentButton = [...filters].find(({ name }) => name === clickedButtonName);
     const updatedButton = {
@@ -104,7 +109,11 @@ function Filter() {
         onSubmit={onSubmit}
         className={formClassName}
       >
-        <button type="button" className={searchButtonClassName}>
+        <button
+          type="button"
+          className={searchButtonClassName}
+          onClick={handleSearchClick}
+        >
           <i className={searchIconClassName} />
         </button>
         <input
